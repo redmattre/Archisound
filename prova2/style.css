@@ -1,0 +1,72 @@
+body {
+  margin: 0;
+}
+
+canvas{
+  position: absolute;
+  z-index: 0;
+}
+
+button {
+  /* scale: 1; */
+  width: 4rem;
+  font-size: xx-large;
+  background-color: transparent;
+  border: solid rgb(213, 217, 220) 2px;
+  border-radius: 2px;
+  color: white;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  /* Smooth transition for background and shadow */
+}
+
+button:active {
+  background-color: rgb(255, 255, 255); /* White to transparent */
+}
+
+button:hover {
+  box-shadow: 0 0 1.5rem rgba(255, 255, 255, 0.8); /* White shadow on hover */
+}
+
+#addCubeButton {
+  position: absolute;
+  top: 5rem;
+  right: 1rem;
+  z-index: 9999;
+}
+
+#addSphereButton {
+  position: absolute;
+  top: 10rem;
+  right: 1rem;
+  z-index: 9999;
+}
+
+#addSpeakerButton {
+  position: absolute;
+  top: 15rem;
+  right: 1rem;
+  z-index: 9999;
+}
+
+#addEarbudsButton {
+  position: absolute;
+  top: 20rem;
+  right: 1rem;
+  z-index: 9999;
+}
+
+#addCadFileButton {
+  position: absolute;
+  top: 25rem;
+  right: 1rem;
+  z-index: 9999;
+}
+
+#info {
+  padding: 1rem;
+  color: rgba(255, 255, 255, 0.194);
+  position: absolute;
+  z-index: 9999;
+}

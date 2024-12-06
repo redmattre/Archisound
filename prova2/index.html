@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>three.js webgl - transform controls</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<link type="text/css" rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="navbar.css">
+	</head>
+	<body>
+
+		<div id="info">
+			"W" translate | "E" rotate | "R" scale | "+/-" adjust size<br />
+			"Q" toggle world/local space |  "Shift" snap to grid<br />
+			"X" toggle X | "Y" toggle Y | "Z" toggle Z | "Spacebar" toggle enabled<br />
+			"Esc" reset current transform<br />
+			"C" toggle camera | "V" random zoom
+		</div>
+
+    <div id="nav-icon3">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <button id="addCubeButton">🧊</button>
+    <button id="addSphereButton">🔮</button>
+    <button id="addSpeakerButton">🔈</button>
+    <button id="addEarbudsButton">🎧</button>
+    <button id="addCadFileButton">🌉</button>
+
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
+
+		<script type="module" src="main.js"></script>
+    <script src="navbar.js"></script>
+
+	</body>
+</html>
