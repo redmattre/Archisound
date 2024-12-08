@@ -256,3 +256,21 @@
   top: 39px;
   left: 8px;
 }
+
+/* pannello che si apre */
+#black-panel{
+  opacity: 0;
+  right: 0;
+  position: absolute;
+  height: 97%;
+  width: 50vw;
+  background-color: black;
+  border: solid rgb(213, 217, 220) 2px;
+  border-radius: 2px;
+  color: white;
+  padding: 0.5rem 1rem;
+  pointer-events: none;
+
+  transition: all 0.2s ease;
+  z-index: 9999;
+}

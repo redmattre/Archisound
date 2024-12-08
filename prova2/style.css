@@ -1,5 +1,7 @@
 body {
   margin: 0;
+  padding: 0;
+  overflow: hidden;
 }
 
 canvas{
@@ -8,7 +10,6 @@ canvas{
 }
 
 button {
-  /* scale: 1; */
   width: 4rem;
   font-size: xx-large;
   background-color: transparent;
@@ -18,15 +19,14 @@ button {
   padding: 0.5rem 1rem;
   cursor: pointer;
   transition: background-color 0.2s ease, box-shadow 0.2s ease;
-  /* Smooth transition for background and shadow */
 }
 
 button:active {
-  background-color: rgb(255, 255, 255); /* White to transparent */
+  background-color: rgb(255, 255, 255);
 }
 
 button:hover {
-  box-shadow: 0 0 1.5rem rgba(255, 255, 255, 0.8); /* White shadow on hover */
+  box-shadow: 0 0 1.5rem rgba(255, 255, 255, 0.8);
 }
 
 #addCubeButton {

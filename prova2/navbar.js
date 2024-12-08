@@ -7,10 +7,11 @@ navIcons.forEach(function(icon) {
         this.classList.toggle('open');
         
         if (count % 2 === 0) {
-            // menu.style.display = "none";
             menu.style.opacity = 0;
+            menu.style.pointerEvents = "none";
         } else {
             menu.style.opacity = 1;
+            menu.style.pointerEvents = "all";
         }
         
         count++;

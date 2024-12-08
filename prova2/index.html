@@ -9,13 +9,15 @@
 	</head>
 	<body>
 
+	<div id="black-panel">
 		<div id="info">
 			"W" translate | "E" rotate | "R" scale | "+/-" adjust size<br />
 			"Q" toggle world/local space |  "Shift" snap to grid<br />
 			"X" toggle X | "Y" toggle Y | "Z" toggle Z | "Spacebar" toggle enabled<br />
 			"Esc" reset current transform<br />
-			"C" toggle camera | "V" random zoom
+			| "V" random zoom
 		</div>
+	</div>
 
     <div id="nav-icon3">
       <span></span>
@@ -30,16 +32,16 @@
     <button id="addEarbudsButton">🎧</button>
     <button id="addCadFileButton">🌉</button>
 
-		<script type="importmap">
-			{
-				"imports": {
-					"three": "../build/three.module.js",
-					"three/addons/": "./jsm/"
-				}
+	<script type="importmap">
+		{
+			"imports": {
+				"three": "../build/three.module.js",
+				"three/addons/": "./jsm/"
 			}
-		</script>
+		}
+	</script>
 
-		<script type="module" src="main.js"></script>
+	<script type="module" src="main.js"></script>
     <script src="navbar.js"></script>
 
 	</body>
