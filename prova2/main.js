@@ -3,13 +3,11 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { TransformControls } from 'three/addons/controls/TransformControls.js';
 
-
-let scene, renderer, control, orbit;
+let cameraPersp, cameraOrtho, currentCamera;
+let scene, renderer, control, orbit, orbitOrtho;
+let raycaster, mouse, hoveredObject;
 
 let normalMesh = new THREE.MeshNormalMaterial();
-
-let cameras = [];
-const views = [];
 
 init();
 render();
@@ -21,7 +19,16 @@ function init() {
 	renderer.setSize( window.innerWidth, window.innerHeight );
 	document.body.appendChild( renderer.domElement );
 
-	//basic scene
+	const aspect = window.innerWidth / window.innerHeight;
+
+	const frustumSize = 3;
+
+	cameraPersp = new THREE.PerspectiveCamera( 50, aspect, 0.1, 100 );
+	cameraOrtho = new THREE.OrthographicCamera( - frustumSize * aspect, frustumSize * aspect, frustumSize, - frustumSize, 0.1, 100 );
+	currentCamera = cameraPersp; //default camera
+
+	currentCamera.position.set( 5, 2.5, 5 );
+
 	scene = new THREE.Scene();
 	scene.add( new THREE.GridHelper( 5, 10, 0x888888, 0x444444 ) );
 
@@ -32,85 +39,20 @@ function init() {
 	light.position.set( 1, 1, 1 );
 	scene.add( light );
 
-	//camera stuff
-	const aspect = window.innerWidth / window.innerHeight;
-	const frustumSize = 5;
-
-	views.push(
-		{
-			left: 0., 
-			bottom: 0.5, 
-			width: 0.5, 
-			height: 0.5, 
-			fov: 50, 
-			position: [5, 5, 5],  // Vista prospettica
-			lookAt: [0, 0, 0],
-			// background: 0x555555 
-			
-		},
-		{
-			left: 0.5, 
-			bottom: 0.5, 
-			width: 0.5, 
-			height: 0.5, 
-			// fov: 50, 
-			position: [0, 10, 0],  // Vista dall'alto (ortogonale, guardando in basso)
-			lookAt: [0, 0, 0],
-			// background: 0x333333 
-		},
-		{
-			left: 0.5, 
-			bottom: 0, 
-			width: 0.5, 
-			height: 0.5, 
-			// fov: 50, 
-			position: [10, 0, 0], // Vista laterale destra
-			lookAt: [0, 0, 0],
-			// background: 0x777777 
-		},
-		{
-			left: 0, 
-			bottom: 0, 
-			width: 0.5, 
-			height: 0.5, 
-			// fov: 50, 
-			position: [0, 0, 10], // Vista frontale
-			lookAt: [0, 0, 0],
-			// background: 0x999999 
-		}
-	);
-
-	for (let i = 0; i < views.length; i++) {
-		const view = views[i];
-		let camera; // Dichiarata con let per permettere la riassegnazione
-	
-		const cameraPerspective = new THREE.PerspectiveCamera(view.fov, aspect, 0.1, 100);
-		const cameraOrthogonal = new THREE.OrthographicCamera(
-			-frustumSize * aspect,
-			frustumSize * aspect,
-			frustumSize,
-			-frustumSize,
-			0.1,
-			100
-		);
-	
-		if (i === 0) {
-			camera = cameraPerspective; 
-		} else {
-			camera = cameraOrthogonal;
-		}
-	
-		camera.position.set(...view.position);
-		camera.lookAt(0, 0, 0);
-		cameras.push(camera);
-	}
-
-	//controls
-	orbit = new OrbitControls( cameras[0], renderer.domElement );
+	//Controlli scena prospettiva
+	orbit = new OrbitControls( cameraPersp, renderer.domElement );
 	orbit.update();
 	orbit.addEventListener( 'change', render );
 
-	control = new TransformControls( cameras[0], renderer.domElement );
+	//controlli scena ortogonale
+	orbitOrtho = new OrbitControls( cameraOrtho, renderer.domElement );
+	orbitOrtho.enableRotate = false;
+	orbitOrtho.enablePan = false;
+	orbitOrtho.enableZoom = true;
+	orbitOrtho.update();
+	orbitOrtho.addEventListener( 'change', render );
+
+	control = new TransformControls( cameraPersp, renderer.domElement );
 	control.addEventListener( 'change', render );
 	control.addEventListener( 'dragging-changed', function ( event ) {
 
@@ -126,128 +68,175 @@ function init() {
 }
 
 function onWindowResize() {
-    const aspect = window.innerWidth / window.innerHeight;
 
-    // Aggiorna la matrice di proiezione di ogni camera
-    cameras.forEach((camera, index) => {
-        if (camera.isPerspectiveCamera) {
-            camera.aspect = aspect;
-        } else if (camera.isOrthographicCamera) {
-            const frustumSize = 5; // Mantieni il frustumSize coerente con quello usato in init()
-            camera.left = -frustumSize * aspect;
-            camera.right = frustumSize * aspect;
-            camera.top = frustumSize;
-            camera.bottom = -frustumSize;
-        }
-        camera.updateProjectionMatrix();
-    });
+	const aspect = window.innerWidth / window.innerHeight;
 
-    // Aggiorna il renderer per la nuova dimensione dello schermo
-    renderer.setSize(window.innerWidth, window.innerHeight);
+	cameraPersp.aspect = aspect;
+	cameraPersp.updateProjectionMatrix();
 
-    // Renderizza di nuovo la scena
-    render();
+	cameraOrtho.left = cameraOrtho.bottom * aspect;
+	cameraOrtho.right = cameraOrtho.top * aspect;
+	cameraOrtho.updateProjectionMatrix();
+
+	renderer.setSize( window.innerWidth, window.innerHeight );
+
+	render();
+
 }
 
 function render() {
-    for (let i = 0; i < views.length; i++) {
-        const view = views[i];
-        const camera = cameras[i];
 
-        const left = Math.floor(window.innerWidth * view.left);
-        const bottom = Math.floor(window.innerHeight * view.bottom);
-        const width = Math.ceil(window.innerWidth * view.width); // Usa Math.ceil
-        const height = Math.ceil(window.innerHeight * view.height);
+	renderer.render( scene, currentCamera );
 
-        renderer.setViewport(left, bottom, width, height);
-        renderer.setScissor(left, bottom, width, height);
-        renderer.setScissorTest(true);
-        renderer.setClearColor(view.background);
-
-        camera.aspect = width / height;
-        camera.updateProjectionMatrix();
-
-        renderer.render(scene, camera);
-    }
 }
 
 //Keyboard Functions
 
 let toggle;
 
-window.addEventListener( 'keydown', function ( event ) {
-	
-	switch ( event.key ) {
-		case '0':
-			toggle = !toggle;
-			toggle ? scene.remove( gizmo ) : scene.add( gizmo );
-		case 'q':
-			control.setSpace( control.space === 'local' ? 'world' : 'local' );
-			break;
+window.addEventListener('keydown', function(event) {
+    switch (event.key) {
+        case '1':
+            // Attiva la camera prospettica
+            currentCamera = cameraPersp;
+            orbit.enabled = true; // Riabilita i controlli Orbit
+			orbitOrtho.enabled = false;
+            // currentCamera.position.set(5, 2.5, 5); 
+            currentCamera.lookAt(0, 0, 0); // Guarda verso il centro della scena
+            control.camera = currentCamera; // Aggiorna la camera nei controlli
+            onWindowResize();
+            break;
 
-		case 'Shift':
-			control.setTranslationSnap( 1 );
-			control.setRotationSnap( THREE.MathUtils.degToRad( 15 ) );
-			control.setScaleSnap( 0.25 );
-			break;
+        case '2':
+            // Attiva la camera ortogonale dall'alto
+            currentCamera = cameraOrtho;
+            orbit.enabled = false; // Disabilita i controlli Orbit
+			orbitOrtho.enabled = true;
+            currentCamera.position.set(0, 5, 0); // Posizione dall'alto
+            currentCamera.lookAt(0, 0, 0); // Guarda verso il centro della scena
+            control.camera = currentCamera; // Aggiorna la camera nei controlli
+            onWindowResize();
+            break;
 
-		case 'w':
-			control.setMode( 'translate' );
-			break;
+        case '3':
+            // Attiva la camera ortogonale da di fronte
+            currentCamera = cameraOrtho;
+            orbit.enabled = false; // Disabilita i controlli Orbit
+			orbitOrtho.enabled = true;
+            currentCamera.position.set(0, 0, 5); // Posizione da di fronte
+            currentCamera.lookAt(0, 0, 0); // Guarda verso il centro della scena
+            control.camera = currentCamera; // Aggiorna la camera nei controlli
+            onWindowResize();
+            break;
 
-		case 'e':
-			control.setMode( 'rotate' );
-			break;
+        case '4':
+            // Attiva la camera ortogonale da destra
+            currentCamera = cameraOrtho;
+            orbit.enabled = false; // Disabilita i controlli Orbit
+			orbitOrtho.enabled = true;
+            currentCamera.position.set(5, 0, 0); // Posizione da destra
+            currentCamera.lookAt(0, 0, 0); // Guarda verso il centro della scena
+            control.camera = currentCamera; // Aggiorna la camera nei controlli
+            onWindowResize();
+            break;
+        // Aggiungi il resto delle tue azioni per altri tasti
+        case 'q':
+            control.setSpace(control.space === 'local' ? 'world' : 'local');
+            break;
 
-		case 'r':
-			control.setMode( 'scale' );
-			break;
-		case 'v':
-			const randomFoV = Math.random() + 0.1;
-			const randomZoom = Math.random() + 0.1;
+        case 'Shift':
+            control.setTranslationSnap(1);
+            control.setRotationSnap(THREE.MathUtils.degToRad(15));
+            control.setScaleSnap(0.25);
+            break;
 
-			cameraPersp.fov = randomFoV * 160;
-			cameraOrtho.bottom = - randomFoV * 500;
-			cameraOrtho.top = randomFoV * 500;
+        case 'w':
+            control.setMode('translate');
+            break;
 
-			cameraPersp.zoom = randomZoom * 5;
-			cameraOrtho.zoom = randomZoom * 5;
-			onWindowResize();
-			break;
+        case 'e':
+            control.setMode('rotate');
+            break;
 
-		case '+':
-		case '=':
-			control.setSize( control.size + 0.1 );
-			break;
+        case 'r':
+            control.setMode('scale');
+            break;
 
-		case '-':
-		case '_':
-			control.setSize( Math.max( control.size - 0.1, 0.1 ) );
-			break;
+        case 'c':
+            const position = currentCamera.position.clone();
+            currentCamera = currentCamera.isPerspectiveCamera ? cameraOrtho : cameraPersp;
+            currentCamera.position.copy(position);
+            orbit.object = currentCamera;
+            control.camera = currentCamera;
+            currentCamera.lookAt(orbit.target.x, orbit.target.y, orbit.target.z);
+            onWindowResize();
+            break;
 
-		case 'x':
-			control.showX = ! control.showX;
-			break;
+        case 'v':
+            const randomFoV = Math.random() + 0.1;
+            const randomZoom = Math.random() + 0.1;
+            cameraPersp.fov = randomFoV * 160;
+            cameraOrtho.bottom = -randomFoV * 500;
+            cameraOrtho.top = randomFoV * 500;
+            cameraPersp.zoom = randomZoom * 5;
+            cameraOrtho.zoom = randomZoom * 5;
+            onWindowResize();
+            break;
 
-		case 'y':
-			control.showY = ! control.showY;
-			break;
+        case '+':
+        case '=':
+            control.setSize(control.size + 0.1);
+            break;
 
-		case 'z':
-			control.showZ = ! control.showZ;
-			break;
+        case '-':
+        case '_':
+            control.setSize(Math.max(control.size - 0.1, 0.1));
+            break;
 
-		case ' ':
-			control.enabled = ! control.enabled;
-			break;
+        // case 'x':
+        //     control.showX = !control.showX;
+        //     break;
 
-		case 'Escape':
-			control.reset();
-			break;
+        // case 'y':
+        //     control.showY = !control.showY;
+        //     break;
 
-	}
+        // case 'z':
+        //     control.showZ = !control.showZ;
+        //     break;
 
-} );
+        // case ' ':
+        //     control.enabled = !control.enabled;
+        //     break;
+
+        case 'Escape':
+            control.reset();
+            break;
+    }
+});
+
+window.addEventListener('dblclick', function () {
+    // Salva il valore corrente dello zoom
+    const currentZoom = currentCamera.zoom;
+
+    if (currentCamera === cameraPersp) {
+        // Resetta posizione e direzione per la camera prospettica
+        currentCamera.position.set(5, 2.5, 5); // Posizione di default
+        currentCamera.lookAt(0, 0, 0);         // Punta al centro della scena
+    } else if (currentCamera === cameraOrtho) {
+        // Resetta posizione per la camera ortogonale
+        currentCamera.position.set(0, 5, 0);   // Posizione dall'alto di default
+        currentCamera.lookAt(0, 0, 0);         // Punta al centro della scena
+    }
+
+    // Mantiene lo zoom attuale
+    currentCamera.zoom = currentZoom;
+    currentCamera.updateProjectionMatrix();
+
+    // Resetta il pan
+    orbit.target.set(0, 0, 0); // Reimposta il target al centro
+    orbit.update();            // Aggiorna i controlli Orbit
+});
 
 window.addEventListener( 'keyup', function ( event ) {
 
@@ -297,6 +286,8 @@ document.getElementById('addSpeakerButton').addEventListener('click', () => {
 	// Attach transform controls to the cube
 	control.attach(mesh);
 });
+
+
 
 //max stuff
 

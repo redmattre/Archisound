@@ -2,6 +2,7 @@ body {
   margin: 0;
   padding: 0;
   overflow: hidden;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 canvas{
@@ -61,6 +62,26 @@ button:hover {
   position: absolute;
   top: 25rem;
   right: 1rem;
+  z-index: 9999;
+}
+
+#visualizzazione {
+  /* width: 2rem; */
+  /* max-width: 4rem; */
+  width: 5rem;
+  text-align: center;
+  /* font-size: large; */
+  background-color: transparent;
+  border: solid rgba(213, 217, 220, 0.342) 2px;
+  border-radius: 2px;
+  color: rgba(255, 255, 255, 0.342);
+  padding: 0.5rem 1rem;
+
+  position: absolute;
+  pointer-events: none;
+
+  bottom: 1rem;
+  left: 44.8%;
   z-index: 9999;
 }
 
