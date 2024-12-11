@@ -764,3 +764,23 @@ document.getElementById('addSpeakerButton').addEventListener('click', () => {
 window.max.bindInlet("hello", function(){
 	max.outlet("from the other side!");
 });
+
+window.max.bindInlet("meshlist", function(){
+	sendMeshesToMax();
+});
+
+function sendMeshesToMax() {
+    objToBeDetected.forEach((mesh) => {
+        if (mesh.isMesh && mesh.name) {
+            // Ottieni la posizione globale dell'oggetto
+            const worldPosition = new THREE.Vector3();
+            mesh.getWorldPosition(worldPosition);
+
+            // Crea il messaggio con la sintassi richiesta
+            const message = `dict set ${mesh.name} ${worldPosition.x} ${worldPosition.y} ${worldPosition.z}`;
+
+            // Invia il messaggio a Max tramite l'outlet
+            max.outlet(message);
+        }
+    });
+}
