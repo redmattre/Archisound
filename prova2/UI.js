@@ -1,4 +1,8 @@
 var visualizzazione = document.getElementById("visualizzazione");
+const infoDiv2 = document.getElementById('infoDiv-2');
+
+let space = "Mondo:";
+let action = "movimento";
 
 window.addEventListener('keydown', function(event) {
     switch (event.key) {
@@ -23,61 +27,21 @@ window.addEventListener('keydown', function(event) {
             break;
         // Aggiungi il resto delle tue azioni per altri tasti
         case 'q':
-            
+            space === 'Mondo:' ? space = 'Locale:' : space = 'Mondo:';
+            infoDiv2.textContent = `${space + " " + action}`;
             break;
-
-        case 'Shift':
-            
-            break;
-
-        case 'w':
-            
-            break;
-
-        case 'e':
-            
-            break;
-
         case 'r':
-            
+            action = "rotazione";
+            infoDiv2.textContent = `${space + " " + action}`;
+            break;
+        case 's':
+            action = "scalatura";
+            infoDiv2.textContent = `${space + " " + action}`;
             break;
 
-        case 'c':
-            
-            break;
-
-        case 'v':
-            
-            break;
-
-        case '+':
-        case '=':
-            
-            break;
-
-        case '-':
-        case '_':
-            
-            break;
-
-        // case 'x':
-        //     control.showX = !control.showX;
-        //     break;
-
-        // case 'y':
-        //     control.showY = !control.showY;
-        //     break;
-
-        // case 'z':
-        //     control.showZ = !control.showZ;
-        //     break;
-
-        // case ' ':
-        //     control.enabled = !control.enabled;
-        //     break;
-
-        case 'Escape':
-            
+        case 'g':
+            action = "movimento";
+            infoDiv2.textContent = `${space + " " + action}`;
             break;
     }
 });

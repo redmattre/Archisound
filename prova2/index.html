@@ -10,13 +10,43 @@
 	<body>
 
 	<div id="black-panel">
+
 		<div id="info">
-			"W" translate | "E" rotate | "R" scale | "+/-" adjust size<br />
+			"G" translate | "R" rotate | "S" scale <br />
 			"Q" toggle world/local space |  "Shift" snap to grid<br />
-			"X" toggle X | "Y" toggle Y | "Z" toggle Z | "Spacebar" toggle enabled<br />
-			"Esc" reset current transform<br />
-			| "V" random zoom
+			"Backspace" or "X" deletes hovered object <br> "esc" to shut controls <br>
+			"Double Click" to restore camera position | <br>
+			"Shift + Click" on hovered objects creates a group
 		</div>
+
+		
+
+		<div class="container">
+			<div class="switch-wrapper">
+			  <label class="switch">
+				<input type="checkbox" data-id="transparency"/>
+				<div></div>
+			  </label>
+			  <span class="switch-label">Trasparenza</span>
+			</div>
+
+			<div class="switch-wrapper">
+			  <label class="switch">
+				<input type="checkbox" data-id="alphaTest" checked/>
+				<div></div>
+			  </label>
+			  <span class="switch-label">Profondità</span>
+			</div>
+
+			<div class="switch-wrapper">
+				<label class="switch">
+				  <input type="checkbox" data-id="wireframe"/>
+				  <div></div>
+				</label>
+				<span class="switch-label">Wireframe</span>
+			  </div>
+		</div>
+
 	</div>
 
     <div id="nav-icon3">
@@ -36,6 +66,14 @@
 		Prospettiva
 	</div>
 
+	<div id="infoDiv">
+		---
+	</div>
+
+	<div id="infoDiv-2">
+		Mondo: scala
+	</div>
+
 	<script type="importmap">
 		{
 			"imports": {
@@ -47,7 +85,7 @@
 
 	<script type="module" src="main.js"></script>
 	<script src="UI.js"></script>
-    <script src="navbar.js"></script>
+    <!-- <script src="navbar.js"></script> -->
 
 	</body>
 </html>
