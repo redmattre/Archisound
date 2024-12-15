@@ -2,10 +2,20 @@ import * as THREE from 'three';
 
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { TransformControls } from 'three/addons/controls/TransformControls.js';
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 
 let cameraPersp, cameraOrtho, currentCamera;
 let scene, renderer, control, orbit, orbitOrtho;
 let raycaster, mouse, hoveredObject, objToBeDetected;
+let halo, architecture;
+
+//optimization
+let needsRaycastUpdate = true;
+let lastHoveredObject = null;
+
+window.addEventListener('mousemove', () => {
+    needsRaycastUpdate = true; // Update on mouse move
+});
 
 //materiali (con controlli)
 
@@ -32,6 +42,14 @@ let standardMesh = new THREE.MeshStandardMaterial({
 	depthTest: true,
 	wireframe: false,
 	opacity: 0.8
+});
+
+let archMaterial = new THREE.LineBasicMaterial({
+	color: new THREE.Color(0xffffff),
+	transparent: true,
+	depthTest: true,
+	wireframe: true,
+	// opacity: 0.5
 });
 
 // Funzione di toggle per gli switch
@@ -98,11 +116,11 @@ function init() {
 	cameraOrtho = new THREE.OrthographicCamera( - frustumSize * aspect, frustumSize * aspect, frustumSize, - frustumSize, 0.1, 100 );
 	currentCamera = cameraPersp; //default camera
 
-	currentCamera.position.set( 5, 2.5, 5 );
+	currentCamera.position.set( 5, 1.5, 5 );
 
 	//scene setup
 	scene = new THREE.Scene();
-	scene.add( new THREE.GridHelper( 5, 10, 0x888888, 0x444444 ) );
+	scene.add( new THREE.GridHelper( 5, 20, 0x888888, 0x444444 ) );
 
 	const ambientLight = new THREE.AmbientLight( 0xffffff );
 	scene.add( ambientLight );
@@ -165,6 +183,46 @@ function init() {
 	// objToBeDetected.push(group)
 	// control.attach(group);
 
+    //aggiungi obj loader
+    const loader = new OBJLoader();
+    loader.load(
+        'halo2_lowpoly.obj',
+        function (object) {
+            object.traverse(function (child) {
+                if (child.isMesh) {
+                    child.material = normalMesh; // Apply the custom material
+                    // child.name = "halo2";
+                }
+            });
+            halo = object;
+        },
+        function (xhr) {
+            console.log((xhr.loaded / xhr.total) * 100 + '% loaded');
+        },
+        function (error) {
+            console.error('An error happened', error);
+        }
+    );
+
+    const loaderArch = new OBJLoader();
+    loaderArch.load(
+        'simpleroom.obj',
+        function (object) {
+            object.traverse(function (child) {
+                if (child.isMesh) {
+                    child.material = archMaterial; // Apply the custom material
+                    // child.name = "halo2";
+                }
+            });
+            architecture = object;
+        },
+        function (xhr) {
+            console.log((xhr.loaded / xhr.total) * 100 + '% loaded');
+        },
+        function (error) {
+            console.error('An error happened', error);
+        }
+    );
 }
 
 function onWindowResize() {
@@ -281,21 +339,29 @@ function onSettingsResizeReverse() {
 }
 
 function render() {
-
-	raycaster.setFromCamera(mouse, currentCamera);
-	const intersects = raycaster.intersectObjects(objToBeDetected, true);
-
-	if (intersects.length > 0) {
-        const hoveredObject = intersects[0].object;
-
-        // Mostra il nome dell'oggetto in un div
-        const infoDiv = document.getElementById('infoDiv');
-        infoDiv.textContent = `${hoveredObject.name}`;
+    if (needsRaycastUpdate) {
+        raycaster.setFromCamera(mouse, currentCamera);
+        const intersects = raycaster.intersectObjects(objToBeDetected, true);
+        if (intersects.length > 0) {
+            const hoveredObject = intersects[0].object;
+    
+            if (hoveredObject !== lastHoveredObject) {
+                const infoDiv = document.getElementById('infoDiv');
+                infoDiv.textContent = `${hoveredObject.name}`;
+                lastHoveredObject = hoveredObject;
+            }
+        } else {
+            if (lastHoveredObject !== null) {
+                const infoDiv = document.getElementById('infoDiv');
+                infoDiv.textContent = ''; // Clear text when nothing is hovered
+                lastHoveredObject = null;
+            }
+        }
+        needsRaycastUpdate = false; // Reset flag
     }
 
-	renderer.render( scene, currentCamera );
-	requestAnimationFrame(render);
-
+    renderer.render(scene, currentCamera);
+    requestAnimationFrame(render);
 }
 
 function renderNotRecursive() {
@@ -470,10 +536,10 @@ window.addEventListener('dblclick', function () {
     const currentZoom = currentCamera.zoom;
 
     if (currentCamera === cameraPersp) {
-        currentCamera.position.set(5, 2.5, 5); // Posizione di default
+        currentCamera.position.set(5, 1.5, 5); // Posizione di default
         currentCamera.lookAt(0, 0, 0);
     } else if (currentCamera === cameraOrtho) {
-        currentCamera.position.set(0, 5, 0); // Posizione dall'alto di default
+        currentCamera.position.set(0, 1.5, 0); // Posizione dall'alto di default
         currentCamera.lookAt(0, 0, 0);
     }
 
@@ -727,7 +793,7 @@ function onShiftReleased() {
 // UI buttons functions
 
 document.getElementById('addCubeButton').addEventListener('click', () => {
-	const geometry = new THREE.BoxGeometry();
+	const geometry = new THREE.BoxGeometry(0.25, 0.25, 0.25);
 	const material = normalMesh;
 	const mesh = new THREE.Mesh(geometry, material);
 	mesh.position.set(0, 0.5, 0);
@@ -738,7 +804,7 @@ document.getElementById('addCubeButton').addEventListener('click', () => {
 });
 
 document.getElementById('addSphereButton').addEventListener('click', () => {
-	const geometry = new THREE.SphereGeometry();
+	const geometry = new THREE.SphereGeometry(0.125, 10, 10);
 	const material = normalMesh;
 	const mesh = new THREE.Mesh(geometry, material);
 	mesh.position.set(0, 0.5, 0);
@@ -749,14 +815,79 @@ document.getElementById('addSphereButton').addEventListener('click', () => {
 });
 
 document.getElementById('addSpeakerButton').addEventListener('click', () => {
-	const geometry = new THREE.ConeGeometry();
+	const geometry = new THREE.ConeGeometry(0.125, 0.25, 20);
 	const material = normalMesh;
 	const mesh = new THREE.Mesh(geometry, material);
 	mesh.position.set(0, 0.5, 0);
+    mesh.rotation.x = Math.PI / -2;
 	mesh.name = `Altoparlante-${scene.children.length}`
 	scene.add(mesh);
 	objToBeDetected.push(mesh);
 	// render();
+});
+
+document.getElementById('addHaloButton').addEventListener('click', () => {
+    const newHalo = halo.clone();
+    const haloIndex = scene.children.filter(obj => obj.name.startsWith('Halo-')).length;
+    newHalo.position.set(0, 0.5, 0);
+    newHalo.name = `Halo-${haloIndex}`;
+    newHalo.scale.set(0.125, 0.125, 0.125);
+
+    // Update the names of child meshes
+    newHalo.traverse((child) => {
+        if (child.isMesh) {
+            child.name = `HaloMesh-${haloIndex}`;
+        }
+    });
+
+    scene.add(newHalo);
+    objToBeDetected.push(newHalo);
+});
+
+document.getElementById('addCadFileButton').addEventListener('click', () => {
+    if (!architecture) {
+        console.error("Architecture model not loaded yet.");
+        return;
+    }
+
+    // Clone the loaded object
+    const newArch = architecture.clone();
+    newArch.position.set(0, 0, 0);
+    newArch.name = `Arch-${scene.children.length}`;
+
+    // Create a group to hold both the edges and the transparent mesh
+    const archGroup = new THREE.Group();
+
+    newArch.traverse((child) => {
+        if (child.isMesh) {
+            // Edges Material (Lines)
+            const edges = new THREE.EdgesGeometry(child.geometry);
+            const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0xffffff }));
+            line.position.copy(child.position);
+            line.rotation.copy(child.rotation);
+            line.scale.copy(child.scale);
+
+            archGroup.add(line); // Add the edges to the group
+
+            // Transparent Grey Material
+            const transparentMaterial = new THREE.MeshBasicMaterial({
+                color: 0x808080, // Grey color
+                opacity: 0.5,    // Transparency level
+                transparent: true,
+            });
+            const transparentMesh = new THREE.Mesh(child.geometry, transparentMaterial);
+            transparentMesh.position.copy(child.position);
+            transparentMesh.rotation.copy(child.rotation);
+            transparentMesh.scale.copy(child.scale);
+
+            archGroup.add(transparentMesh); // Add the transparent mesh to the group
+        }
+    });
+
+    scene.add(archGroup); // Add the group to the scene
+    // objToBeDetected.push(archGroup); 
+
+    // console.log(`Added group with edges and transparent material for ${newArch.name}`);
 });
 
 //max stuff
@@ -784,3 +915,42 @@ function sendMeshesToMax() {
         }
     });
 }
+
+//c'è qualcosa di strano perchè la z è in mezzo in realtà per qualche motivo
+window.max.bindInlet("moveHalo", function(index, x, y, z) {
+    // Construct the target object's name based on the index
+    const targetName = `HaloMesh-${index}`;
+    
+    // Find the object in the scene by its name
+    const targetObject = scene.getObjectByName(targetName);
+    
+    // If the object exists, move it to the specified position
+    if (targetObject) {
+        targetObject.position.set(x, y, z);
+        // console.log(`Moved ${targetName} to position (${x}, ${y}, ${z})`);
+    } else {
+        // console.error(`Object with name ${targetName} not found in the scene.`);
+    }
+});
+
+window.max.bindInlet("rotateHalo", function(index, x, y, z) {
+
+    // Map 0-1 range to 0-2π radians (360 degrees)
+    const xRotation = x * Math.PI * 2; // 0-1 mapped to 0-360° in radians
+    const yRotation = y * Math.PI * 2;
+    const zRotation = z * Math.PI * 2;
+
+    // Construct the target object's name based on the index
+    const targetName = `HaloMesh-${index}`;
+
+    // Find the object in the scene by its name
+    const targetObject = scene.getObjectByName(targetName);
+
+    // If the object exists, set its rotation
+    if (targetObject) {
+        targetObject.rotation.set(xRotation, yRotation, zRotation);
+        console.log(`Rotated ${targetName} to rotation (${xRotation}, ${yRotation}, ${zRotation})`);
+    } else {
+        console.error(`Object with name ${targetName} not found in the scene.`);
+    }
+});
