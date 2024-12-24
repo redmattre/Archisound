@@ -1,0 +1,37 @@
+.modCadButton {
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.25s ease;
+}
+
+.CadButtonWrap {
+    background-color: none;
+    width: 10rem;
+    height: 4rem;
+    position: absolute;
+    top: 25rem;
+    right: 1rem;
+    z-index: 88;
+}
+
+/* Nasconde i bottoni modCadButton quando il mouse è su #addCadFileButton */
+#addCadFileButton:hover ~ .modCadButton {
+  opacity: 1;
+  pointer-events: all;
+  cursor: pointer;
+}
+
+/* Posizionamento dei bottoni modCadButton */
+#modCadButton1 {
+    position: absolute;
+    top: 25rem;
+    right: 6rem;
+    z-index: 9999;
+}
+
+#modCadButton2 {
+    position: absolute;
+    top: 25rem;
+    right: 11rem;
+    z-index: 9999;
+}

@@ -1,7 +1,7 @@
 /* Icon 1 */
 
-#nav-icon1 span:hover{
-    box-shadow: 0 0 1.5rem rgba(255, 255, 255, 0.8); /* White shadow on hover */
+#nav-icon1, #nav-icon2, #nav-icon3 span:hover{
+    box-shadow: 0 0 1.5rem var(--dettaglio); /* White shadow on hover */
 }
 
 #nav-icon1, #nav-icon2, #nav-icon3, #nav-icon4 {
@@ -29,9 +29,9 @@
 #nav-icon1 span, #nav-icon3 span, #nav-icon4 span {
   display: block;
   position: absolute;
-  height: 3px;
+  height: 2px;
   width: 100%;
-  background: rgb(213, 217, 220);
+  background: var(--dettaglio);
   /* background: rgb(53, 53, 53); */
   border-radius: 1.5px;
   opacity: 1;
@@ -267,10 +267,10 @@
   position: absolute;
   height: 97%;
   width: 50vw;
-  background-color: black;
-  border: solid rgb(213, 217, 220) 2px;
+  background-color: var(--fondale);
+  border: solid var(--dettaglio) 2px;
   border-radius: 2px;
-  color: white;
+  color: var(--testo);
   padding: 0.5rem 1rem;
   pointer-events: none;
 
@@ -296,7 +296,7 @@
   font-size: 20px;
   height: 1em;
   width: 2em;
-  background: #BDB9A6;
+  background: var(--grigino);
   border-radius: 1em;
 }
 
@@ -304,8 +304,8 @@
   height: 1em;
   width: 1em;
   border-radius: 1em;
-  background: #FFF;
-  box-shadow: 0 0.1em 0.3em rgba(0, 0, 0, 0.3);
+  background: var(--fondaleBianco);
+  box-shadow: 0 0.1em 0.3em rgba(0, 0, 0, 0.4);
   transition: all 300ms;
 }
 
@@ -321,12 +321,12 @@
 .switch-label {
   font-size: 1em;
   line-height: 1em; /* Per allineare perfettamente il testo con lo switch */
-  color: rgba(255, 255, 255, 0.844);
+  color: var(--testo);
 }
 
 #info {
   padding: 1rem;
-  color: rgba(255, 255, 255, 0.593);
+  color: var(--testo);
   /* position: absolute; */
   z-index: 9999;
 }

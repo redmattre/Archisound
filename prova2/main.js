@@ -5,7 +5,7 @@ import { TransformControls } from 'three/addons/controls/TransformControls.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 
 let cameraPersp, cameraOrtho, currentCamera;
-let scene, renderer, control, orbit, orbitOrtho;
+let scene, renderer, control, orbit, orbitOrtho, rendererBackgoundColor;
 let raycaster, mouse, hoveredObject, objToBeDetected;
 let halo, architecture;
 
@@ -78,6 +78,10 @@ function toggleSwitch(id, state) {
 			standardMesh.needsUpdate = true;
 			break;
 
+        case 'theme':
+            changeTheme(state);
+            break;
+
 		default:
 			console.log('Switch non riconosciuto');
 	}
@@ -91,6 +95,8 @@ function init() {
 	renderer = new THREE.WebGLRenderer( { antialias: true } );
 	renderer.setPixelRatio( window.devicePixelRatio );
 	renderer.setSize( window.innerWidth, window.innerHeight );
+    rendererBackgoundColor = 0xf5f5f5; //inizia bianco
+    renderer.setClearColor(rendererBackgoundColor);
 	document.body.appendChild( renderer.domElement );
 
 	
@@ -339,26 +345,26 @@ function onSettingsResizeReverse() {
 }
 
 function render() {
-    if (needsRaycastUpdate) {
-        raycaster.setFromCamera(mouse, currentCamera);
-        const intersects = raycaster.intersectObjects(objToBeDetected, true);
-        if (intersects.length > 0) {
-            const hoveredObject = intersects[0].object;
+    // if (needsRaycastUpdate) {
+    //     raycaster.setFromCamera(mouse, currentCamera);
+    //     const intersects = raycaster.intersectObjects(objToBeDetected, true);
+    //     if (intersects.length > 0) {
+    //         const hoveredObject = intersects[0].object;
     
-            if (hoveredObject !== lastHoveredObject) {
-                const infoDiv = document.getElementById('infoDiv');
-                infoDiv.textContent = `${hoveredObject.name}`;
-                lastHoveredObject = hoveredObject;
-            }
-        } else {
-            if (lastHoveredObject !== null) {
-                const infoDiv = document.getElementById('infoDiv');
-                infoDiv.textContent = ''; // Clear text when nothing is hovered
-                lastHoveredObject = null;
-            }
-        }
-        needsRaycastUpdate = false; // Reset flag
-    }
+    //         if (hoveredObject !== lastHoveredObject) {
+    //             const infoDiv = document.getElementById('infoDiv');
+    //             infoDiv.textContent = `${hoveredObject.name}`;
+    //             lastHoveredObject = hoveredObject;
+    //         }
+    //     } else {
+    //         if (lastHoveredObject !== null) {
+    //             const infoDiv = document.getElementById('infoDiv');
+    //             infoDiv.textContent = ''; // Clear text when nothing is hovered
+    //             lastHoveredObject = null;
+    //         }
+    //     }
+    //     needsRaycastUpdate = false; // Reset flag
+    // }
 
     renderer.render(scene, currentCamera);
     requestAnimationFrame(render);
@@ -366,20 +372,38 @@ function render() {
 
 function renderNotRecursive() {
 
-	raycaster.setFromCamera(mouse, currentCamera);
-	const intersects = raycaster.intersectObjects(objToBeDetected, true);
+	// raycaster.setFromCamera(mouse, currentCamera);
+	// const intersects = raycaster.intersectObjects(objToBeDetected, true);
 
-	if (intersects.length > 0) {
-        const hoveredObject = intersects[0].object;
+	// if (intersects.length > 0) {
+    //     const hoveredObject = intersects[0].object;
 
-        // Mostra il nome dell'oggetto in un div
-        const infoDiv = document.getElementById('infoDiv');
-        infoDiv.textContent = `${hoveredObject.name}`;
-    }
+    //     // Mostra il nome dell'oggetto in un div
+    //     const infoDiv = document.getElementById('infoDiv');
+    //     infoDiv.textContent = `${hoveredObject.name}`;
+    // }
 
 	renderer.render( scene, currentCamera );
 	// requestAnimationFrame(render);
 
+}
+
+function changeTheme(state) {
+    var root = document.documentElement;
+
+    if (state) {
+        rendererBackgoundColor = 0x000;
+        renderer.setClearColor(rendererBackgoundColor);
+        root.style.setProperty('--fondale', 'var(--fondaleNero)');
+        root.style.setProperty('--testo', 'var(--fondaleBianco)');
+        root.style.setProperty('--dettaglio', 'var(--grigino)');
+    } else {
+        rendererBackgoundColor = 0xf5f5f5;
+        renderer.setClearColor(rendererBackgoundColor);
+        root.style.setProperty('--fondale', 'var(--fondaleBianco)');
+        root.style.setProperty('--testo', 'var(--fondaleNero)');
+        root.style.setProperty('--dettaglio', 'var(--grigio)');
+    }
 }
 
 //Keyboard Functions
@@ -532,7 +556,11 @@ navIcons.forEach(function(icon) {
     });
 });
 
-window.addEventListener('dblclick', function () {
+// Seleziona il canvas di rendering
+const canvas = renderer.domElement;
+
+// Aggiungi il listener al canvas
+canvas.addEventListener('dblclick', function () {
     const currentZoom = currentCamera.zoom;
 
     if (currentCamera === cameraPersp) {
@@ -549,97 +577,125 @@ window.addEventListener('dblclick', function () {
     orbit.target.set(0, 0, 0); // Reimposta il target al centro
     orbit.update();            // Aggiorna i controlli Orbit
 });
-
 // Funzione per aggiornare il testo del div
 function updateInfoText(text) {
     infoDiv.textContent = text || '---';
 }
 
-// Aggiungi un evento mousemove
-window.addEventListener('mousemove', (event) => {
-    // Converti le coordinate del mouse in spazio normalizzato (-1 a 1)
-    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+// // Aggiungi un evento mousemove
+// window.addEventListener('mousemove', (event) => {
+//     // Converti le coordinate del mouse in spazio normalizzato (-1 a 1)
+//     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+//     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
-    // Usa il raycaster per determinare l'oggetto sotto il puntatore
-    raycaster.setFromCamera(mouse, currentCamera);
-    const intersects = raycaster.intersectObjects(objToBeDetected, true);
+//     // Usa il raycaster per determinare l'oggetto sotto il puntatore
+//     raycaster.setFromCamera(mouse, currentCamera);
+//     const intersects = raycaster.intersectObjects(objToBeDetected, true);
 
-    if (intersects.length > 0) {
-        // Prendi il primo oggetto intersecato
-        const firstObject = intersects[0].object;
+//     if (intersects.length > 0) {
+//         // Prendi il primo oggetto intersecato
+//         const firstObject = intersects[0].object;
         
-        // Controlla se è diverso dall'oggetto già hoverato
-        if (hoveredObject !== firstObject) {
-            hoveredObject = firstObject;
-            updateInfoText(`${hoveredObject.name || 'Senza Nome'}`);
-        }
-    } else {
-        // Se nessun oggetto è selezionato, resetta
-        hoveredObject = null;
-        updateInfoText();
-    }
-});
+//         // Controlla se è diverso dall'oggetto già hoverato
+//         if (hoveredObject !== firstObject) {
+//             hoveredObject = firstObject;
+//             updateInfoText(`${hoveredObject.name || 'Senza Nome'}`);
+//         }
+//     } else {
+//         // Se nessun oggetto è selezionato, resetta
+//         hoveredObject = null;
+//         updateInfoText();
+//     }
+// });
 
-function addControlsOnClick() {
-    raycaster.setFromCamera(mouse, currentCamera);
-    const intersects = raycaster.intersectObjects(objToBeDetected, true);
+// function addControlsOnClick() {
+//     raycaster.setFromCamera(mouse, currentCamera);
+//     const intersects = raycaster.intersectObjects(objToBeDetected, true);
 
-    if (intersects.length > 0) {
-        let clickedObject = intersects[0].object;
+//     if (intersects.length > 0) {
+//         let clickedObject = intersects[0].object;
 
-        // Se l'oggetto fa parte di un gruppo, usa il genitore
-        if (clickedObject.parent && clickedObject.parent.isGroup) {
-            clickedObject = clickedObject.parent;
-        }
+//         // Se l'oggetto fa parte di un gruppo, usa il genitore
+//         if (clickedObject.parent && clickedObject.parent.isGroup) {
+//             clickedObject = clickedObject.parent;
+//         }
 
-        // Attiva i controlli Orbit e disabilita TransformControls
-        orbit.enabled = true; // Abilita i controlli Orbit
-        control.detach();     // Rimuovi il TransformControls se presente
+//         // Attiva i controlli Orbit e disabilita TransformControls
+//         orbit.enabled = true; // Abilita i controlli Orbit
+//         control.detach();     // Rimuovi il TransformControls se presente
 
-        // Attacca TransformControls all'oggetto cliccato
-        control.attach(clickedObject);
-        scene.add(control);
-    } else {
-        // Se non è stato cliccato nessun oggetto, disattiva i controlli
-        orbit.enabled = true;  // Riabilita OrbitControls
-        control.detach();     // Disattacca TransformControls
-    }
-}
+//         // Attacca TransformControls all'oggetto cliccato
+//         control.attach(clickedObject);
+//         scene.add(control);
+//     } else {
+//         // Se non è stato cliccato nessun oggetto, disattiva i controlli
+//         orbit.enabled = true;  // Riabilita OrbitControls
+//         control.detach();     // Disattacca TransformControls
+//     }
+// }
 
-function deleteObjectOnClick() {
-    // Imposta il raycaster dalla posizione del mouse e dalla camera corrente
-    raycaster.setFromCamera(mouse, currentCamera);
+// function deleteObjectOnClick() {
+//     // Imposta il raycaster dalla posizione del mouse e dalla camera corrente
+//     raycaster.setFromCamera(mouse, currentCamera);
 
-    // Trova gli oggetti intersecati
-    const intersects = raycaster.intersectObjects(objToBeDetected, true);
+//     // Trova gli oggetti intersecati
+//     const intersects = raycaster.intersectObjects(objToBeDetected, true);
 
-    if (intersects.length > 0) {
-        // Prendi il primo oggetto intersecato
-        const intersectedObject = intersects[0].object;
+//     if (intersects.length > 0) {
+//         // Prendi il primo oggetto intersecato
+//         const intersectedObject = intersects[0].object;
 
-        // Rimuovi l'oggetto dal suo genitore
-        if (intersectedObject.parent) {
-            intersectedObject.parent.remove(intersectedObject);
-        }
+//         // Funzione ricorsiva per rimuovere l'oggetto e liberare le risorse
+//         function disposeObject(obj) {
+//             // Rimuovi i figli ricorsivamente
+//             while (obj.children.length > 0) {
+//                 disposeObject(obj.children[0]);
+//             }
 
-        // Liberare memoria (opzionale, ma raccomandato)
-        if (intersectedObject.geometry) {
-            intersectedObject.geometry.dispose();
-        }
-        if (intersectedObject.material) {
-            if (Array.isArray(intersectedObject.material)) {
-                intersectedObject.material.forEach(mat => mat.dispose());
-            } else {
-                intersectedObject.material.dispose();
-            }
-        }
+//             // Rimuovi il materiale
+//             if (obj.material) {
+//                 if (Array.isArray(obj.material)) {
+//                     obj.material.forEach(mat => {
+//                         if (mat.map) mat.map.dispose();
+//                         if (mat.envMap) mat.envMap.dispose();
+//                         mat.dispose();
+//                     });
+//                 } else {
+//                     if (obj.material.map) obj.material.map.dispose();
+//                     if (obj.material.envMap) obj.material.envMap.dispose();
+//                     obj.material.dispose();
+//                 }
+//             }
 
-        console.log("Oggetto eliminato:", intersectedObject.name || intersectedObject.id);
-    } else {
-        console.log("Nessun oggetto intersecato.");
-    }
-}
+//             // Rimuovi la geometria
+//             if (obj.geometry) {
+//                 obj.geometry.dispose();
+//             }
+
+//             // Rimuovi l'oggetto dal suo genitore
+//             if (obj.parent) {
+//                 obj.parent.remove(obj);
+//             }
+
+//             console.log("Oggetto eliminato:", obj.name || obj.id);
+//         }
+
+//         // Chiama la funzione per eliminare l'oggetto selezionato
+//         disposeObject(intersectedObject);
+
+//         // Rimuovi l'oggetto da objToBeDetected
+//         const index = objToBeDetected.indexOf(intersectedObject);
+//         if (index !== -1) {
+//             objToBeDetected.splice(index, 1);
+//         }
+
+//         // Forza l'aggiornamento del raycaster e del renderer
+//         raycaster.needsUpdate = true;
+//         renderer.render(scene, currentCamera);
+//     } else {
+//         console.log("Nessun oggetto intersecato.");
+//     }
+// }
 
 //funzioni per creare gruppo///////////////////////////////////////////////////////////////////////////////
 let isShiftPressed = false;

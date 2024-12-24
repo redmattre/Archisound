@@ -6,6 +6,7 @@
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 		<link type="text/css" rel="stylesheet" href="style.css">
     	<link rel="stylesheet" href="navbar.css">
+		<link rel="stylesheet" href="hover.css">
 	</head>
 	<body>
 
@@ -31,19 +32,19 @@
 				</div>
 
 				<div class="switch-wrapper">
-				<label class="switch">
-					<input type="checkbox" data-id="alphaTest" checked/>
-					<div></div>
-				</label>
-				<span class="switch-label">Profondità</span>
-				</div>
-
-				<div class="switch-wrapper">
 					<label class="switch">
 					<input type="checkbox" data-id="wireframe"/>
 					<div></div>
 					</label>
 					<span class="switch-label">Wireframe</span>
+				</div>
+
+				<div class="switch-wrapper">
+					<label class="switch">
+						<input type="checkbox" data-id="theme"/>   <!-- 'checked' se vuoi metterlo cliccato!-->
+						<div></div>
+					</label>
+					<span class="switch-label">Tema Eco</span>
 				</div>
 			</div>
 
@@ -56,12 +57,16 @@
 		<span></span>
 		</div>
 
-		<button id="addCubeButton">🧊</button>
-		<button id="addSphereButton">🔮</button>
-		<button id="addSpeakerButton">🔈</button>
-		<button id="addHaloButton">🎧</button>
-		<button id="addCadFileButton">🌉</button>
+		<button id="addCubeButton">C</button>
+		<button id="addSphereButton">S</button>
+		<button id="addSpeakerButton">A</button>
+		<button id="addHaloButton">H</button>
 
+	
+		<button id="addCadFileButton">B</button>
+		<button id="modCadButton1" class="modCadButton">X</button>
+		<button id="modCadButton2" class="modCadButton">L</button>
+		
 		<div id="visualizzazione">
 			Prospettiva
 		</div>
@@ -85,6 +90,7 @@
 
 		<script type="module" src="main.js"></script>
 		<script src="UI.js"></script>
+		<script src="hover.js"></script>
 
 	</body>
 </html>

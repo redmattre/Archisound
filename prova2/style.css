@@ -1,9 +1,21 @@
+:root {
+  --fondaleBianco: #f5f5f5;
+  --fondaleNero: black;
+  --grigio: grey;
+  --grigino: rgb(161, 161, 161);
+  --dettaglioBianco: #e0e0e0;
+
+  --testo: var(var(--fondaleNero));
+  --dettaglio: var(--grigio);
+  --fondale: var(--fondaleBianco);
+}
+
 body {
   margin: 0;
   padding: 0;
   overflow: hidden;
   font-family: Arial, Helvetica, sans-serif;
-  background-color: black;
+  background-color: var(--fondale);
 }
 
 canvas{
@@ -15,9 +27,9 @@ button {
   width: 4rem;
   font-size: xx-large;
   background-color: transparent;
-  border: solid rgb(213, 217, 220) 2px;
-  border-radius: 2px;
-  color: white;
+  border: solid var(--dettaglio) 2px;
+  border-radius: 10px;
+  color: var(--testo);
   padding: 0.5rem 1rem;
   cursor: pointer;
   transition: background-color 0.2s ease, box-shadow 0.2s ease;
@@ -25,11 +37,11 @@ button {
 }
 
 button:active {
-  background-color: rgb(255, 255, 255);
+  background-color: var(--dettaglio);
 }
 
 button:hover {
-  box-shadow: 0 0 1.5rem rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 0.5rem var(--grigino);
 }
 
 #addCubeButton {
@@ -74,9 +86,9 @@ button:hover {
   text-align: center;
   /* font-size: large; */
   background-color: transparent;
-  border: solid rgba(213, 217, 220, 0.342) 2px;
-  border-radius: 2px;
-  color: rgba(255, 255, 255, 0.342);
+  border: solid var(--dettaglio) 2px;
+  border-radius: 10px;
+  color: var(--dettaglio);
   padding: 0.5rem 1rem;
 
   position: absolute;
@@ -95,7 +107,7 @@ button:hover {
   top: 1rem;
   left: 1rem;
   background-color: transparent;
-  color: white;
+  color: var(--testo);
   pointer-events: none;
   user-select: none;
   z-index: 999;
@@ -106,7 +118,7 @@ button:hover {
   bottom: 1rem;
   left: 1rem;
   background-color: transparent;
-  color: white;
+  color: var(--dettaglio);
   pointer-events: none;
   user-select: none;
   z-index: 999;
