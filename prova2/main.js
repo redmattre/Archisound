@@ -47,8 +47,8 @@ let standardMesh = new THREE.MeshStandardMaterial({
 let archMaterial = new THREE.LineBasicMaterial({
 	color: new THREE.Color(0xffffff),
 	transparent: true,
-	depthTest: true,
-	wireframe: true,
+	depthTest: true
+	// wireframe: true,
 	// opacity: 0.5
 });
 
@@ -110,13 +110,13 @@ function init() {
 	//cameras
 	const aspect = window.innerWidth / window.innerHeight;
 
-	const frustumSize = 3;
+	const frustumSize = 4;
 
-	cameraPersp = new THREE.PerspectiveCamera( 50, aspect, 0.1, 100 );
+	cameraPersp = new THREE.PerspectiveCamera( 50, aspect, 0.2, 100 );
 	cameraOrtho = new THREE.OrthographicCamera( - frustumSize * aspect, frustumSize * aspect, frustumSize, - frustumSize, 0.1, 100 );
 	currentCamera = cameraPersp; //default camera
 
-	currentCamera.position.set( 5, 1.5, 5 );
+	currentCamera.position.set( 5, 2, 5 );
 
 	//scene setup
 	scene = new THREE.Scene();
@@ -206,7 +206,7 @@ function init() {
 
     const loaderArch = new OBJLoader();
     loaderArch.load(
-        'simpleroom.obj',
+        'parkinglot.obj',
         function (object) {
             object.traverse(function (child) {
                 if (child.isMesh) {
@@ -491,19 +491,19 @@ window.addEventListener('keydown', function(event) {
     }
 });
 
-// window.addEventListener( 'keyup', function ( event ) {
+window.addEventListener( 'keyup', function ( event ) {
 
-// 	switch ( event.key ) {
+	switch ( event.key ) {
 
-// 		case 'Shift':
-// 			control.setTranslationSnap( null );
-// 			control.setRotationSnap( null );
-// 			control.setScaleSnap( null );
-// 			break;
+		case 'Shift':
+			control.setTranslationSnap( null );
+			control.setRotationSnap( null );
+			control.setScaleSnap( null );
+			break;
 
-// 	}
+	}
 
-// } );
+} );
 
 const navIcons = document.querySelectorAll('#nav-icon1, #nav-icon2, #nav-icon3, #nav-icon4');
 const menu = document.getElementById("black-panel");
@@ -550,18 +550,6 @@ window.addEventListener('dblclick', function () {
     orbit.update();            // Aggiorna i controlli Orbit
 });
 
-// window.addEventListener('click', function (event) {
-// 	raycaster.setFromCamera(mouse, currentCamera);
-//     const intersects = raycaster.intersectObjects(objToBeDetected, true);
-
-//     if (intersects.length > 0) {
-        
-//     } else {
-//         orbit.enabled = true;  // Riabilita OrbitControls
-//         control.detach();     // Disattacca TransformControls
-//     }
-// });
-
 // Funzione per aggiornare il testo del div
 function updateInfoText(text) {
     infoDiv.textContent = text || '---';
@@ -593,13 +581,17 @@ window.addEventListener('mousemove', (event) => {
     }
 });
 
-// Aggiungi un listener per il click del mouse
 function addControlsOnClick() {
     raycaster.setFromCamera(mouse, currentCamera);
     const intersects = raycaster.intersectObjects(objToBeDetected, true);
 
     if (intersects.length > 0) {
-        const clickedObject = intersects[0].object;
+        let clickedObject = intersects[0].object;
+
+        // Se l'oggetto fa parte di un gruppo, usa il genitore
+        if (clickedObject.parent && clickedObject.parent.isGroup) {
+            clickedObject = clickedObject.parent;
+        }
 
         // Attiva i controlli Orbit e disabilita TransformControls
         orbit.enabled = true; // Abilita i controlli Orbit
@@ -746,7 +738,6 @@ function onShiftClick(event) {
 }
 
 // Funzione da eseguire quando si rilascia Shift
-// Funzione da eseguire quando si rilascia Shift
 function onShiftReleased() {
     if (group) {
         if (group.children.length < 2) {
@@ -790,7 +781,7 @@ function onShiftReleased() {
     }
 }
 
-// UI buttons functions
+// add Objects UI buttons
 
 document.getElementById('addCubeButton').addEventListener('click', () => {
 	const geometry = new THREE.BoxGeometry(0.25, 0.25, 0.25);
@@ -804,14 +795,13 @@ document.getElementById('addCubeButton').addEventListener('click', () => {
 });
 
 document.getElementById('addSphereButton').addEventListener('click', () => {
-	const geometry = new THREE.SphereGeometry(0.125, 10, 10);
+	const geometry = new THREE.SphereGeometry(0.125, 20, 20);
 	const material = normalMesh;
 	const mesh = new THREE.Mesh(geometry, material);
 	mesh.position.set(0, 0.5, 0);
 	mesh.name = `Sfera-${scene.children.length}`
 	scene.add(mesh);
 	objToBeDetected.push(mesh);
-	// render();
 });
 
 document.getElementById('addSpeakerButton').addEventListener('click', () => {
@@ -862,7 +852,11 @@ document.getElementById('addCadFileButton').addEventListener('click', () => {
         if (child.isMesh) {
             // Edges Material (Lines)
             const edges = new THREE.EdgesGeometry(child.geometry);
-            const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0xffffff }));
+            const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ 
+                color: 0xffffff,
+                transparent: true,
+                opacity: 0.5
+            }));
             line.position.copy(child.position);
             line.rotation.copy(child.rotation);
             line.scale.copy(child.scale);
@@ -870,11 +864,17 @@ document.getElementById('addCadFileButton').addEventListener('click', () => {
             archGroup.add(line); // Add the edges to the group
 
             // Transparent Grey Material
-            const transparentMaterial = new THREE.MeshBasicMaterial({
-                color: 0x808080, // Grey color
-                opacity: 0.5,    // Transparency level
+            // const transparentMaterial = new THREE.MeshBasicMaterial({
+            //     color: 0x808080, // Grey color
+            //     opacity: 0.5,    // Transparency level
+            //     transparent: false,
+            // });
+            const transparentMaterial = new THREE.MeshNormalMaterial({
                 transparent: true,
+                wireframe: false,
+                opacity: 0.3
             });
+
             const transparentMesh = new THREE.Mesh(child.geometry, transparentMaterial);
             transparentMesh.position.copy(child.position);
             transparentMesh.rotation.copy(child.rotation);
@@ -884,10 +884,9 @@ document.getElementById('addCadFileButton').addEventListener('click', () => {
         }
     });
 
+    archGroup.scale.multiplyScalar(0.1);
+    archGroup.position.set(-0.5, 0, -4);
     scene.add(archGroup); // Add the group to the scene
-    // objToBeDetected.push(archGroup); 
-
-    // console.log(`Added group with edges and transparent material for ${newArch.name}`);
 });
 
 //max stuff
@@ -901,18 +900,34 @@ window.max.bindInlet("meshlist", function(){
 });
 
 function sendMeshesToMax() {
-    objToBeDetected.forEach((mesh) => {
-        if (mesh.isMesh && mesh.name) {
-            // Ottieni la posizione globale dell'oggetto
-            const worldPosition = new THREE.Vector3();
-            mesh.getWorldPosition(worldPosition);
+    let conta = 0;
+    objToBeDetected.forEach((object) => {
+        // Traverse the object tree if it contains meshes or groups
+        object.traverse((mesh) => {
+            if (mesh.isMesh && mesh.name) {
+                // Ensure the world position is up-to-date
+                mesh.updateMatrixWorld(true); // Force update of the world matrix
+                
+                // Get the world position of the mesh
+                const worldPosition = new THREE.Vector3();
+                mesh.getWorldPosition(worldPosition);
 
-            // Crea il messaggio con la sintassi richiesta
-            const message = `dict set ${mesh.name} ${worldPosition.x} ${worldPosition.y} ${worldPosition.z}`;
+                // Get the world rotation as a quaternion
+                const worldQuaternion = new THREE.Quaternion();
+                mesh.getWorldQuaternion(worldQuaternion);
 
-            // Invia il messaggio a Max tramite l'outlet
-            max.outlet(message);
-        }
+                // Convert the quaternion to Euler angles (if needed)
+                const worldEuler = new THREE.Euler();
+                worldEuler.setFromQuaternion(worldQuaternion);
+
+                // Create the message in the requested format
+                const message = `dict set ${conta} ${mesh.name} position ${worldPosition.x} ${worldPosition.y} ${worldPosition.z} rotation ${worldEuler.x} ${worldEuler.y} ${worldEuler.z}`;
+
+                // Send the message to Max
+                max.outlet(message);
+                conta++;
+            }
+        });
     });
 }
 
@@ -927,9 +942,6 @@ window.max.bindInlet("moveHalo", function(index, x, y, z) {
     // If the object exists, move it to the specified position
     if (targetObject) {
         targetObject.position.set(x, y, z);
-        // console.log(`Moved ${targetName} to position (${x}, ${y}, ${z})`);
-    } else {
-        // console.error(`Object with name ${targetName} not found in the scene.`);
     }
 });
 
@@ -954,3 +966,154 @@ window.max.bindInlet("rotateHalo", function(index, x, y, z) {
         console.error(`Object with name ${targetName} not found in the scene.`);
     }
 });
+
+//bisogna fare in modo che funzioni così con un tasto di modifica
+window.max.bindInlet("shiftPressed", function(bool) {
+    let shiftFromOutside;
+    if (shiftFromOutside == 1) {
+        isShiftPressed = true;
+    } else {
+        isShiftPressed = false;
+    }
+});
+
+//carica posizioni progetto ////// quasi giusta: bisogna mettere bene l'ordine di x e di y, gli halo sono affanculo per qualche ragione
+
+window.max.bindInlet("parseLine", function(line) {
+    // Parse the line into components
+    const parts = line.split(" ");
+    const name = parts[0]; // Object name, e.g., "Sfera-4"
+
+    // Determine the type of object from the name
+    let type;
+    if (name.startsWith("Sfera")) {
+        type = "sphere";
+    } else if (name.startsWith("Cubo")) {
+        type = "cube";
+    } else if (name.startsWith("Altoparlante")) {
+        type = "speaker";
+    } else if (name.startsWith("Halo")) {
+        type = "halo";
+    } else if (name.startsWith("Arch")) {
+        type = "architecture";
+    } else {
+        console.error(`Unknown object type for name: ${name}`);
+        return;
+    }
+
+    // Extract position and rotation from the line
+    const positionIndex = parts.indexOf("position");
+    const rotationIndex = parts.indexOf("rotation");
+
+    if (positionIndex === -1 || rotationIndex === -1) {
+        console.error(`Invalid line format: ${line}`);
+        return;
+    }
+
+    const position = {
+        x: parseFloat(parts[positionIndex + 1]),
+        y: parseFloat(parts[positionIndex + 2]),
+        z: parseFloat(parts[positionIndex + 3]),
+    };
+
+    const rotation = {
+        x: parseFloat(parts[rotationIndex + 1]) * (Math.PI / 180), // Convert to radians
+        y: parseFloat(parts[rotationIndex + 2]) * (Math.PI / 180),
+        z: parseFloat(parts[rotationIndex + 3]) * (Math.PI / 180),
+    };
+
+    // Create the object and add it to the scene
+    let mesh;
+    switch (type) {
+        case "sphere":
+            mesh = createSphere(name, position, rotation);
+            break;
+        case "cube":
+            mesh = createCube(name, position, rotation);
+            break;
+        case "speaker":
+            mesh = createSpeaker(name, position, rotation);
+            break;
+        case "halo":
+            mesh = createHalo(name, position, rotation);
+            break;
+        case "architecture":
+            mesh = createArchitecture(name, position, rotation);
+            break;
+    }
+
+    if (mesh) {
+        scene.add(mesh);
+        objToBeDetected.push(mesh);
+        console.log(`Added ${type} with name ${name} to the scene.`);
+    }
+});
+
+// Helper functions to create objects
+function createSphere(name, position, rotation) {
+    const geometry = new THREE.SphereGeometry(0.125, 20, 20);
+    const material = normalMesh;
+    const mesh = new THREE.Mesh(geometry, material);
+    mesh.name = name;
+    setTransform(mesh, position, rotation);
+    return mesh;
+}
+
+function createCube(name, position, rotation) {
+    const geometry = new THREE.BoxGeometry(0.25, 0.25, 0.25);
+    const material = normalMesh;
+    const mesh = new THREE.Mesh(geometry, material);
+    mesh.name = name;
+    setTransform(mesh, position, rotation);
+    return mesh;
+}
+
+function createSpeaker(name, position, rotation) {
+    const geometry = new THREE.ConeGeometry(0.125, 0.25, 20);
+    const material = normalMesh;
+    const mesh = new THREE.Mesh(geometry, material);
+    mesh.name = name;
+    setTransform(mesh, position, rotation);
+    return mesh;
+}
+
+function createHalo(name, position, rotation) {
+    const newHalo = halo.clone();
+    newHalo.name = name;
+    newHalo.scale.set(0.125, 0.125, 0.125);
+    setTransform(newHalo, position, rotation);
+    return newHalo;
+}
+
+function createArchitecture(name, position, rotation) {
+    if (!architecture) {
+        console.error("Architecture model not loaded yet.");
+        return null;
+    }
+
+    const newArch = architecture.clone();
+    const archGroup = new THREE.Group();
+    newArch.traverse((child) => {
+        if (child.isMesh) {
+            const edges = new THREE.EdgesGeometry(child.geometry);
+            const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0xffffff }));
+            const transparentMaterial = new THREE.MeshBasicMaterial({
+                color: 0x808080,
+                opacity: 0.5,
+                transparent: true,
+            });
+            const transparentMesh = new THREE.Mesh(child.geometry, transparentMaterial);
+            archGroup.add(line);
+            archGroup.add(transparentMesh);
+        }
+    });
+    archGroup.name = name;
+    setTransform(archGroup, position, rotation);
+    return archGroup;
+}
+
+// Utility function to set position and rotation
+function setTransform(mesh, position, rotation) {
+    mesh.position.set(position.x, position.y, position.z);
+    mesh.rotation.set(rotation.x, rotation.y, rotation.z);
+}

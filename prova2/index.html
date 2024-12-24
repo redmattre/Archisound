@@ -5,88 +5,86 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 		<link type="text/css" rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="navbar.css">
+    	<link rel="stylesheet" href="navbar.css">
 	</head>
 	<body>
 
-	<div id="black-panel">
+		<div id="black-panel">
 
-		<div id="info">
-			"G" translate | "R" rotate | "S" scale <br />
-			"Q" toggle world/local space |  "Shift" snap to grid<br />
-			"Backspace" or "X" deletes hovered object <br> "esc" to shut controls <br>
-			"Double Click" to restore camera position | <br>
-			"Shift + Click" on hovered objects creates a group
-		</div>
-
-		
-
-		<div class="container">
-			<div class="switch-wrapper">
-			  <label class="switch">
-				<input type="checkbox" data-id="transparency"/>
-				<div></div>
-			  </label>
-			  <span class="switch-label">Trasparenza</span>
+			<div id="info">
+				"G" translate | "R" rotate | "S" scale <br />
+				"Q" toggle world/local space |  "Shift" snap to grid<br />
+				"Backspace" or "X" deletes hovered object <br> "esc" to shut controls <br>
+				"Double Click" to restore camera position | <br>
+				"Shift + Click" on hovered objects creates a group
 			</div>
 
-			<div class="switch-wrapper">
-			  <label class="switch">
-				<input type="checkbox" data-id="alphaTest" checked/>
-				<div></div>
-			  </label>
-			  <span class="switch-label">Profondità</span>
-			</div>
+			
 
-			<div class="switch-wrapper">
+			<div class="container">
+				<div class="switch-wrapper">
 				<label class="switch">
-				  <input type="checkbox" data-id="wireframe"/>
-				  <div></div>
+					<input type="checkbox" data-id="transparency"/>
+					<div></div>
 				</label>
-				<span class="switch-label">Wireframe</span>
-			  </div>
+				<span class="switch-label">Trasparenza</span>
+				</div>
+
+				<div class="switch-wrapper">
+				<label class="switch">
+					<input type="checkbox" data-id="alphaTest" checked/>
+					<div></div>
+				</label>
+				<span class="switch-label">Profondità</span>
+				</div>
+
+				<div class="switch-wrapper">
+					<label class="switch">
+					<input type="checkbox" data-id="wireframe"/>
+					<div></div>
+					</label>
+					<span class="switch-label">Wireframe</span>
+				</div>
+			</div>
+
 		</div>
 
-	</div>
+		<div id="nav-icon3">
+		<span></span>
+		<span></span>
+		<span></span>
+		<span></span>
+		</div>
 
-    <div id="nav-icon3">
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
+		<button id="addCubeButton">🧊</button>
+		<button id="addSphereButton">🔮</button>
+		<button id="addSpeakerButton">🔈</button>
+		<button id="addHaloButton">🎧</button>
+		<button id="addCadFileButton">🌉</button>
 
-    <button id="addCubeButton">🧊</button>
-    <button id="addSphereButton">🔮</button>
-    <button id="addSpeakerButton">🔈</button>
-    <button id="addHaloButton">🎧</button>
-    <button id="addCadFileButton">🌉</button>
+		<div id="visualizzazione">
+			Prospettiva
+		</div>
 
-	<div id="visualizzazione">
-		Prospettiva
-	</div>
+		<div id="infoDiv">
+			---
+		</div>
 
-	<div id="infoDiv">
-		---
-	</div>
+		<div id="infoDiv-2">
+			Mondo: scala
+		</div>
 
-	<div id="infoDiv-2">
-		Mondo: scala
-	</div>
-
-	<script type="importmap">
-		{
-			"imports": {
-				"three": "../build/three.module.js",
-				"three/addons/": "./jsm/"
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
 			}
-		}
-	</script>
+		</script>
 
-	<script type="module" src="main.js"></script>
-	<script src="UI.js"></script>
-    
-	
+		<script type="module" src="main.js"></script>
+		<script src="UI.js"></script>
 
 	</body>
 </html>
