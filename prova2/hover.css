@@ -5,8 +5,8 @@
 }
 
 .CadButtonWrap {
-    background-color: none;
-    width: 10rem;
+    /* background-color: red; */
+    width: 15rem;
     height: 4rem;
     position: absolute;
     top: 25rem;
@@ -14,8 +14,20 @@
     z-index: 88;
 }
 
+.CadButtonWrap:hover ~ .modCadButton {
+  opacity: 1;
+  pointer-events: all;
+  cursor: pointer;
+}
+
 /* Nasconde i bottoni modCadButton quando il mouse è su #addCadFileButton */
 #addCadFileButton:hover ~ .modCadButton {
+  opacity: 1;
+  pointer-events: all;
+  cursor: pointer;
+}
+
+.modCadButton:hover {
   opacity: 1;
   pointer-events: all;
   cursor: pointer;

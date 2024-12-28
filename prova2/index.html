@@ -12,16 +12,6 @@
 
 		<div id="black-panel">
 
-			<div id="info">
-				"G" translate | "R" rotate | "S" scale <br />
-				"Q" toggle world/local space |  "Shift" snap to grid<br />
-				"Backspace" or "X" deletes hovered object <br> "esc" to shut controls <br>
-				"Double Click" to restore camera position | <br>
-				"Shift + Click" on hovered objects creates a group
-			</div>
-
-			
-
 			<div class="container">
 				<div class="switch-wrapper">
 				<label class="switch">
@@ -46,6 +36,23 @@
 					</label>
 					<span class="switch-label">Tema Eco</span>
 				</div>
+
+				
+
+				<button id="helper">
+					?
+					<div id="helperCard">
+						<div id="info">
+							"G" translate | "R" rotate | "S" scale <br />
+							"Q" toggle world/local space |  "Shift" snap to grid<br />
+							"Backspace" or "X" deletes hovered object <br> "esc" to shut controls <br>
+							"Double Click" to restore camera position | <br>
+							"Shift + Click" on hovered objects creates a group
+						</div>
+					</div>
+				</button>
+
+				
 			</div>
 
 		</div>
@@ -56,13 +63,12 @@
 		<span></span>
 		<span></span>
 		</div>
-
 		<button id="addCubeButton">C</button>
 		<button id="addSphereButton">S</button>
 		<button id="addSpeakerButton">A</button>
 		<button id="addHaloButton">H</button>
 
-	
+		<div class="CadButtonWrap"></div>
 		<button id="addCadFileButton">B</button>
 		<button id="modCadButton1" class="modCadButton">X</button>
 		<button id="modCadButton2" class="modCadButton">L</button>

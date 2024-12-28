@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>three.js webgl - postprocessing - sobel (edge detection)</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<link type="text/css" rel="stylesheet" href="main.css">
+	</head>
+	<body>
+
+		<div id="info">
+			<a href="https://threejs.org" target="_blank" rel="noopener noreferrer">three.js</a> - webgl - postprocessing<br/>
+			sobel (edge detection)
+		</div>
+
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
+
+		<script type="module">
+
+import * as THREE from 'three';
+
+import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
+import { LuminosityShader } from 'three/addons/shaders/LuminosityShader.js';
+import { SobelOperatorShader } from 'three/addons/shaders/SobelOperatorShader.js';
+
+let camera, scene, renderer, composer;
+
+let effectSobel;
+
+const params = {
+    enable: true
+};
+
+init();
+
+function init() {
+    // Scene and Camera
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 1, 3);
+    camera.lookAt(scene.position);
+
+    // Geometry and Material
+    const geometry = new THREE.TorusKnotGeometry(1, 0.3, 256, 32);
+    const material = new THREE.MeshStandardMaterial({ color: "orange" });
+    const mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
+
+    // Lighting
+    const ambientLight = new THREE.AmbientLight(0xe7e7e7);
+    scene.add(ambientLight);
+
+    const pointLight = new THREE.PointLight(0xffffff, 20);
+    camera.add(pointLight);
+    scene.add(camera);
+
+    // Renderer
+    renderer = new THREE.WebGLRenderer();
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setAnimationLoop(animate);
+    document.body.appendChild(renderer.domElement);
+
+    // Postprocessing
+    composer = new EffectComposer(renderer);
+
+    // Render the original scene
+    const renderPass = new RenderPass(scene, camera);
+    composer.addPass(renderPass);
+
+    // Grayscale conversion
+    const effectGrayScale = new ShaderPass(LuminosityShader);
+    composer.addPass(effectGrayScale);
+
+    // Sobel operator
+    effectSobel = new ShaderPass(SobelOperatorShader);
+    effectSobel.uniforms['resolution'].value.x = window.innerWidth * window.devicePixelRatio;
+    effectSobel.uniforms['resolution'].value.y = window.innerHeight * window.devicePixelRatio;
+    composer.addPass(effectSobel);
+
+    // Combine the original scene and Sobel filter
+    const combineShader = {
+        uniforms: {
+            tDiffuse: { value: null },
+            tSobel: { value: null },
+        },
+        vertexShader: `
+            varying vec2 vUv;
+            void main() {
+                vUv = uv;
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+            }
+        `,
+        fragmentShader: `
+            varying vec2 vUv;
+            uniform sampler2D tDiffuse;
+            uniform sampler2D tSobel;
+            void main() {
+                vec4 originalColor = texture2D(tDiffuse, vUv);
+                vec4 sobelColor = texture2D(tSobel, vUv);
+                gl_FragColor = mix(originalColor, vec4(sobelColor.rgb, 1.0), 0.5); // Blend using mix
+            }
+        `
+    };
+
+    const combinePass = new ShaderPass(combineShader);
+    composer.addPass(combinePass);
+
+    // Orbit Controls
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableZoom = false;
+
+    // GUI
+    const gui = new GUI();
+    gui.add(params, 'enable');
+    gui.open();
+
+    // Resize Event
+    window.addEventListener('resize', onWindowResize);
+}
+
+function onWindowResize() {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    composer.setSize(window.innerWidth, window.innerHeight);
+
+    effectSobel.uniforms['resolution'].value.x = window.innerWidth * window.devicePixelRatio;
+    effectSobel.uniforms['resolution'].value.y = window.innerHeight * window.devicePixelRatio;
+}
+
+function animate() {
+    if (params.enable === true) {
+        composer.render();
+    } else {
+        renderer.render(scene, camera);
+    }
+}
+		</script>
+
+	</body>
+</html>
