@@ -4,8 +4,9 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { TransformControls } from 'three/addons/controls/TransformControls.js';
 import { standardMat, phongMat } from './materials.js';
 
-let cameraPersp, cameraOrtho, currentCamera, camera;
 export let scene, renderer, control, orbit, orbitOrtho;
+export let objToBeDetected = [];
+export let cameraPersp, cameraOrtho, currentCamera, camera;
 let rendererBackgoundColor = 0xf5f5f5; //inizia bianco
 
 export function init() {
@@ -70,8 +71,10 @@ export function debugGeo() {
     const geometry = new THREE.BoxGeometry(1, 1, 1);
     const material = phongMat;
     const mesh = new THREE.Mesh(geometry, material);
+	mesh.name = `debug-${scene.children.length}`
     // control.attach(mesh);
     scene.add(mesh);
+	objToBeDetected.push(mesh);
 }
 
 function initTransformControls() {

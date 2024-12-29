@@ -5,5 +5,5 @@ import { loadObj } from './loaders.js';
 
 init();
 render();
-// debugGeo();
-loadObj('parkinglot.obj', normalMat);
+debugGeo();
+// loadObj('parkinglot.obj', normalMat);

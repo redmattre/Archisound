@@ -1,4 +1,14 @@
 body {
     margin: 0;
     padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#infoDiv {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    pointer-events: none;
+    user-select: none;
+    z-index: 9999;
 }
