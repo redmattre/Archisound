@@ -3,13 +3,78 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="navbar.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Archisound</title>
   </head>
   <body>
     
-    <div id="infoDiv">miao</div>
+    <div id="black-panel">
 
+			<div class="container">
+
+        <div>Generali</div>
+				<div class="switch-wrapper">
+					<label class="switch">
+						<input type="checkbox" data-id="theme"/>
+						<div></div>
+					</label>
+					<span class="switch-label">Tema Eco</span>
+				</div>
+
+        <div class="switch-wrapper">
+					<label class="switch">
+						<input type="checkbox" data-id="lock"/>
+						<div></div>
+					</label>
+					<span class="switch-label">Diorama</span>
+				</div>
+
+        <div>Architettura</div>
+				<div class="switch-wrapper">
+				<label class="switch">
+					<input type="checkbox" data-id="transparency"/>
+					<div></div>
+				</label>
+				<span class="switch-label">Trasparenza</span>
+				</div>
+
+				<button id="helper">
+					?
+					<div id="helperCard">
+						<div id="info">
+							"G" translate | "R" rotate | "S" scale <br />
+							"Q" toggle world/local space |  "Shift" snap to grid<br />
+							"Backspace" or "X" deletes hovered object <br> "esc" to shut controls <br>
+							"Double Click" to restore camera position | <br>
+							"Shift + Click" on hovered objects creates a group
+						</div>
+					</div>
+				</button>
+
+				
+			</div>
+
+		</div>
+
+    <div id="infoDivTopLeft">---</div>
+    
+    <div class="bottonieraDestra">
+      <div id="nav-icon3">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <button id="addCube">H</button>
+      <button id="addCube">C</button>
+      <button id="addSphere">S</button>
+      <button id="addCone">C</button>
+      <button id="addArch">A</button>
+      <button id="addZone">Z</button>
+    </div>
+
+    <script src="navbar.js"></script>
     <script type="module" src="main.js"></script>
     <script type="module" src="setup.js"></script>
     <script type="module" src="materials.js"></script>

@@ -7,24 +7,20 @@ import { OutlinePass } from 'three/addons/postprocessing/OutlinePass.js';
 export let raycaster = new THREE.Raycaster();
 export let mouse = new THREE.Vector2();
 export let isRaycasterActive = true;
+let outlineObject = null;  // Variabile per l'oggetto dell'outline
 
 let outlinePass;
 let composer;
 
-// Variabile per tracciare l'oggetto attualmente con l'outline
-let outlineObject = null;
-
-// Intervallo per limitare la frequenza degli aggiornamenti
 let lastUpdateTime = 0;
-const updateInterval = 100; // Aggiorna ogni 100ms
+const updateInterval = 100; // Aggiorna ogni 100ms, ad esempio
 
-// Inizializza il composer e l'outline pass
 function initPostProcessing() {
     const renderPass = new RenderPass(scene, currentCamera);
 
     outlinePass = new OutlinePass(new THREE.Vector2(window.innerWidth, window.innerHeight), scene, currentCamera);
     outlinePass.edgeStrength = 10; // Regola la forza del contorno
-    outlinePass.edgeGlow = 0; // Nessun bagliore
+    outlinePass.edgeGlow = 0.5; // Nessun bagliore
     outlinePass.edgeThickness = 5; // Spessore del contorno
     outlinePass.visibleEdgeColor.set('#ffffff'); // Colore del contorno visibile
     outlinePass.hiddenEdgeColor.set('#ffffff'); // Colore del contorno nascosto
@@ -34,20 +30,24 @@ function initPostProcessing() {
     composer.addPass(outlinePass);
 }
 
-// Evento per ridimensionare il renderer e il composer
+// Evento per ridimensionare il renderer e il composer (solo il composer forse puoi metterla da un altra parte questa cosa)
 window.addEventListener('resize', () => {
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    // renderer.setSize(window.innerWidth, window.innerHeight);
     composer.setSize(window.innerWidth, window.innerHeight);
 });
 
-// Gestione del raycaster
 renderer.domElement.addEventListener('mousemove', (event) => {
-    if (!isRaycasterActive) return;
+    if (!isRaycasterActive) {
+        return;  // Se il raycaster è disattivato, non eseguire il raycasting
+    }
 
     const now = Date.now();
-    if (now - lastUpdateTime < updateInterval) return;
+    if (now - lastUpdateTime < updateInterval) {
+        return; // Non aggiornare se il tempo tra gli aggiornamenti è troppo breve
+    }
     lastUpdateTime = now;
 
+    // Il resto del codice per raycasting e highlighting
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
@@ -56,7 +56,7 @@ renderer.domElement.addEventListener('mousemove', (event) => {
 
     if (intersects.length > 0) {
         let firstNonDashedObject = null;
-    
+
         for (let i = 0; i < intersects.length; i++) {
             const intersectedObject = intersects[i].object;
             if (!intersectedObject.isDashed) {
@@ -64,51 +64,66 @@ renderer.domElement.addEventListener('mousemove', (event) => {
                 break;
             }
         }
-    
+
         if (firstNonDashedObject) {
             updateInfoText(firstNonDashedObject.name || 'Oggetto non trattato');
-            outlineObject = firstNonDashedObject;
-            outlinePass.selectedObjects = [outlineObject];
+            highlightObject(firstNonDashedObject);
         } else {
             const dashedObject = intersects[0].object;
-    
-            // Risali al gruppo contenente la linea intersecata
-            const parentGroup = dashedObject.parent;
-            if (parentGroup) {
-                // Trova la geometria invisibile (mesh) nel gruppo
-                const invisibleMesh = parentGroup.children.find(child => child.isMesh);
-                if (invisibleMesh) {
-                    // Aggiorna l'outline per la mesh invisibile
-                    outlineObject = invisibleMesh;
-                    outlinePass.selectedObjects = [outlineObject];
-    
-                    // Rendi visibile la mesh (opzionale, se necessario)
-                    // invisibleMesh.material.visible = true;
-                }
-            }
-    
             updateInfoText(dashedObject.name || 'Oggetto trattato');
+            highlightObject(dashedObject);
         }
     } else {
         updateInfoText();
-        outlineObject = null;
-        outlinePass.selectedObjects = [];
+        removeOutline();
     }
 });
 
-// Funzione di rendering con il composer
-function animate() {
-    requestAnimationFrame(animate);
-    composer.render();
+// Funzione per attivare o disattivare il raycaster
+export function toggleRaycaster(status) {
+    isRaycasterActive = status;  // Imposta la variabile globale
 }
 
-// Funzione per aggiornare il div con le informazioni
 const infoDiv = document.getElementById('infoDivTopLeft');
+
 function updateInfoText(text) {
     infoDiv.textContent = text || '---';
 }
 
+function highlightObject(object) {
+    if (outlineObject) {
+        scene.remove(outlineObject);
+    }
 
-// Inizializza post-processing e avvia il rendering
-initPostProcessing();
-animate();
+    let outlineMaterial = new THREE.MeshBasicMaterial({
+        color: 'black', // Colore dell'outline (giallo)
+        side: THREE.BackSide,
+        depthWrite: false,
+    });
+
+    if (object instanceof THREE.Mesh) {
+        // Per le Mesh, usa un BoxGeometry per l'outline
+        const boundingBox = new THREE.Box3().setFromObject(object);
+        const size = boundingBox.getSize(new THREE.Vector3()).multiplyScalar(1.1); // Aumenta la dimensione dell'oggetto per l'outline
+        const outlineGeometry = new THREE.BoxGeometry(size.x, size.y, size.z);
+
+        outlineObject = new THREE.Mesh(outlineGeometry, outlineMaterial);
+        outlineObject.position.copy(object.position);
+        outlineObject.rotation.copy(object.rotation);
+    } else if (object instanceof THREE.LineSegments) {
+        // Per le linee, usa una geometria di edges per l'outline
+        const outlineGeometry = new THREE.EdgesGeometry(object.geometry);
+        outlineObject = new THREE.LineSegments(outlineGeometry, outlineMaterial);
+        outlineObject.position.copy(object.position);
+        outlineObject.rotation.copy(object.rotation);
+    }
+
+    scene.add(outlineObject);
+}
+
+function removeOutline() {
+    if (outlineObject) {
+        scene.remove(outlineObject);
+        outlineObject = null;
+    }
+}

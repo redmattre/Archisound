@@ -1,14 +1,109 @@
-body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, Helvetica, sans-serif;
+:root {
+  --fondaleBianco: #d6d6d6;
+  --fondaleNero: black;
+  --grigio: grey;
+  --grigino: rgb(161, 161, 161);
+  --dettaglioBianco: #e0e0e0;
+
+  --testo: black;
+  --dettaglio: var(--grigio);
+  --fondale: var(--fondaleBianco);
 }
 
-#infoDiv {
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--fondale);
+}
+
+canvas{
+  position: absolute;
+  z-index: 0;
+}
+
+button {
+  width: 4rem;
+  font-size: xx-large;
+  background-color: transparent;
+  border: solid var(--testo) 2px;
+  border-radius: 10px;
+  color: var(--testo);
+  padding: 0.5rem 1rem;
+  margin-top: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  user-select: none;
+}
+
+button:active {
+  background-color: var(--dettaglio);
+}
+
+button:hover {
+  box-shadow: 0 0 0.5rem var(--grigino);
+}
+
+#infoDivTopLeft {
     position: absolute;
     top: 1rem;
     left: 1rem;
     pointer-events: none;
     user-select: none;
+    z-index: 500;
+    text-shadow: 2px 0 var(--fondale), -2px 0 var(--fondale), 0 2px var(--fondale), 0 -2px var(--fondale),
+             1px 1px var(--fondale), -1px -1px var(--fondale), 1px -1px var(--fondale), -1px 1px var(--fondale);
+}
+
+.bottonieraDestra {
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    /* background-color: red; */
+    height: 95vh;
+    width: 4rem;
+    top: 1rem;
+    right: 1rem;
     z-index: 9999;
+}
+
+#helper {
+  background-color: transparent;
+  border: solid var(--dettaglio) 2px;
+  border-radius: 10px;
+  color: var(--dettaglio);
+  padding: 0.5rem 1rem;
+
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+#helperCard {
+  background-color: var(--fondale);
+  border: solid var(--dettaglio) 2px;
+  border-radius: 10px;
+  color: var(--dettaglio);
+  padding: 0.5rem 1rem;
+  opacity: 0;
+  font-size: large;
+
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  height: 23vh;
+  width: 42vw;
+  overflow: scroll;
+  pointer-events: none;
+
+  transition: all 0.25s ease;
+}
+
+/* Qui il contenuto diventa visibile quando l'hover è sul #helper */
+#helper:hover #helperCard {
+  opacity: 1;
 }

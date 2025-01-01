@@ -2,12 +2,16 @@ import * as THREE from 'three';
 
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { TransformControls } from 'three/addons/controls/TransformControls.js';
-import { standardMat, phongMat } from './materials.js';
+import { LineSegmentsGeometry } from 'three/addons/lines/LineSegmentsGeometry.js';
+import { LineSegments2 } from 'three/addons/lines/LineSegments2.js';
+import { standardMat, phongMat, dashedLineMat, dashedMaterial, solidMaterial, goochMaterial } from './materials.js';
+import { loadObj } from './loaders.js';
 
 export let scene, renderer, control, orbit, orbitOrtho;
 export let objToBeDetected = [];
 export let cameraPersp, cameraOrtho, currentCamera, camera;
-let rendererBackgoundColor = 0xf5f5f5; //inizia bianco
+let rendererBackgoundColor = 0xd6d6d6; //inizia bianco
+// let rendererBackgoundColor = 0x000000; //inizia nero
 
 export function init() {
 
@@ -39,9 +43,10 @@ export function init() {
 	scene.add(currentCamera);
 
 	//Renderer
-    renderer = new THREE.WebGLRenderer( { antialias: true } );
+    renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
     renderer.setPixelRatio( window.devicePixelRatio );
 	renderer.setSize( window.innerWidth, window.innerHeight );
+	renderer.autoClear = false;
     renderer.setClearColor(rendererBackgoundColor);
 	document.body.appendChild( renderer.domElement );
 
@@ -68,13 +73,88 @@ export function render() {
 
 export function debugGeo() {
     // const geometry = new THREE.TorusKnotGeometry(1, 0.3, 256, 32);
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
-    const material = phongMat;
+    const geometry = new THREE.BoxGeometry(0.2,0.2,0.2);
+	// const geometry = new THREE.SphereGeometry;
+    const material = goochMaterial;
     const mesh = new THREE.Mesh(geometry, material);
 	mesh.name = `debug-${scene.children.length}`
+	mesh.isDashed = false;
     // control.attach(mesh);
     scene.add(mesh);
 	objToBeDetected.push(mesh);
+}
+
+export function debugGeo1() {
+    // const geometry = new THREE.TorusKnotGeometry(1, 0.3, 256, 32);
+	const geometry = new THREE.BoxGeometry(1.5, 1.5, 1.5);
+    const edges = new THREE.EdgesGeometry(geometry); // Crea una geometria di bordi
+    const line = new THREE.LineSegments(edges, dashedLineMat);
+    line.computeLineDistances(); // Necessario per il materiale LineDashedMaterial
+    line.name = `debug-dashed-${scene.children.length}`;
+	line.isDashed = true;
+    scene.add(line);
+    objToBeDetected.push(line);
+}
+
+export const zonaWIFI = new THREE.Group();
+
+export function debugGeo2() {
+    const geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+    const edges = new THREE.EdgesGeometry(geometry); // Estrai gli edge del cubo
+
+    // LineSegmentsGeometry compatibile con Line2
+    const lineGeometry = new LineSegmentsGeometry().fromEdgesGeometry(edges);
+
+    // Crea una LineSegments2 con il materiale dashed
+    const line = new LineSegments2(lineGeometry, dashedMaterial);
+
+    // Assicurati di abilitare il calcolo delle distanze (è richiesto per il dashed)
+    line.computeLineDistances();
+	line.name = `zonaWIFI`;
+	line.isDashed = true;
+
+	//parte della mesh
+	const material = new THREE.MeshStandardMaterial({
+		color: new THREE.Color(0xf25d00),
+		transparent: true,
+		depthTest: true,
+		wireframe: false,
+		opacity: 0.,
+		visible: true
+	});;
+	const mesh = new THREE.Mesh(geometry, material);
+
+    // scene.add(line);
+	// scene.add(mesh);
+	zonaWIFI.add(mesh);
+	zonaWIFI.add(line);
+	scene.add(zonaWIFI);
+	objToBeDetected.push(line);
+}
+
+
+export function LineaContinuaObj() {
+    const geometry = new THREE.BoxGeometry(1, 1, 1); 
+	// const geometry = new THREE.TorusKnotGeometry(1, 0.3, 256, 32);
+    const edges = new THREE.EdgesGeometry(geometry); // Estrai gli edge del cubo
+
+    const lineGeometry = new LineSegmentsGeometry().fromEdgesGeometry(edges); // LineSegmentsGeometry compatibile
+    const line = new LineSegments2(lineGeometry, solidMaterial); // Applica il materiale dashed
+
+    scene.add(line); // Aggiungi alla scena
+	line.name = "architettura";
+	line.isDashed = true;
+	objToBeDetected.push(line);
+}
+
+export function debugGeo4() {
+    const geometry = loadObj('parkinglot.obj');
+    const edges = new THREE.EdgesGeometry(geometry); // Estrai gli edge del cubo
+
+    const lineGeometry = new LineSegmentsGeometry().fromEdgesGeometry(edges); // LineSegmentsGeometry compatibile
+    const line = new LineSegments2(lineGeometry, solidMaterial); // Applica il materiale dashed
+
+    scene.add(line); // Aggiungi alla scena
 }
 
 function initTransformControls() {
