@@ -17,13 +17,13 @@ export function init() {
 
     //Scene setup
 	scene = new THREE.Scene();
-	scene.add( new THREE.GridHelper( 5, 20, 0x888888, 0x444444 ) );
+	scene.add( new THREE.GridHelper( 5.5, 8, 0x888888, 0x444444 ) );
 
 	//Camere
 	const aspect = window.innerWidth / window.innerHeight;
 	const frustumSize = 4;
-	cameraPersp = new THREE.PerspectiveCamera( 50, aspect, 0.2, 200 );
-	cameraOrtho = new THREE.OrthographicCamera( - frustumSize * aspect, frustumSize * aspect, frustumSize, - frustumSize, 0.1, 200 );
+	cameraPersp = new THREE.PerspectiveCamera( 50, aspect, 0.3, 200 );
+	cameraOrtho = new THREE.OrthographicCamera( - frustumSize * aspect, frustumSize * aspect, frustumSize, - frustumSize, 0.3, 200 );
 	currentCamera = cameraPersp; //default camera
 	currentCamera.position.set( 5, 1.5, 5 );
 
@@ -66,19 +66,42 @@ export function init() {
     window.addEventListener( 'resize', onWindowResize );
 }
 
+export function changeTheme(state) {
+    var root = document.documentElement;
+
+    if (state) {
+        rendererBackgoundColor = 0x000;
+        renderer.setClearColor(rendererBackgoundColor);
+        root.style.setProperty('--fondale', 'var(--fondaleNero)');
+        root.style.setProperty('--testo', 'var(--fondaleBianco)');
+        root.style.setProperty('--dettaglio', 'var(--grigino)');
+		dashedMaterial.color.set('yellow');
+    } else {
+        rendererBackgoundColor = 0xd6d6d6;
+        renderer.setClearColor(rendererBackgoundColor);
+        root.style.setProperty('--fondale', 'var(--fondaleBianco)');
+        root.style.setProperty('--testo', 'var(--fondaleNero)');
+        root.style.setProperty('--dettaglio', 'var(--grigio)');
+		// dashedMaterial.color.set(0x343434);
+		dashedMaterial.color.set('yellow');
+    }
+}
+
 export function render() {
     renderer.render(scene, currentCamera);
 	requestAnimationFrame(render);
 }
 
 export function debugGeo() {
-    // const geometry = new THREE.TorusKnotGeometry(1, 0.3, 256, 32);
-    const geometry = new THREE.BoxGeometry(0.2,0.2,0.2);
+    const geometry = new THREE.TorusKnotGeometry(1, 0.3, 256, 32);
+    // const geometry = new THREE.BoxGeometry(0.2,0.2,0.2);
 	// const geometry = new THREE.SphereGeometry;
     const material = goochMaterial;
     const mesh = new THREE.Mesh(geometry, material);
+	mesh.scale.set(0.25, 0.24, 0.25);
 	mesh.name = `debug-${scene.children.length}`
 	mesh.isDashed = false;
+	mesh.position.set(0, 0.44, 0);
     // control.attach(mesh);
     scene.add(mesh);
 	objToBeDetected.push(mesh);
@@ -110,7 +133,7 @@ export function debugGeo2() {
 
     // Assicurati di abilitare il calcolo delle distanze (è richiesto per il dashed)
     line.computeLineDistances();
-	line.name = `zonaWIFI`;
+	line.name = `prima zona`;
 	line.isDashed = true;
 
 	//parte della mesh
@@ -128,6 +151,7 @@ export function debugGeo2() {
 	// scene.add(mesh);
 	zonaWIFI.add(mesh);
 	zonaWIFI.add(line);
+	zonaWIFI.position.set(0, 0.5, 0);
 	scene.add(zonaWIFI);
 	objToBeDetected.push(line);
 }

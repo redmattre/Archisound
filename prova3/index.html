@@ -8,6 +8,12 @@
     <title>Archisound</title>
   </head>
   <body>
+
+    <div class="bottonieraSotto" id="bottonieraSotto">
+      <div class="visualizzazione">
+        Prospettiva
+      </div>
+    </div>
     
     <div id="black-panel">
 
@@ -30,10 +36,18 @@
 					<span class="switch-label">Diorama</span>
 				</div>
 
+        <div class="switch-wrapper">
+					<label class="switch">
+						<input type="checkbox" data-id="grid" checked/>
+						<div></div>
+					</label>
+					<span class="switch-label">Super Superficie</span>
+				</div>
+
         <div>Architettura</div>
 				<div class="switch-wrapper">
 				<label class="switch">
-					<input type="checkbox" data-id="transparency"/>
+					<input type="checkbox" data-id="transparencyA"/>
 					<div></div>
 				</label>
 				<span class="switch-label">Trasparenza</span>
@@ -80,5 +94,6 @@
     <script type="module" src="materials.js"></script>
     <script type="module" src="loaders.js"></script>
     <script type="module" src="raycaster.js"></script>
+    <script type="module" src="UI.js"></script>
   </body>
 </html>

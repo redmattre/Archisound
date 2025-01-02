@@ -86,7 +86,7 @@ export function loadObjWithDashedEdges(filename, dashedMaterial) {
                     const dashedLine = new LineSegments2(lineGeometry, dashedMaterial);
 
                     dashedLine.scale.multiplyScalar(0.1);
-                    dashedLine.position.set(-0.5, 0, -4);
+                    dashedLine.position.set(-0.5, 0, -5);
 
                     //fai che solo sul wireframe viene selezionato
                     dashedLine.name = `architecture`;
@@ -94,12 +94,12 @@ export function loadObjWithDashedEdges(filename, dashedMaterial) {
 
                     // Aggiungi le linee alla scena
                     scene.add(dashedLine);
-                    objToBeDetected.push(dashedLine);
+                    // objToBeDetected.push(dashedLine); //sospendiamo la detection per ora
                 }
             });
 
             object.scale.multiplyScalar(0.1);
-            object.position.set(-0.5, 0, -4);
+            object.position.set(-0.5, 0, -5);
             // Aggiungi l'oggetto principale alla scena
             scene.add(object);
 

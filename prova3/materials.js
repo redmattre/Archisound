@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { LineMaterial } from 'three/addons/lines/LineMaterial.js';
+import { color } from 'three/tsl';
 
 export let normalMat = new THREE.MeshNormalMaterial({
 	transparent: false,
@@ -36,7 +37,8 @@ export let dashedLineMat = new THREE.LineDashedMaterial({
 
 export let dashedMaterial = new LineMaterial({
     // color: 0xf0ed5d,
-    color: 0x343434,
+    // color: 0x343434,
+    color: 'yellow',
     linewidth: 0.015,
     dashed: true,
     dashSize: 0.07,
@@ -50,13 +52,18 @@ export let solidMaterial = new LineMaterial({
     linewidth: 0.008,
     worldUnits: true,
     alphaToCoverage: true, // Enable better transparency blending
+    visible: false
 });
 
 export let goochMaterial = new THREE.ShaderMaterial({
     uniforms: {
         lightDirection: { value: new THREE.Vector3(1, 1, 1).normalize() },
-        coolColor: { value: new THREE.Color(0x000080) }, // Colore freddo
-        warmColor: { value: new THREE.Color(0xF5F5DC) }, // Colore caldo
+        // coolColor: { value: new THREE.Color(0x292520) }, // clay
+        // warmColor: { value: new THREE.Color(0xffebcc) }, 
+        // coolColor: { value: new THREE.Color(0x0077ff) }, // cool
+        // warmColor: { value: new THREE.Color(0xffaa00) }, 
+        coolColor: { value: new THREE.Color(0xADD8E6) }, // metal
+        warmColor: { value: new THREE.Color(0xFF6F61) }, 
         surfaceColor: { value: new THREE.Color(0xffffff) }, // Colore base
     },
     vertexShader: `
@@ -105,7 +112,7 @@ export let goochMaterialAlpha = new THREE.ShaderMaterial({
         // coolColor: { value: new THREE.Color(0x000080) }, // Colore freddo
         // warmColor: { value: new THREE.Color(0xF5F5DC) }, // Colore caldo
         surfaceColor: { value: new THREE.Color(0xffffff) }, // Colore base
-        opacity: { value: 1.0 } // Aggiungi l'uniforme per l'opacità
+        opacity: { value: 0. } // Aggiungi l'uniforme per l'opacità
     },
     transparent: true, // Abilita la trasparenza
     vertexShader: `

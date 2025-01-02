@@ -8,6 +8,14 @@ export let raycaster = new THREE.Raycaster();
 export let mouse = new THREE.Vector2();
 export let isRaycasterActive = true;
 
+export function setRaycasterActive(state) {
+    isRaycasterActive = state;
+}
+
+export function getRaycasterActive() {
+    return isRaycasterActive;
+}
+
 let outlinePass;
 let composer;
 

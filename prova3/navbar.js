@@ -1,5 +1,6 @@
 const navIcons = document.querySelectorAll('#nav-icon1, #nav-icon2, #nav-icon3, #nav-icon4');
 const menu = document.getElementById("black-panel");
+const visualizzazione = document.getElementById("bottonieraSotto");
 let settingsFlag = 1;
 
 navIcons.forEach(function(icon) {
@@ -11,13 +12,13 @@ navIcons.forEach(function(icon) {
             menu.style.opacity = 0;
             menu.style.pointerEvents = "none";
 			
-			// visualizzazione.style.left = "44.8%";
+			// visualizzazione.style.right = "1rem";
 			// onSettingsResizeReverse();
         } else {
             menu.style.opacity = 1;
             menu.style.pointerEvents = "all";
 
-			// visualizzazione.style.left = "20.5%";
+			// visualizzazione.style.right = "33vw";
 			// onSettingsResize();
         }
         

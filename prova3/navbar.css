@@ -264,8 +264,10 @@
   opacity: 0;
   right: 0;
   position: absolute;
-  height: 97%;
-  width: 50vw;
+  height: auto;
+  top: 0;
+  bottom: 0;
+  width: 33vw;
   background-color: var(--fondale);
   border: solid var(--dettaglio) 2px;
   border-radius: 2px;

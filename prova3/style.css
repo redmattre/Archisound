@@ -27,6 +27,7 @@ button {
   width: 4rem;
   font-size: xx-large;
   background-color: transparent;
+  /* background-color: var(--fondale); */
   border: solid var(--testo) 2px;
   border-radius: 10px;
   color: var(--testo);
@@ -35,18 +36,20 @@ button {
   cursor: pointer;
   transition: background-color 0.2s ease, box-shadow 0.2s ease;
   user-select: none;
+  /* box-shadow: 0 0 0.5rem var(--fondale); */
 }
 
 button:active {
   background-color: var(--dettaglio);
 }
 
-button:hover {
+/* button:hover {
   box-shadow: 0 0 0.5rem var(--grigino);
-}
+} */
 
 #infoDivTopLeft {
     position: absolute;
+    color: var(--testo);
     top: 1rem;
     left: 1rem;
     pointer-events: none;
@@ -66,6 +69,38 @@ button:hover {
     top: 1rem;
     right: 1rem;
     z-index: 9999;
+}
+
+.bottonieraSotto {
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    /* background-color: red; */
+    /* border: var(--dettaglio) solid 2px;
+    border-radius: 10px; */
+    height: 3rem;
+    width: auto;
+    bottom: 1rem;
+    right: 1rem;
+    left: 1rem;
+    z-index: 200;
+    text-align: center; /* Allinea il testo orizzontalmente */
+    display: flex; /* Attiva flexbox */
+    justify-content: center; /* Centra orizzontalmente */
+    align-items: center; /* Centra verticalmente */
+}
+
+.visualizzazione {
+    height: 3rem;
+    width: 7rem;
+    border: var(--dettaglio) solid 2px;
+    color: var(--dettaglio);
+    border-radius: 10px;
+    text-align: center; /* Allinea il testo orizzontalmente */
+    display: flex; /* Attiva flexbox */
+    justify-content: center; /* Centra orizzontalmente */
+    align-items: center; /* Centra verticalmente */
+    user-select: none;
 }
 
 #helper {
