@@ -1,5 +1,5 @@
 import { goochMaterialAlpha, solidMaterial } from "./materials";
-// import { setRaycasterActive } from "./raycaster";
+import { setRaycasterActive } from "./raycaster";
 import { currentCamera, changeTheme, control, orbit, orbitOrtho, onWindowResize } from "./setup";
 
 // SWITCHES

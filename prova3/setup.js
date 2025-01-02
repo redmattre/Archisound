@@ -36,17 +36,17 @@ export function init() {
     currentCamera.position.set(5, 1.5, 5);
 
     // Lighting
-    const ambientLight = new THREE.AmbientLight(0xe7e7e7, 1);
-    scene.add(ambientLight);
+    // const ambientLight = new THREE.AmbientLight(0xe7e7e7, 1);
+    // scene.add(ambientLight);
 
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
-    directionalLight.position.set(5, 10, 7.5);
-    directionalLight.castShadow = true;
-    scene.add(directionalLight);
+    // const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
+    // directionalLight.position.set(5, 10, 7.5);
+    // directionalLight.castShadow = true;
+    // scene.add(directionalLight);
 
-    const pointLight = new THREE.PointLight(0xffffff, 1);
-    cameraPersp.add(pointLight);
-    scene.add(currentCamera);
+    // const pointLight = new THREE.PointLight(0xffffff, 1);
+    // cameraPersp.add(pointLight);
+    // scene.add(currentCamera);
 
     // Renderer
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
