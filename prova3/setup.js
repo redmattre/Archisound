@@ -13,58 +13,158 @@ export let cameraPersp, cameraOrtho, currentCamera, camera;
 let rendererBackgoundColor = 0xd6d6d6; //inizia bianco
 // let rendererBackgoundColor = 0x000000; //inizia nero
 
+const visualizzazione = document.getElementById("visualizzazione");
+
 export function init() {
+    // Scene setup
+    scene = new THREE.Scene();
+    scene.add(new THREE.GridHelper(5.5, 8, 0x888888, 0x444444));
 
-    //Scene setup
-	scene = new THREE.Scene();
-	scene.add( new THREE.GridHelper( 5.5, 8, 0x888888, 0x444444 ) );
+    // Camere
+    const aspect = window.innerWidth / window.innerHeight;
+    const frustumSize = 4;
+    cameraPersp = new THREE.PerspectiveCamera(50, aspect, 0.3, 200);
+    cameraOrtho = new THREE.OrthographicCamera(
+        -frustumSize * aspect,
+        frustumSize * aspect,
+        frustumSize,
+        -frustumSize,
+        0.3,
+        200
+    );
+    currentCamera = cameraPersp; // Default camera
+    currentCamera.position.set(5, 1.5, 5);
 
-	//Camere
-	const aspect = window.innerWidth / window.innerHeight;
-	const frustumSize = 4;
-	cameraPersp = new THREE.PerspectiveCamera( 50, aspect, 0.3, 200 );
-	cameraOrtho = new THREE.OrthographicCamera( - frustumSize * aspect, frustumSize * aspect, frustumSize, - frustumSize, 0.3, 200 );
-	currentCamera = cameraPersp; //default camera
-	currentCamera.position.set( 5, 1.5, 5 );
-
-    //Lighting
-	const ambientLight = new THREE.AmbientLight(0xe7e7e7, 1);
+    // Lighting
+    const ambientLight = new THREE.AmbientLight(0xe7e7e7, 1);
     scene.add(ambientLight);
 
-	const directionalLight = new THREE.DirectionalLight(0xffffff, 2); // Evidenzia forme
-	directionalLight.position.set(5, 10, 7.5); // Una posizione sopra e leggermente di lato
-	directionalLight.castShadow = true; // Se vuoi ombre
-	scene.add(directionalLight);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
+    directionalLight.position.set(5, 10, 7.5);
+    directionalLight.castShadow = true;
+    scene.add(directionalLight);
 
-	//luce "torcia"
-	const pointLight = new THREE.PointLight(0xffffff, 1);
-    cameraPersp.add(pointLight); //forse la luce solamente dalla perspective
-    // cameraOrtho.add(pointLight);
-	scene.add(currentCamera);
+    const pointLight = new THREE.PointLight(0xffffff, 1);
+    cameraPersp.add(pointLight);
+    scene.add(currentCamera);
 
-	//Renderer
-    renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
-    renderer.setPixelRatio( window.devicePixelRatio );
-	renderer.setSize( window.innerWidth, window.innerHeight );
-	renderer.autoClear = false;
+    // Renderer
+    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.autoClear = false;
     renderer.setClearColor(rendererBackgoundColor);
-	document.body.appendChild( renderer.domElement );
+    document.body.appendChild(renderer.domElement);
 
-    //Controlli scena prospettiva
-    orbit = new OrbitControls( cameraPersp, renderer.domElement );
-	orbit.update();
+    // Controlli scena prospettiva
+    orbit = new OrbitControls(cameraPersp, renderer.domElement);
+    orbit.update();
 
-    //Controlli scena ortogonale
-    orbitOrtho = new OrbitControls( cameraOrtho, renderer.domElement );
-	orbitOrtho.enableRotate = false;
-	orbitOrtho.enablePan = false;
-	orbitOrtho.enableZoom = true;
-	orbitOrtho.update();
+    // Controlli scena ortogonale
+    orbitOrtho = new OrbitControls(cameraOrtho, renderer.domElement);
+    orbitOrtho.enableRotate = false;
+    orbitOrtho.enablePan = true;
+    orbitOrtho.enableZoom = true;
+    orbitOrtho.update();
 
     initTransformControls();
 
-    window.addEventListener( 'resize', onWindowResize );
+    // Listener per cambiare camera
+    window.addEventListener('keydown', (event) => {
+		switch (event.key) {
+			case '1': // Tasto 1: Camera prospettica
+				currentCamera = cameraPersp;
+				orbit.enabled = true;
+				orbitOrtho.enabled = false;
+	
+				// Aggiorna i controlli per la nuova camera
+				orbit.object = currentCamera;
+				orbit.update();
+				// currentCamera.position.set(0, 5, 0); // Posizione dall'alto
+				currentCamera.lookAt(0, 0, 0); // Guarda verso il centro della scena
+				control.camera = currentCamera; // Aggiorna la camera nei c
+	
+				visualizzazione.textContent = "Prospettiva";
+				break;
+	
+			case '2': // Tasto 2: Camera ortogonale
+				currentCamera = cameraOrtho;
+				orbit.enabled = false;
+				orbitOrtho.enabled = true;
+	
+				// Aggiorna i controlli per la nuova camera
+				orbitOrtho.object = currentCamera;
+				orbitOrtho.update();
+				currentCamera.position.set(0, 5, 0); // Posizione dall'alto
+				currentCamera.lookAt(0, 0, 0); // Guarda verso il centro della scena
+				orbitOrtho.target.set(0, 0, 0);
+				control.camera = currentCamera; // Aggiorna la camera nei c
+	
+				visualizzazione.textContent = "Pianta";
+				break;
+			case '3': // Tasto 2: Camera ortogonale
+				currentCamera = cameraOrtho;
+				orbit.enabled = false;
+				orbitOrtho.enabled = true;
+
+				// Aggiorna i controlli per la nuova camera
+				orbitOrtho.object = currentCamera;
+				orbitOrtho.update();
+				currentCamera.position.set(0, 0, 5); // Posizione da di fronte
+				currentCamera.lookAt(0, 0, 0); // Guarda verso il centro della scena
+				orbitOrtho.target.set(0, 0, 0);
+				control.camera = currentCamera; // Aggiorna la camera nei c
+
+				visualizzazione.textContent = "Fronte";
+				break;
+			case '4': // Tasto 2: Camera ortogonale
+				currentCamera = cameraOrtho;
+				orbit.enabled = false;
+				orbitOrtho.enabled = true;
+
+				// Aggiorna i controlli per la nuova camera
+				orbitOrtho.object = currentCamera;
+				orbitOrtho.update();
+				currentCamera.position.set(5, 0, 0); // Posizione da destra
+				currentCamera.lookAt(0, 0, 0); // Guarda verso il centro della scena
+				orbitOrtho.target.set(0, 0, 0);
+				control.camera = currentCamera; // Aggiorna la camera nei c
+
+				visualizzazione.textContent = "Lato";
+				break;
+		}
+	
+		// Aggiungi la nuova camera alla scena
+		scene.add(currentCamera);
+	
+		// Forza il renderer a utilizzare la nuova camera
+		renderer.render(scene, currentCamera);
+	});
+
+	const canvas = renderer.domElement;
+
+	canvas.addEventListener('dblclick', function () {
+		const currentZoom = currentCamera.zoom;
+
+		if (currentCamera === cameraPersp) {
+			currentCamera.position.set(5, 1.5, 5); // Posizione di default
+			currentCamera.lookAt(0, 0, 0);
+		} else if (currentCamera === cameraOrtho) {
+			
+			//nient
+		}
+
+		currentCamera.zoom = currentZoom;
+		currentCamera.updateProjectionMatrix();
+
+		orbit.target.set(0, 0, 0); // Reimposta il target al centro
+		orbit.update();            // Aggiorna i controlli Orbit
+	});
+
+    window.addEventListener('resize', onWindowResize);
 }
+
+
 
 export function changeTheme(state) {
     var root = document.documentElement;
@@ -198,7 +298,7 @@ function initTransformControls() {
 	scene.add( gizmo );
 }
 
-function onWindowResize() {
+export function onWindowResize() {
 
 	const aspect = window.innerWidth / window.innerHeight;
 
