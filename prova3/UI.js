@@ -1,6 +1,7 @@
+import * as THREE from 'three';
 import { goochMaterialAlpha, solidMaterial } from "./materials";
 import { setRaycasterActive } from "./raycaster";
-import { currentCamera, changeTheme, control, orbit, orbitOrtho, onWindowResize } from "./setup";
+import { currentCamera, changeTheme, control, orbit, orbitOrtho, onWindowResize, ssuper, scene, renderer, changeGrid } from "./setup";
 
 // SWITCHES
 document.querySelectorAll('.switch input').forEach((checkbox) => {
@@ -11,7 +12,7 @@ document.querySelectorAll('.switch input').forEach((checkbox) => {
 	});
 });
 
-let architectureTransparency = 1.;
+let architectureTransparency = 0.7;
 
 function toggleSwitch(id, state) {
 	switch (id) {
@@ -21,27 +22,104 @@ function toggleSwitch(id, state) {
 
         case 'transparencyA':
             if (state) {
-                goochMaterialAlpha.uniforms.opacity.value = 0.5;
-                architectureTransparency = 0.5;
+                goochMaterialAlpha.uniforms.opacity.value = architectureTransparency;
+                // architectureTransparency = 0.5;
+                // goochMaterialAlpha.transparent = true;
+                isTransparent = true;
             } else {
                 goochMaterialAlpha.uniforms.opacity.value = 1.;
-                architectureTransparency = 1.;
+                // architectureTransparency = 1.;
+                // goochMaterialAlpha.transparent = false;
+                isTransparent = false;
+            }
+            
+            break;
+        case 'serioso':
+            if (state) {
+                goochMaterialAlpha.uniforms.coolColor.value = new THREE.Color(0x000080);
+                goochMaterialAlpha.uniforms.warmColor.value = new THREE.Color(0xF5F5DC);
+            } else {
+                goochMaterialAlpha.uniforms.coolColor.value = new THREE.Color(0x0077ff);
+                goochMaterialAlpha.uniforms.warmColor.value = new THREE.Color(0xffaa00);
             }
             
             break;
         case 'theme':
             changeTheme(state);
             break;
-
+        case 'grid':
+            ssuper.visible = state;
+            break;
 		default:
 			console.log('Switch non riconosciuto');
 	}
 }
 
+// SLIDERS
+
+document.querySelectorAll('.multitoggle input').forEach((range) => {
+	range.addEventListener('change', (event) => {
+		const valore = parseInt(event.target.value); // Converte in numero
+		const sliderId = event.target.getAttribute('data-id');
+		toggleSlider(sliderId, valore);
+	});
+});
+
+function toggleSlider(id, val) {
+    switch (id) {
+        case 'gridsize':
+            switch (val) {
+                case 1:
+                    changeGrid(5, 8);
+                    break;
+                case 2:
+                    changeGrid(10, 16);
+                    break;
+                case 3:
+                    changeGrid(20, 32);
+                    break;
+                case 4:
+                    changeGrid(40, 64);
+                    break;
+                default:
+                    console.log("Valore non riconosciuto.");
+                    return;
+            }
+            break;
+        case 'transArchVal':
+            switch (val) {
+                case 1:
+                    architectureTransparency = 0.;
+                    if (isTransparent) {goochMaterialAlpha.uniforms.opacity.value = 0.;}
+                    break;
+                case 2:
+                    architectureTransparency = 0.2;
+                    if (isTransparent) {goochMaterialAlpha.uniforms.opacity.value = 0.2;}
+                    break;
+                case 3:
+                    architectureTransparency = 0.5;
+                    if (isTransparent) {goochMaterialAlpha.uniforms.opacity.value = 0.5;}
+                    break;
+                case 4:
+                    architectureTransparency = 0.7;
+                    if (isTransparent) {goochMaterialAlpha.uniforms.opacity.value = 0.7;}
+                    break;
+                default:
+                    console.log("Valore non riconosciuto.");
+                    return;
+            }
+            break;
+
+        default:
+            console.log("ID non riconosciuto.");
+    }
+}
+
 // BUTTONS
 
 let counter = 1; // Definito al di fuori per mantenere lo stato tra i clic
-
+let isTransparent = false;
+let isVisible = false;
 
 document.getElementById('addArch').addEventListener('click', () => {
     if (counter === 0) {
@@ -50,14 +128,20 @@ document.getElementById('addArch').addEventListener('click', () => {
 
         // Nasconde il materiale solidMaterial
         solidMaterial.visible = false;
+        isVisible = false;
 
         counter = 1; // Cambia lo stato per il prossimo clic
     } else {
         // Cambia opacità di goochMaterialAlpha
-        goochMaterialAlpha.uniforms.opacity.value = architectureTransparency;
+        if (isTransparent) {
+            goochMaterialAlpha.uniforms.opacity.value = architectureTransparency;
+        } else {
+            goochMaterialAlpha.uniforms.opacity.value = 1;
+        }
 
         // Mostra il materiale solidMaterial
         solidMaterial.visible = true;
+        isVisible = true;
 
         counter = 0; // Cambia lo stato per il prossimo clic
     }

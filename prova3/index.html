@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="navbar.css">
+    <link rel="stylesheet" href="stepSlider.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Archisound</title>
   </head>
@@ -30,6 +31,14 @@
 
         <div class="switch-wrapper">
 					<label class="switch">
+						<input type="checkbox" data-id="serioso"/>
+						<div></div>
+					</label>
+					<span class="switch-label">Tema Muto</span>
+				</div>
+
+        <div class="switch-wrapper">
+					<label class="switch">
 						<input type="checkbox" data-id="lock"/>
 						<div></div>
 					</label>
@@ -43,16 +52,27 @@
 					</label>
 					<span class="switch-label">Super Superficie</span>
 				</div>
-
+        <div class="input-wrapper">
+          <label class="multitoggle">
+            <input type='range' min='1' max='4' value='1' step='1' class="n n4" data-id="gridsize"/>
+          </label>
+        </div>
+      
         <div>Architettura</div>
 				<div class="switch-wrapper">
-				<label class="switch">
-					<input type="checkbox" data-id="transparencyA"/>
-					<div></div>
-				</label>
-				<span class="switch-label">Trasparenza</span>
+          <label class="switch">
+            <input type="checkbox" data-id="transparencyA"/>
+            <div></div>
+          </label>
+          <span class="switch-label">Trasparenza</span>
 				</div>
 
+        <label class="multitoggle">
+          <div class="input-wrapper">
+            <input type='range' min='1' max='4' value='4' step='1' class="n n4" data-id="transArchVal"/>
+          </div>
+        </label>
+      
 				<button id="helper">
 					?
 					<div id="helperCard">

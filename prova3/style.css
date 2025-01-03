@@ -121,7 +121,7 @@ button:active {
 #helperCard {
   background-color: var(--fondale);
   border: solid var(--dettaglio) 2px;
-  border-radius: 10px;
+  border-radius: 8px;
   color: var(--dettaglio);
   padding: 0.5rem 1rem;
   opacity: 0;

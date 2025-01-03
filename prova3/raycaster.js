@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { renderer, objToBeDetected, currentCamera, scene } from './setup';
+import { renderer, objToBeDetected, currentCamera, scene, control } from './setup';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { OutlinePass } from 'three/addons/postprocessing/OutlinePass.js';
@@ -24,7 +24,7 @@ let outlineObject = null;
 
 // Intervallo per limitare la frequenza degli aggiornamenti
 let lastUpdateTime = 0;
-const updateInterval = 100; // Aggiorna ogni 100ms
+const updateInterval = 50; // Aggiorna ogni 100ms
 
 // Inizializza il composer e l'outline pass
 function initPostProcessing() {
@@ -56,6 +56,8 @@ renderer.domElement.addEventListener('mousemove', (event) => {
     if (now - lastUpdateTime < updateInterval) return;
     lastUpdateTime = now;
 
+    // console.log('objToBeDetected:', objToBeDetected.map(obj => obj.name || obj.id));
+
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
@@ -77,6 +79,14 @@ renderer.domElement.addEventListener('mousemove', (event) => {
             updateInfoText(firstNonDashedObject.name || 'Oggetto non trattato');
             outlineObject = firstNonDashedObject;
             outlinePass.selectedObjects = [outlineObject];
+            window.addEventListener('keydown', function(event) {
+              if (event.key === 'g' || event.key === 's' || event.key === 'r') {
+                control.attach(outlineObject);
+                outlineObject = null;
+                outlinePass.selectedObjects = [];
+                isRaycasterActive = false;
+              }
+            });
         } else {
             const dashedObject = intersects[0].object;
     
@@ -89,9 +99,14 @@ renderer.domElement.addEventListener('mousemove', (event) => {
                     // Aggiorna l'outline per la mesh invisibile
                     outlineObject = invisibleMesh;
                     outlinePass.selectedObjects = [outlineObject];
-    
-                    // Rendi visibile la mesh (opzionale, se necessario)
-                    // invisibleMesh.material.visible = true;
+                    window.addEventListener('keydown', function(event) {
+                      if (event.key === 'g' || event.key === 's' || event.key === 'r') {
+                        control.attach(parentGroup);
+                        outlineObject = null;
+                        outlinePass.selectedObjects = [];
+                        isRaycasterActive = false;
+                      }
+                    });
                 }
             }
     
@@ -139,6 +154,11 @@ window.addEventListener('keydown', (event) => {
         case '4': // Tasto 2: Camera ortogonale
             initPostProcessing();
             animate();
+            break;
+        case 'Escape':
+            if (!isRaycasterActive) {
+                isRaycasterActive = true;
+            } 
             break;
     }
 

@@ -7,7 +7,7 @@ import { LineSegments2 } from 'three/addons/lines/LineSegments2.js';
 import { standardMat, phongMat, dashedLineMat, dashedMaterial, solidMaterial, goochMaterial } from './materials.js';
 import { loadObj } from './loaders.js';
 
-export let scene, renderer, control, orbit, orbitOrtho;
+export let scene, ssuper, renderer, control, orbit, orbitOrtho;
 export let objToBeDetected = [];
 export let cameraPersp, cameraOrtho, currentCamera, camera;
 let rendererBackgoundColor = 0xd6d6d6; //inizia bianco
@@ -15,10 +15,17 @@ let rendererBackgoundColor = 0xd6d6d6; //inizia bianco
 
 const visualizzazione = document.getElementById("visualizzazione");
 
+export function changeGrid(size, divisions) {
+	scene.remove(ssuper);
+	ssuper = new THREE.GridHelper(size, divisions, 0x888888, 0x888888)
+	scene.add(ssuper);
+}
+
 export function init() {
     // Scene setup
+	ssuper = new THREE.GridHelper(5, 8, 0x888888, 0x888888)
     scene = new THREE.Scene();
-    scene.add(new THREE.GridHelper(5.5, 8, 0x888888, 0x444444));
+    scene.add(ssuper);
 
     // Camere
     const aspect = window.innerWidth / window.innerHeight;
@@ -135,10 +142,47 @@ export function init() {
 		}
 	
 		// Aggiungi la nuova camera alla scena
-		scene.add(currentCamera);
+		// scene.add(currentCamera);
 	
 		// Forza il renderer a utilizzare la nuova camera
 		renderer.render(scene, currentCamera);
+	});
+
+	window.addEventListener('keydown', function(event) {
+		switch (event.key) {
+			case 'q':
+				control.setSpace(control.space === 'local' ? 'world' : 'local');
+				break;
+	
+			// case 'Shift':
+			//     control.setTranslationSnap(1);
+			//     control.setRotationSnap(THREE.MathUtils.degToRad(15));
+			//     control.setScaleSnap(0.25);
+			//     break;
+			case 'g':
+				control.setMode('translate');
+				// addControlsOnClick();
+				break;
+	
+			case 'r':
+				control.setMode('rotate');
+				// addControlsOnClick();
+				break;
+	
+			case 's':
+				control.setMode('scale');
+				// addControlsOnClick();
+				break;
+			case 'Escape':
+				control.detach();  // Disattiva TransformControls
+				orbit.enabled = true; // Riabilita i controlli Orbit
+				//eventualmente e
+				break;
+			case 'Backspace', 'x':
+				deleteObjectOnClick();
+				break;
+				
+		}
 	});
 
 	const canvas = renderer.domElement;
@@ -176,6 +220,7 @@ export function changeTheme(state) {
         root.style.setProperty('--testo', 'var(--fondaleBianco)');
         root.style.setProperty('--dettaglio', 'var(--grigino)');
 		dashedMaterial.color.set('yellow');
+		solidMaterial.color.set(0xd6d6d6);
     } else {
         rendererBackgoundColor = 0xd6d6d6;
         renderer.setClearColor(rendererBackgoundColor);
@@ -184,6 +229,7 @@ export function changeTheme(state) {
         root.style.setProperty('--dettaglio', 'var(--grigio)');
 		// dashedMaterial.color.set(0x343434);
 		dashedMaterial.color.set('yellow');
+		solidMaterial.color.set("black");
     }
 }
 

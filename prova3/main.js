@@ -10,4 +10,5 @@ debugGeo();
 // debugGeo1();
 debugGeo2();
 // LineaContinuaObj();
+// loadObjWithDashedEdges('provaarch1.obj', solidMaterial);
 loadObjWithDashedEdges('parkinglot.obj', solidMaterial);
