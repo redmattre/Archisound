@@ -14,6 +14,8 @@ let rendererBackgoundColor = 0xd6d6d6; //inizia bianco
 // let rendererBackgoundColor = 0x000000; //inizia nero
 
 const visualizzazione = document.getElementById("visualizzazione");
+const stato = document.getElementById("infoDivBottomLeft");
+let transfo = false;
 
 export function changeGrid(size, divisions) {
 	scene.remove(ssuper);
@@ -151,7 +153,9 @@ export function init() {
 	window.addEventListener('keydown', function(event) {
 		switch (event.key) {
 			case 'q':
+				transfo = !transfo;
 				control.setSpace(control.space === 'local' ? 'world' : 'local');
+				updateStato1();
 				break;
 	
 			// case 'Shift':
@@ -161,22 +165,22 @@ export function init() {
 			//     break;
 			case 'g':
 				control.setMode('translate');
-				// addControlsOnClick();
+				updateStato('spostamento');
 				break;
 	
 			case 'r':
 				control.setMode('rotate');
-				// addControlsOnClick();
+				updateStato('rotazione');
 				break;
 	
 			case 's':
 				control.setMode('scale');
-				// addControlsOnClick();
+				updateStato('scala');
 				break;
 			case 'Escape':
-				control.detach();  // Disattiva TransformControls
-				orbit.enabled = true; // Riabilita i controlli Orbit
-				//eventualmente e
+				control.detach();
+				orbit.enabled = true;
+				updateStato3();
 				break;
 			case 'Backspace', 'x':
 				deleteObjectOnClick();
@@ -208,7 +212,31 @@ export function init() {
     window.addEventListener('resize', onWindowResize);
 }
 
+let miao;
+let tipo;
 
+function updateStato(type) {
+	tipo = type;
+	if (transfo) {
+		miao = "locale";
+	} else {
+		miao = "globale";
+	}
+	stato.textContent = type + " " + miao;
+}
+
+function updateStato1() {
+	if (transfo) {
+		miao = "locale";
+	} else {
+		miao = "globale";
+	}
+	stato.textContent = tipo + " " + miao;
+}
+
+function updateStato3() {
+	stato.textContent = "---";
+}
 
 export function changeTheme(state) {
     var root = document.documentElement;

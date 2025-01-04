@@ -39,7 +39,7 @@ export let dashedMaterial = new LineMaterial({
     // color: 0xf0ed5d,
     // color: 0x343434,
     color: 'yellow',
-    linewidth: 0.015,
+    linewidth: 0.025,
     dashed: true,
     dashSize: 0.07,
     gapSize: 0.04,

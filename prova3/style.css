@@ -59,6 +59,18 @@ button:active {
              1px 1px var(--fondale), -1px -1px var(--fondale), 1px -1px var(--fondale), -1px 1px var(--fondale);
 }
 
+#infoDivBottomLeft {
+    position: absolute;
+    color: var(--testo);
+    bottom: 1rem;
+    left: 1rem;
+    pointer-events: none;
+    user-select: none;
+    z-index: 500;
+    text-shadow: 2px 0 var(--fondale), -2px 0 var(--fondale), 0 2px var(--fondale), 0 -2px var(--fondale),
+             1px 1px var(--fondale), -1px -1px var(--fondale), 1px -1px var(--fondale), -1px 1px var(--fondale);
+}
+
 .bottonieraDestra {
     padding: 0;
     margin: 0;

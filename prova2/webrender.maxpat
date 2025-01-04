@@ -29,7 +29,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 706.0, 26.0, 150.0, 20.0 ],
+					"patching_rect" : [ 712.0, 25.0, 150.0, 20.0 ],
 					"text" : "carica setup"
 				}
 
@@ -389,7 +389,7 @@
 
 							}
  ],
-						"originid" : "pat-939"
+						"originid" : "pat-8"
 					}
 ,
 					"patching_rect" : [ 675.0, 53.0, 76.0, 22.0 ],
@@ -523,7 +523,7 @@
 
 							}
  ],
-						"originid" : "pat-927"
+						"originid" : "pat-10"
 					}
 ,
 					"patching_rect" : [ 600.0, 53.0, 58.0, 22.0 ],
@@ -578,9 +578,8 @@
 						}
 ,
 						"classnamespace" : "box",
-						"rect" : [ 34.0, 68.0, 1284.0, 776.0 ],
+						"rect" : [ 76.0, 97.0, 1020.0, 747.0 ],
 						"gridsize" : [ 15.0, 15.0 ],
-						"visible" : 1,
 						"boxes" : [ 							{
 								"box" : 								{
 									"id" : "obj-26",
@@ -1160,7 +1159,7 @@
 
 							}
  ],
-						"originid" : "pat-919"
+						"originid" : "pat-12"
 					}
 ,
 					"patching_rect" : [ 481.0, 53.0, 99.0, 22.0 ],
@@ -2152,7 +2151,7 @@
 
 							}
  ],
-						"originid" : "pat-921"
+						"originid" : "pat-16"
 					}
 ,
 					"patching_rect" : [ 390.0, 54.0, 75.0, 22.0 ],
@@ -2283,7 +2282,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 16.0, 719.0, 242.0, 22.0 ],
-					"text" : "title \"three.js webgl - transform controls\""
+					"text" : "title Archisound"
 				}
 
 			}
@@ -2532,7 +2531,7 @@
 
 			}
  ],
-		"originid" : "pat-917",
+		"originid" : "pat-6",
 		"dependency_cache" : [  ],
 		"autosave" : 0
 	}

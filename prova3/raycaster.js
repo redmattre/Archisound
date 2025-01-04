@@ -81,7 +81,7 @@ renderer.domElement.addEventListener('mousemove', (event) => {
             outlinePass.selectedObjects = [outlineObject];
             window.addEventListener('keydown', function(event) {
               if (event.key === 'g' || event.key === 's' || event.key === 'r') {
-                control.attach(outlineObject);
+                control.attach(firstNonDashedObject);
                 outlineObject = null;
                 outlinePass.selectedObjects = [];
                 isRaycasterActive = false;
