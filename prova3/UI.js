@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { goochMaterialAlpha, solidMaterial } from "./materials";
+import { dashedMaterial, dashedMaterialB, dashedMaterialC, dashedMaterialD, goochMaterialAlpha, solidMaterial } from "./materials";
 import { setRaycasterActive } from "./raycaster";
 import { currentCamera, changeTheme, control, orbit, orbitOrtho, onWindowResize, ssuper, scene, renderer, changeGrid } from "./setup";
 
@@ -50,6 +50,18 @@ function toggleSwitch(id, state) {
         case 'grid':
             ssuper.visible = state;
             break;
+        case 'zoneVisibility':
+            if (state) {
+                dashedMaterial.visible = true;
+                dashedMaterialB.visible = true;
+                dashedMaterialC.visible = true;
+                dashedMaterialD.visible = true;
+            } else {
+                dashedMaterial.visible = false;
+                dashedMaterialB.visible = false;
+                dashedMaterialC.visible = false;
+                dashedMaterialD.visible = false;
+            }
 		default:
 			console.log('Switch non riconosciuto');
 	}
@@ -121,28 +133,21 @@ let counter = 1; // Definito al di fuori per mantenere lo stato tra i clic
 let isTransparent = false;
 let isVisible = false;
 
-document.getElementById('addArch').addEventListener('click', () => {
-    if (counter === 0) {
-        // Cambia opacità di goochMaterialAlpha
+document.getElementById('addArch').addEventListener('click', (event) => {
+    // Recupera lo stato del pulsante dal suo attributo data
+    const isActive = event.target.getAttribute('data-active') === 'true';
+
+    if (isActive) {
+        // Disattiva
         goochMaterialAlpha.uniforms.opacity.value = 0;
-
-        // Nasconde il materiale solidMaterial
         solidMaterial.visible = false;
-        isVisible = false;
 
-        counter = 1; // Cambia lo stato per il prossimo clic
+        event.target.setAttribute('data-active', 'false'); // Aggiorna stato
     } else {
-        // Cambia opacità di goochMaterialAlpha
-        if (isTransparent) {
-            goochMaterialAlpha.uniforms.opacity.value = architectureTransparency;
-        } else {
-            goochMaterialAlpha.uniforms.opacity.value = 1;
-        }
-
-        // Mostra il materiale solidMaterial
+        // Attiva
+        goochMaterialAlpha.uniforms.opacity.value = isTransparent ? architectureTransparency : 1;
         solidMaterial.visible = true;
-        isVisible = true;
 
-        counter = 0; // Cambia lo stato per il prossimo clic
+        event.target.setAttribute('data-active', 'true'); // Aggiorna stato
     }
 });

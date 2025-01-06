@@ -6,7 +6,7 @@ import { objToBeDetected, scene } from './setup.js';
 import * as THREE from 'three';
 import { goochMaterial, goochMaterialAlpha, normalMat, phongMat, standardMat } from './materials.js';
 
-export function loadObj(filename, material) {
+export function loadObj(filename, name, material, scaleFactor, x, y, z) {
     const loader = new OBJLoader();
 
     loader.load(
@@ -15,11 +15,16 @@ export function loadObj(filename, material) {
             object.traverse(function (child) {
                 if (child.isMesh) {
                     child.material = material; // Applica il materiale
+                    child.name = `${name}`;
                 }
             });
 
             // Aggiungi l'oggetto alla scena
+            object.scale.multiplyScalar(scaleFactor);
+            object.position.set(x, z, y);
+            // object.name = `${name}`;
             scene.add(object);
+            objToBeDetected.push(object);
 
             console.log(`Loaded ${filename} successfully.`);
         },

@@ -87,6 +87,7 @@ button:active {
     padding: 0;
     margin: 0;
     position: absolute;
+    pointer-events: none;
     /* background-color: red; */
     /* border: var(--dettaglio) solid 2px;
     border-radius: 10px; */

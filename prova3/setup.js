@@ -247,7 +247,7 @@ export function changeTheme(state) {
         root.style.setProperty('--fondale', 'var(--fondaleNero)');
         root.style.setProperty('--testo', 'var(--fondaleBianco)');
         root.style.setProperty('--dettaglio', 'var(--grigino)');
-		dashedMaterial.color.set('yellow');
+		// dashedMaterial.color.set('yellow');
 		solidMaterial.color.set(0xd6d6d6);
     } else {
         rendererBackgoundColor = 0xd6d6d6;
@@ -256,7 +256,7 @@ export function changeTheme(state) {
         root.style.setProperty('--testo', 'var(--fondaleNero)');
         root.style.setProperty('--dettaglio', 'var(--grigio)');
 		// dashedMaterial.color.set(0x343434);
-		dashedMaterial.color.set('yellow');
+		// dashedMaterial.color.set('yellow');
 		solidMaterial.color.set("black");
     }
 }
@@ -292,44 +292,6 @@ export function debugGeo1() {
     scene.add(line);
     objToBeDetected.push(line);
 }
-
-export const zonaWIFI = new THREE.Group();
-
-export function debugGeo2() {
-    const geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
-    const edges = new THREE.EdgesGeometry(geometry); // Estrai gli edge del cubo
-
-    // LineSegmentsGeometry compatibile con Line2
-    const lineGeometry = new LineSegmentsGeometry().fromEdgesGeometry(edges);
-
-    // Crea una LineSegments2 con il materiale dashed
-    const line = new LineSegments2(lineGeometry, dashedMaterial);
-
-    // Assicurati di abilitare il calcolo delle distanze (è richiesto per il dashed)
-    line.computeLineDistances();
-	line.name = `prima zona`;
-	line.isDashed = true;
-
-	//parte della mesh
-	const material = new THREE.MeshStandardMaterial({
-		color: new THREE.Color(0xf25d00),
-		transparent: true,
-		depthTest: true,
-		wireframe: false,
-		opacity: 0.,
-		visible: true
-	});;
-	const mesh = new THREE.Mesh(geometry, material);
-
-    // scene.add(line);
-	// scene.add(mesh);
-	zonaWIFI.add(mesh);
-	zonaWIFI.add(line);
-	zonaWIFI.position.set(0, 0.5, 0);
-	scene.add(zonaWIFI);
-	objToBeDetected.push(line);
-}
-
 
 export function LineaContinuaObj() {
     const geometry = new THREE.BoxGeometry(1, 1, 1); 

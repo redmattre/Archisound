@@ -21,20 +21,25 @@
 			<div class="container">
 
         <div>Generali</div>
+        <div class="switch-wrapper">
+					<label class="switch">
+						<input type="checkbox" data-id="gridSnapState" checked/>
+						<div></div>
+					</label>
+					<span class="switch-label">Aggancio Griglia</span>
+				</div>
+        <div class="input-wrapper">
+          <label class="multitoggle">
+            <input type='range' min='1' max='3' value='1' step='1' class="n n3" data-id="snapDefinition"/>
+          </label>
+        </div>
+
 				<div class="switch-wrapper">
 					<label class="switch">
 						<input type="checkbox" data-id="theme"/>
 						<div></div>
 					</label>
 					<span class="switch-label">Tema Eco</span>
-				</div>
-
-        <div class="switch-wrapper">
-					<label class="switch">
-						<input type="checkbox" data-id="serioso"/>
-						<div></div>
-					</label>
-					<span class="switch-label">Tema Muto</span>
 				</div>
 
         <div class="switch-wrapper">
@@ -59,6 +64,14 @@
         </div>
       
         <div>Architettura</div>
+        <div class="switch-wrapper">
+					<label class="switch">
+						<input type="checkbox" data-id="serioso" checked/>
+						<div></div>
+					</label>
+					<span class="switch-label">Tema Muto</span>
+				</div>
+
 				<div class="switch-wrapper">
           <label class="switch">
             <input type="checkbox" data-id="transparencyA"/>
@@ -72,6 +85,33 @@
             <input type='range' min='1' max='4' value='4' step='1' class="n n4" data-id="transArchVal"/>
           </div>
         </label>
+
+        <div>Zone</div>
+				<div class="switch-wrapper">
+					<label class="switch">
+						<input type="checkbox" data-id="zoneVisibility" checked/>
+						<div></div>
+					</label>
+					<span class="switch-label">⏿</span>
+				</div>
+
+        <div>Altoparlanti</div>
+				<div class="switch-wrapper">
+					<label class="switch">
+						<input type="checkbox" data-id="speakersVisibility" checked/>
+						<div></div>
+					</label>
+					<span class="switch-label">⏿</span>
+				</div>
+
+        <div>Corone</div>
+				<div class="switch-wrapper">
+					<label class="switch">
+						<input type="checkbox" data-id="speakersVisibility" checked/>
+						<div></div>
+					</label>
+					<span class="switch-label">⏿</span>
+				</div>
       
 				<button id="helper">
 					?
@@ -92,7 +132,7 @@
 		</div>
 
     <div id="infoDivTopLeft">---</div>
-    <div id="infoDivBottomLeft">spenta - rotazione locale</div>
+    <div id="infoDivBottomLeft">---</div>
     
     <div class="bottonieraDestra">
       <div id="nav-icon3">
@@ -101,9 +141,9 @@
         <span></span>
         <span></span>
       </div>
-      <button id="addCube">H</button>
-      <button id="addCube">C</button>
-      <button id="addSphere">S</button>
+      <button id="addHalo">H</button>
+      <!-- <button id="addCube">C</button> -->
+      <!-- <button id="addSphere">S</button> -->
       <button id="addCone">C</button>
       <button id="addArch">A</button>
       <button id="addZone">Z</button>
@@ -116,5 +156,7 @@
     <script type="module" src="loaders.js"></script>
     <script type="module" src="raycaster.js"></script>
     <script type="module" src="UI.js"></script>
+    <script type="module" src="addgeometries.js"></script>
+    <script type="module" src="max.js"></script>
   </body>
 </html>
