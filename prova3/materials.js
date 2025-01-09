@@ -62,7 +62,8 @@ export let dashedMaterialB = new LineMaterial({
 export let dashedMaterialC = new LineMaterial({
     // color: 0xf0ed5d,
     // color: 0x343434,
-    color: 0x497DC4,
+    // color: 0x497DC4,
+    color: 0x7c80d2,
     linewidth: 0.025,
     dashed: true,
     dashSize: 0.07,
@@ -74,7 +75,7 @@ export let dashedMaterialC = new LineMaterial({
 export let dashedMaterialD = new LineMaterial({
     // color: 0xf0ed5d,
     // color: 0x343434,
-    color: 0x326C69,
+    color: 0x469793,
     linewidth: 0.025,
     dashed: true,
     dashSize: 0.07,
@@ -197,6 +198,57 @@ export let goochMaterialSp = new THREE.ShaderMaterial({
         warmColor: { value: new THREE.Color(0xf8f6f1) }, 
         // coolColor: { value: new THREE.Color(0x0077ff) }, // cool
         // warmColor: { value: new THREE.Color(0xffaa00) }, 
+        surfaceColor: { value: new THREE.Color(0xffffff) }, // Colore base
+    },
+    vertexShader: `
+        varying vec3 vNormal;
+        varying vec3 vPosition;
+
+        void main() {
+            vNormal = normalize(normalMatrix * normal);
+            vPosition = (modelViewMatrix * vec4(position, 1.0)).xyz;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+    `,
+    fragmentShader: `
+        uniform vec3 lightDirection;
+        uniform vec3 coolColor;
+        uniform vec3 warmColor;
+        uniform vec3 surfaceColor;
+
+        varying vec3 vNormal;
+        varying vec3 vPosition;
+
+        void main() {
+            // Calcola l'intensità della luce
+            vec3 N = normalize(vNormal);
+            vec3 L = normalize(lightDirection);
+
+            // Intensity tra 0 e 1
+            float intensity = dot(N, L) * 0.5 + 0.5;
+
+            // Interpolazione tra colori freddo e caldo
+            vec3 goochColor = mix(coolColor, warmColor, intensity);
+
+            // Combina con il colore della superficie
+            vec3 finalColor = surfaceColor * goochColor;
+
+            gl_FragColor = vec4(finalColor, 1.0); // Colore finale
+        }
+    `,
+});
+
+export let goochMaterialArrow = new THREE.ShaderMaterial({
+    uniforms: {
+        lightDirection: { value: new THREE.Vector3(1, 1, 1).normalize() },
+        // coolColor: { value: new THREE.Color(0x292520) }, // clay
+        // warmColor: { value: new THREE.Color(0xffebcc) }, 
+        // coolColor: { value: new THREE.Color(0x0077ff) }, // cool
+        // warmColor: { value: new THREE.Color(0xffaa00) }, 
+        // coolColor: { value: new THREE.Color(0xf0644d) }, // metal
+        // warmColor: { value: new THREE.Color(0xC04F3D) }, //
+        coolColor: { value: new THREE.Color(0x303030) }, // metal
+        warmColor: { value: new THREE.Color(0x000000) }, //
         surfaceColor: { value: new THREE.Color(0xffffff) }, // Colore base
     },
     vertexShader: `

@@ -4,7 +4,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { TransformControls } from 'three/addons/controls/TransformControls.js';
 import { LineSegmentsGeometry } from 'three/addons/lines/LineSegmentsGeometry.js';
 import { LineSegments2 } from 'three/addons/lines/LineSegments2.js';
-import { standardMat, phongMat, dashedLineMat, dashedMaterial, solidMaterial, goochMaterial } from './materials.js';
+import { standardMat, phongMat, dashedLineMat, dashedMaterial, solidMaterial, goochMaterial, goochMaterialArrow } from './materials.js';
 import { loadObj } from './loaders.js';
 
 export let scene, ssuper, renderer, control, orbit, orbitOrtho;
@@ -45,17 +45,17 @@ export function init() {
     currentCamera.position.set(5, 1.5, 5);
 
     // Lighting
-    // const ambientLight = new THREE.AmbientLight(0xe7e7e7, 1);
-    // scene.add(ambientLight);
+    const ambientLight = new THREE.AmbientLight(0xe7e7e7, 1);
+    scene.add(ambientLight);
 
-    // const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
-    // directionalLight.position.set(5, 10, 7.5);
-    // directionalLight.castShadow = true;
-    // scene.add(directionalLight);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
+    directionalLight.position.set(5, 10, 7.5);
+    directionalLight.castShadow = true;
+    scene.add(directionalLight);
 
-    // const pointLight = new THREE.PointLight(0xffffff, 1);
-    // cameraPersp.add(pointLight);
-    // scene.add(currentCamera);
+    const pointLight = new THREE.PointLight(0xffffff, 1);
+    cameraPersp.add(pointLight);
+    scene.add(currentCamera);
 
     // Renderer
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -249,6 +249,8 @@ export function changeTheme(state) {
         root.style.setProperty('--dettaglio', 'var(--grigino)');
 		// dashedMaterial.color.set('yellow');
 		solidMaterial.color.set(0xd6d6d6);
+		goochMaterialArrow.uniforms.coolColor.value = new THREE.Color(0xd6d6d6);
+		goochMaterialArrow.uniforms.warmColor.value = new THREE.Color(0xe8e8e8);
     } else {
         rendererBackgoundColor = 0xd6d6d6;
         renderer.setClearColor(rendererBackgoundColor);
@@ -258,6 +260,8 @@ export function changeTheme(state) {
 		// dashedMaterial.color.set(0x343434);
 		// dashedMaterial.color.set('yellow');
 		solidMaterial.color.set("black");
+		goochMaterialArrow.uniforms.coolColor.value = new THREE.Color(0x303030);
+		goochMaterialArrow.uniforms.coolColor.value = new THREE.Color(0x000000);
     }
 }
 
@@ -266,55 +270,76 @@ export function render() {
 	requestAnimationFrame(render);
 }
 
-export function debugGeo() {
-    const geometry = new THREE.TorusKnotGeometry(1, 0.3, 256, 32);
-    // const geometry = new THREE.BoxGeometry(0.2,0.2,0.2);
-	// const geometry = new THREE.SphereGeometry;
-    const material = goochMaterial;
-    const mesh = new THREE.Mesh(geometry, material);
-	mesh.scale.set(0.25, 0.24, 0.25);
-	mesh.name = `debug-${scene.children.length}`
-	mesh.isDashed = false;
-	mesh.position.set(0, 0.44, 0);
-    // control.attach(mesh);
-    scene.add(mesh);
-	objToBeDetected.push(mesh);
-}
+// export function debugGeo() {
+//     const geometry = new THREE.TorusKnotGeometry(1, 0.3, 256, 32);
+//     // const geometry = new THREE.BoxGeometry(0.2,0.2,0.2);
+// 	// const geometry = new THREE.SphereGeometry;
+//     const material = goochMaterial;
+//     const mesh = new THREE.Mesh(geometry, material);
+// 	mesh.scale.set(0.25, 0.24, 0.25);
+// 	mesh.name = `debug-${scene.children.length}`
+// 	mesh.isDashed = false;
+// 	mesh.position.set(0, 0.44, 0);
+//     // control.attach(mesh);
+//     scene.add(mesh);
+// 	objToBeDetected.push(mesh);
+// }
 
-export function debugGeo1() {
-    // const geometry = new THREE.TorusKnotGeometry(1, 0.3, 256, 32);
-	const geometry = new THREE.BoxGeometry(1.5, 1.5, 1.5);
-    const edges = new THREE.EdgesGeometry(geometry); // Crea una geometria di bordi
-    const line = new THREE.LineSegments(edges, dashedLineMat);
-    line.computeLineDistances(); // Necessario per il materiale LineDashedMaterial
-    line.name = `debug-dashed-${scene.children.length}`;
-	line.isDashed = true;
-    scene.add(line);
-    objToBeDetected.push(line);
-}
+// export function debugGeo1() {
+//     // const geometry = new THREE.TorusKnotGeometry(1, 0.3, 256, 32);
+// 	const geometry = new THREE.BoxGeometry(1.5, 1.5, 1.5);
+//     const edges = new THREE.EdgesGeometry(geometry); // Crea una geometria di bordi
+//     const line = new THREE.LineSegments(edges, dashedLineMat);
+//     line.computeLineDistances(); // Necessario per il materiale LineDashedMaterial
+//     line.name = `debug-dashed-${scene.children.length}`;
+// 	line.isDashed = true;
+//     scene.add(line);
+//     objToBeDetected.push(line);
+// }
 
-export function LineaContinuaObj() {
-    const geometry = new THREE.BoxGeometry(1, 1, 1); 
-	// const geometry = new THREE.TorusKnotGeometry(1, 0.3, 256, 32);
-    const edges = new THREE.EdgesGeometry(geometry); // Estrai gli edge del cubo
+// export function LineaContinuaObj() {
+//     const geometry = new THREE.BoxGeometry(1, 1, 1); 
+// 	// const geometry = new THREE.TorusKnotGeometry(1, 0.3, 256, 32);
+//     const edges = new THREE.EdgesGeometry(geometry); // Estrai gli edge del cubo
 
-    const lineGeometry = new LineSegmentsGeometry().fromEdgesGeometry(edges); // LineSegmentsGeometry compatibile
-    const line = new LineSegments2(lineGeometry, solidMaterial); // Applica il materiale dashed
+//     const lineGeometry = new LineSegmentsGeometry().fromEdgesGeometry(edges); // LineSegmentsGeometry compatibile
+//     const line = new LineSegments2(lineGeometry, solidMaterial); // Applica il materiale dashed
 
-    scene.add(line); // Aggiungi alla scena
-	line.name = "architettura";
-	line.isDashed = true;
-	objToBeDetected.push(line);
-}
+//     scene.add(line); // Aggiungi alla scena
+// 	line.name = "architettura";
+// 	line.isDashed = true;
+// 	objToBeDetected.push(line);
+// }
 
-export function debugGeo4() {
-    const geometry = loadObj('parkinglot.obj');
-    const edges = new THREE.EdgesGeometry(geometry); // Estrai gli edge del cubo
+// export function debugGeo4() {
+//     const geometry = loadObj('parkinglot.obj');
+//     const edges = new THREE.EdgesGeometry(geometry); // Estrai gli edge del cubo
 
-    const lineGeometry = new LineSegmentsGeometry().fromEdgesGeometry(edges); // LineSegmentsGeometry compatibile
-    const line = new LineSegments2(lineGeometry, solidMaterial); // Applica il materiale dashed
+//     const lineGeometry = new LineSegmentsGeometry().fromEdgesGeometry(edges); // LineSegmentsGeometry compatibile
+//     const line = new LineSegments2(lineGeometry, solidMaterial); // Applica il materiale dashed
 
-    scene.add(line); // Aggiungi alla scena
+//     scene.add(line); // Aggiungi alla scena
+// }
+
+export function freccia() {
+	const dir = new THREE.Vector3( 1, 2, 0 );
+
+	//normalize the direction vector (convert to vector of length 1)
+	dir.normalize();
+
+	const origin = new THREE.Vector3( 0, 0, 0 );
+	const length = 0.5;
+	const hex = 0x000000;
+
+	const arrowHelper = new THREE.ArrowHelper( dir, origin, length, hex, 0.1, 0.1 );
+	arrowHelper.cone.geometry.dispose();
+	arrowHelper.cone.geometry = new THREE.CylinderGeometry( 0, 0.5, 1, 30, 1 );
+	arrowHelper.cone.geometry.translate(0, -0.5, 0);
+	arrowHelper.cone.name = "Orifonte-X"; //da oriri = sorgere (latino). è bello perchè indica un preciso punto cardinale dove la fonte sonora "sorge" ma non ci si può mai arrivare
+	arrowHelper.line.name = "Orifonte-X";
+	// scene.add( arrowHelper );
+	scene.add( arrowHelper );
+	objToBeDetected.push(arrowHelper.cone);
 }
 
 function initTransformControls() {

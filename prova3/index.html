@@ -19,7 +19,7 @@
     <div id="black-panel">
 
 			<div class="container">
-
+        <div id="titoloImpostazioni">Impostazioni</div>
         <div>Generali</div>
         <div class="switch-wrapper">
 					<label class="switch">
@@ -64,6 +64,14 @@
         </div>
       
         <div>Architettura</div>
+        <!-- <button id="addArch">A</button> -->
+        <div class="switch-wrapper">
+					<label class="switch">
+						<input type="checkbox" data-id="archVisibility"/>
+						<div></div>
+					</label>
+					<span class="switch-label">⏿</span>
+				</div>
         <div class="switch-wrapper">
 					<label class="switch">
 						<input type="checkbox" data-id="serioso" checked/>
@@ -113,7 +121,7 @@
 					<span class="switch-label">⏿</span>
 				</div>
       
-				<button id="helper">
+				<!-- <button id="helper">
 					?
 					<div id="helperCard">
 						<div id="info">
@@ -124,15 +132,22 @@
 							"Shift + Click" on hovered objects creates a group
 						</div>
 					</div>
-				</button>
-
+				</button> -->
 				
 			</div>
-
 		</div>
+
+    <button id="helper">
+      <a href="" target="_blank">⁈</a>
+    </button>
 
     <div id="infoDivTopLeft">---</div>
     <div id="infoDivBottomLeft">---</div>
+    <div id="infoDivCenter">
+      <button id="addZoneCube" class="centeredButton">C</button>
+      <button id="addZoneSphere" class="centeredButton">S</button>
+      <button id="closeInfoDivCenter">X</button>
+    </div>
     
     <div class="bottonieraDestra">
       <div id="nav-icon3">
@@ -141,12 +156,15 @@
         <span></span>
         <span></span>
       </div>
-      <button id="addHalo">H</button>
+      <button id="addHalo">❍</button>
+      <button id="addCone">⊚</button>
+      <button id="addZone">⛶</button>
       <!-- <button id="addCube">C</button> -->
-      <!-- <button id="addSphere">S</button> -->
-      <button id="addCone">C</button>
-      <button id="addArch">A</button>
-      <button id="addZone">Z</button>
+      <!-- <button id="addArrow">⇨</button> -->
+       <button id="addArrow">➞</button>
+      <button id="addSphere">⬤</button>
+      <button id="seeItemsList">▤</button>
+      
     </div>
 
     <script src="navbar.js"></script>

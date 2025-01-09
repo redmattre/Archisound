@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { dashedMaterial, dashedMaterialB, dashedMaterialC, dashedMaterialD, goochMaterialAlpha, solidMaterial } from "./materials";
 import { setRaycasterActive } from "./raycaster";
-import { currentCamera, changeTheme, control, orbit, orbitOrtho, onWindowResize, ssuper, scene, renderer, changeGrid } from "./setup";
+import { currentCamera, changeTheme, control, orbit, orbitOrtho, onWindowResize, ssuper, scene, renderer, changeGrid, render } from "./setup";
 
 // SWITCHES
 document.querySelectorAll('.switch input').forEach((checkbox) => {
@@ -151,3 +151,13 @@ document.getElementById('addArch').addEventListener('click', (event) => {
         event.target.setAttribute('data-active', 'true'); // Aggiorna stato
     }
 });
+
+//OPTIMIZATION
+
+// const canvas = renderer.domElement; // Ottieni il canvas della scena
+// canvas.addEventListener('mousedown', function () {
+//     setRaycasterActive(false);
+// });
+// canvas.addEventListener('mouseup', function () {
+//     setRaycasterActive(true);
+// });

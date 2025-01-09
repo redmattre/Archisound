@@ -13,7 +13,7 @@
   right: 1rem;
   top: 1.25rem;
   /* margin: 50px auto; */
-  margin-top: 0;
+  margin-top: 0.5rem;
   -webkit-transform: rotate(0deg);
   -moz-transform: rotate(0deg);
   -o-transform: rotate(0deg);
@@ -265,8 +265,9 @@
   right: 0;
   position: absolute;
   height: auto;
-  top: 0;
-  bottom: 0;
+  top: 0.5rem;
+  bottom: 0.5rem;
+  right: 0.5rem;
   width: 33vw;
   background-color: var(--fondale);
   border: solid var(--dettaglio) 2px;
@@ -277,13 +278,25 @@
 
   transition: all 0.25s ease;
   z-index: 500;
+  overflow: scroll;
+  border-radius: 10px;
 }
 
 .container {
+  /* margin-top: 4rem; */
+  font-size: small;
   padding: 0.5rem 1rem;
   display: flex;
   flex-direction: column; /* Disposizione verticale per le righe */
   gap: 1rem; /* Spaziatura tra ogni riga */
+}
+
+#titoloImpostazioni {
+  /* height: 4rem;
+  margin: 0;
+  padding: 0; */
+  font-size: xx-large;
+  position: sticky;
 }
 
 .switch-wrapper {

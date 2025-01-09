@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 78.0, 116.0, 1058.0, 708.0 ],
+		"rect" : [ 77.0, 116.0, 1019.0, 708.0 ],
 		"gridsize" : [ 15.0, 15.0 ],
 		"boxes" : [ 			{
 				"box" : 				{
@@ -578,7 +578,7 @@
 						}
 ,
 						"classnamespace" : "box",
-						"rect" : [ 76.0, 97.0, 1020.0, 747.0 ],
+						"rect" : [ 77.0, 97.0, 1019.0, 747.0 ],
 						"gridsize" : [ 15.0, 15.0 ],
 						"boxes" : [ 							{
 								"box" : 								{
@@ -1189,7 +1189,7 @@
 						}
 ,
 						"classnamespace" : "box",
-						"rect" : [ 34.0, 68.0, 1284.0, 776.0 ],
+						"rect" : [ 77.0, 97.0, 1019.0, 747.0 ],
 						"gridsize" : [ 15.0, 15.0 ],
 						"boxes" : [ 							{
 								"box" : 								{
@@ -1307,7 +1307,7 @@
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
 									"patching_rect" : [ 722.131126880645752, 382.786874294281006, 120.0, 22.0 ],
-									"text" : "prepend moveHalo 3"
+									"text" : "prepend moveHalo 4"
 								}
 
 							}
@@ -1415,7 +1415,7 @@
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
 									"patching_rect" : [ 505.737690448760986, 382.786874294281006, 120.0, 22.0 ],
-									"text" : "prepend moveHalo 2"
+									"text" : "prepend moveHalo 3"
 								}
 
 							}
@@ -1547,7 +1547,7 @@
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
 									"patching_rect" : [ 289.344254016876221, 383.606546401977539, 120.0, 22.0 ],
-									"text" : "prepend moveHalo 1"
+									"text" : "prepend moveHalo 2"
 								}
 
 							}
@@ -1655,7 +1655,7 @@
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
 									"patching_rect" : [ 68.852457046508789, 383.606546401977539, 120.0, 22.0 ],
-									"text" : "prepend moveHalo 0"
+									"text" : "prepend moveHalo 1"
 								}
 
 							}
@@ -2151,7 +2151,7 @@
 
 							}
  ],
-						"originid" : "pat-16"
+						"originid" : "pat-14"
 					}
 ,
 					"patching_rect" : [ 390.0, 54.0, 75.0, 22.0 ],
@@ -2282,7 +2282,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 16.0, 719.0, 242.0, 22.0 ],
-					"text" : "title Archisound"
+					"text" : "\"move halo\""
 				}
 
 			}

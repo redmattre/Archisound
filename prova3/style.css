@@ -10,6 +10,10 @@
   --fondale: var(--fondaleBianco);
 }
 
+a{
+    all: unset;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -24,7 +28,11 @@ canvas{
 }
 
 button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 4rem;
+  height: 3.7rem;
   font-size: xx-large;
   background-color: transparent;
   /* background-color: var(--fondale); */
@@ -37,6 +45,42 @@ button {
   transition: background-color 0.2s ease, box-shadow 0.2s ease;
   user-select: none;
   /* box-shadow: 0 0 0.5rem var(--fondale); */
+}
+
+#addArrow {
+    overflow: hidden;
+    height: 3.6rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#addSphere {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* #addHalo {
+    background-image: url('halo_render_back.png');
+    background-size: 120%;
+    background-position: center;
+    background-repeat: no-repeat;
+} */
+
+#closeInfoDivCenter {
+    position: absolute;
+    height: 1rem;
+    width: 1rem;
+    font-size: x-small;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--fondale);
+    margin: 0;
+    /* top: calc(50% - 0.5rem); */
+    bottom: -.7rem;
+    left: calc(50% - 1.15rem);
 }
 
 button:active {
@@ -71,12 +115,41 @@ button:active {
              1px 1px var(--fondale), -1px -1px var(--fondale), 1px -1px var(--fondale), -1px 1px var(--fondale);
 }
 
+#infoDivCenter {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    width: calc(10rem + 1rem);
+    height: calc(4rem + 1rem);
+    z-index: 500;
+    border: solid 2px var(--testo);
+    background-color: var(--fondale);
+    border-radius: 10px;
+    top: calc(50vh - 2.5rem);
+    left: calc(50vw - 5.5rem);
+    text-shadow: 2px 0 var(--fondale), -2px 0 var(--fondale), 0 2px var(--fondale), 0 -2px var(--fondale),
+             1px 1px var(--fondale), -1px -1px var(--fondale), 1px -1px var(--fondale), -1px 1px var(--fondale);
+    /* display: flex; */
+    display: flex;
+    opacity: 0;
+    pointer-events: none;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.centeredButton {
+    margin: 0;
+    margin-right: 0.5rem;
+    margin-left: 0.5rem;
+}
+
 .bottonieraDestra {
     padding: 0;
     margin: 0;
     position: absolute;
     /* background-color: red; */
-    height: 95vh;
+    height: 85vh;
     width: 4rem;
     top: 1rem;
     right: 1rem;
@@ -117,6 +190,13 @@ button:active {
 }
 
 #helper {
+    z-index: 9999;
+    bottom: 1rem;
+    right: 1rem;
+    position: absolute;
+}
+
+/* #helper {
   background-color: transparent;
   border: solid var(--dettaglio) 2px;
   border-radius: 10px;
@@ -151,7 +231,7 @@ button:active {
   transition: all 0.25s ease;
 }
 
-/* Qui il contenuto diventa visibile quando l'hover è sul #helper */
+/* Qui il contenuto diventa visibile quando l'hover è sul #helper 
 #helper:hover #helperCard {
   opacity: 1;
-}
+} */

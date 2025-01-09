@@ -2,17 +2,19 @@ import * as THREE from 'three';
 import { loadObj } from './loaders.js';
 import { LineSegmentsGeometry } from 'three/addons/lines/LineSegmentsGeometry.js';
 import { LineSegments2 } from 'three/addons/lines/LineSegments2.js';
-import { dashedMaterial, dashedMaterialB, dashedMaterialC, dashedMaterialD, goochMaterialSp } from './materials.js';
+import { dashedMaterial, dashedMaterialB, dashedMaterialC, dashedMaterialD, goochMaterialArrow, goochMaterialSp, standardMat } from './materials.js';
 import { objToBeDetected, scene } from './setup.js';
 import { color } from 'three/tsl';
+import { bool } from 'three/tsl';
 
 const addSpeaker = document.getElementById('addCone');
 const addHalo = document.getElementById('addHalo');
-const addZone = document.getElementById('addZone');
+const addSphere = document.getElementById('addSphere');
+const addArrow = document.getElementById('addArrow');
 
 let howManySpeakers = 0;
 
-addSpeaker.addEventListener('click', (event) => {
+addSpeaker.addEventListener('click', () => {
     howManySpeakers++;
     let nome = `Altoparlante ${howManySpeakers}`
     loadObj('speaker3dec.obj', nome, goochMaterialSp, 0.025, 0., 0, 0.5);
@@ -20,40 +22,76 @@ addSpeaker.addEventListener('click', (event) => {
 
 let howManyHalos = 0;
 
-addHalo.addEventListener('click', (event) => {
+addHalo.addEventListener('click', () => {
     howManyHalos++;
-    let nome = `Aureola ${howManyHalos}`
-    loadObj('halo2_lowpoly.obj', nome, goochMaterialSp, 0.08, 0., 0, 0.5);
+    let nome = `Aureola-${howManyHalos}`
+    loadObj('halo2_lowpoly.obj', nome, goochMaterialSp, 0.11, 0., 0, 0.5);
 });
+
+let howManyArrows = 0;
+
+ addArrow.addEventListener('click', () => {
+    howManyArrows++;
+    const nome = `Orifonte-${howManyArrows}`;
+    loadObj('arrow.obj', nome, goochMaterialArrow, 0.025, 0., 0., 0.5)
+});
+
+let howManySpheres = 0;
+
+addSphere.addEventListener('click', (event) => {
+    howManySpheres++;
+    let nome = `Omnifonte-${howManySpheres}`;
+    newShape(true, nome, goochMaterialSp, 0., 0., 0.5);
+});
+
+//zones
 
 let howManyZones = 0;
 
-addZone.addEventListener('click', (event) => {
-    howManyZones++;
-    let color;
-    let nome = `Zona ${howManyZones}`
-    switch(howManyZones) {
-        case 1:
-            color = dashedMaterial;
-            break;
-        case 2:
-            color = dashedMaterialB;
-            break;
-        case 3:
-            color = dashedMaterialC;
-            break;
-        case 4:
-            color = dashedMaterialD;
-            break;
-        default:
-			color = dashedMaterial;
-    }
-    newZone(false, nome, color, 0., 0., 0.5);
+const materials = [dashedMaterial, dashedMaterialB, dashedMaterialC, dashedMaterialD];
+const multimenu = document.getElementById("infoDivCenter");
+const addZone = document.getElementById('addZone');
+const addZoneCube = document.getElementById('addZoneCube');
+const addZoneSphere = document.getElementById('addZoneSphere');
+const closeMultimenu = document.getElementById('closeInfoDivCenter');
+
+addZone.addEventListener('click', () => {
+    multimenu.style.opacity = 1;
+    multimenu.style.pointerEvents = "all";
 });
+
+addZoneCube.addEventListener('click', () => {
+    howManyZones++;
+    const index = (howManyZones - 1) % materials.length;
+    const color = materials[index];
+    const nome = `Zona ${howManyZones}`;
+
+    newZone(false, nome, color, 0., 0., 0.5);
+    multimenu.style.opacity = 0;
+    multimenu.style.pointerEvents = "none";
+});
+
+closeMultimenu.addEventListener('click', () => {
+    multimenu.style.opacity = 0;
+    multimenu.style.pointerEvents = "none";
+});
+
+addZoneSphere.addEventListener('click', () => {
+    howManyZones++;
+    const index = (howManyZones - 1) % materials.length;
+    const color = materials[index];
+    const nome = `Zona ${howManyZones}`;
+
+    newZone(true, nome, color, 0., 0., 0.5);
+    multimenu.style.opacity = 0;
+    multimenu.style.pointerEvents = "none";
+});
+
+//functions
 
 function newZone(boolgeo, name, materiale, x, y, z) {
 
-    const zonaWIFI = new THREE.Group();
+    const group = new THREE.Group();
 
     let geometry;
 
@@ -61,7 +99,7 @@ function newZone(boolgeo, name, materiale, x, y, z) {
         geometry = new THREE.BoxGeometry(2, 1, 2);
         // console.log('qui ci sono!');
     } else {
-        geometry = new THREE.SphereGeometry(0.25, 20, 20);
+        geometry = new THREE.SphereGeometry(0.5, 8, 8);
     }
     
     const edges = new THREE.EdgesGeometry(geometry); // Estrai gli edge del cubo
@@ -88,11 +126,29 @@ function newZone(boolgeo, name, materiale, x, y, z) {
 	});;
 	const mesh = new THREE.Mesh(geometry, material);
 
-    // scene.add(line);
-	// scene.add(mesh);
-	zonaWIFI.add(mesh);
-	zonaWIFI.add(line);
-	zonaWIFI.position.set(x, z, y);
-	scene.add(zonaWIFI);
+	group.add(mesh);
+	group.add(line);
+	group.position.set(x, z, y);
+	scene.add(group);
 	objToBeDetected.push(line);
+}
+
+function newShape(boolgeo, name, materiale, x, y, z) {
+    // const geometry = new THREE.TorusKnotGeometry(1, 0.3, 256, 32);
+    let geometry;
+
+    if (!boolgeo) {
+        geometry = new THREE.BoxGeometry(0.2,0.2,0.2);
+    } else {
+        geometry = new THREE.SphereGeometry(0.25, 40, 40);
+    }
+
+    const material = materiale;
+    const mesh = new THREE.Mesh(geometry, material);
+	mesh.scale.set(0.25, 0.24, 0.25);
+	mesh.name = name;
+	mesh.isDashed = false;
+	mesh.position.set(x, z, y);
+    scene.add(mesh);
+	objToBeDetected.push(mesh);
 }

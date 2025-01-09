@@ -1,4 +1,5 @@
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
+import { Rhino3dmLoader } from 'three/addons/loaders/3DMLoader.js';
 import { LineSegments2 } from 'three/examples/jsm/lines/LineSegments2';
 import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial';
 import { LineSegmentsGeometry } from 'three/examples/jsm/lines/LineSegmentsGeometry';

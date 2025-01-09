@@ -1,0 +1,35 @@
+features to add to this version:
+
+- data menu
+    (a menu with all items listed in the scene and the position, rotation and scale(?) values that
+    change interactively or you can input from there)
+    (also a configurations menu)
+    (also an upload menu where you can tag in the space the speakers and where they are)
+    (the menu will graphically be a thing on the right on top of the normal one (or "al posto"))
+    (oppure potrebbe essere sulla sinistra tra le due cose delle trasformazioni, un bubble menu)
+- POV camera
+    (you can choose an halo to attach a POV camera and you can change that in the generals menu)
+- Json file
+    (fare in modo che si possa salvare un file di configurazione che serve a richiamare gli elementi)
+
+da fixare:
+
+- Aggancio griglia
+    (attiva e disattiva)
+    (funziona solamente per le geometrie che aggiungo io non per gli obj perchè?)
+    (aggiungi che puoi decidere quanto)
+- Sitemare/togliere quel tasto "?"
+- Capire dove si trova il problema che fa andare framerate in merda
+- Tasto nascondimento altoparlanti ed halo
+
+note:
+    è un idea interessante quella di aggiungere una fonte direzionale. Con direzionale non si intende
+    direzionalmente piazzata nello spazio ma semplicemente che ha una direzione globale, per tutti. Come
+    se di fatto non fosse altro che un hard pan binaurale che tutte le persone nella stanza sentono prove
+    nire "dalla stessa direzione". Se stiamo parlando della gente con le cuffie sarà un suono che ha una
+    distanza fissa dall'osservatore e se ci muoviamo verso di lui esso si "allontana" (no effetto distanza)
+    ma che se ci giriamo ci da comunque l'impressione di essere dall'altra parte. Nell'impianto, sarà 
+    renderizzato come qualcosa di "fuori", lontano e non triangolato all'interno degli altoparlanti. Questa
+    è una versione diversa ed alternativa di panning che mi è venuta in mente basandomi sulla directional
+    light nel 3D, non ha una distanza e una direzione della luce sempre. Directional sound, non vero 3D 
+    placed simulated sound; ANCHE QUESTA COSA E' VIRTUALITA'.
