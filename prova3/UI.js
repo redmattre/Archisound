@@ -133,22 +133,46 @@ let counter = 1; // Definito al di fuori per mantenere lo stato tra i clic
 let isTransparent = false;
 let isVisible = false;
 
-document.getElementById('addArch').addEventListener('click', (event) => {
+// document.getElementById('addArch').addEventListener('click', (event) => {
+//     // Recupera lo stato del pulsante dal suo attributo data
+//     const isActive = event.target.getAttribute('data-active') === 'true';
+
+//     if (isActive) {
+//         // Disattiva
+//         goochMaterialAlpha.uniforms.opacity.value = 0;
+//         solidMaterial.visible = false;
+
+//         event.target.setAttribute('data-active', 'false'); // Aggiorna stato
+//     } else {
+//         // Attiva
+//         goochMaterialAlpha.uniforms.opacity.value = isTransparent ? architectureTransparency : 1;
+//         solidMaterial.visible = true;
+
+//         event.target.setAttribute('data-active', 'true'); // Aggiorna stato
+//     }
+// });
+
+const menuList = document.getElementById("menuList");
+
+document.getElementById('seeItemsList').addEventListener('click', (event) => {
+    console.log("sono qui");
     // Recupera lo stato del pulsante dal suo attributo data
     const isActive = event.target.getAttribute('data-active') === 'true';
 
     if (isActive) {
         // Disattiva
-        goochMaterialAlpha.uniforms.opacity.value = 0;
-        solidMaterial.visible = false;
-
-        event.target.setAttribute('data-active', 'false'); // Aggiorna stato
+        menuList.style.opacity = 0;
+        menuList.style.width = "0vw";
+        menuList.style.color = "var(--fondale)";
+        menu.style.pointerEvents = "none";
+        event.target.setAttribute('data-active', 'false');
     } else {
         // Attiva
-        goochMaterialAlpha.uniforms.opacity.value = isTransparent ? architectureTransparency : 1;
-        solidMaterial.visible = true;
-
-        event.target.setAttribute('data-active', 'true'); // Aggiorna stato
+        menuList.style.opacity = 1;
+        menuList.style.width = "23vw";
+        menuList.style.color = "var(--testo)";
+        menu.style.pointerEvents = "all";
+        event.target.setAttribute('data-active', 'true');
     }
 });
 

@@ -248,7 +248,7 @@ export function changeTheme(state) {
         root.style.setProperty('--testo', 'var(--fondaleBianco)');
         root.style.setProperty('--dettaglio', 'var(--grigino)');
 		// dashedMaterial.color.set('yellow');
-		solidMaterial.color.set(0xd6d6d6);
+		// solidMaterial.color.set(0xd6d6d6);
 		goochMaterialArrow.uniforms.coolColor.value = new THREE.Color(0xd6d6d6);
 		goochMaterialArrow.uniforms.warmColor.value = new THREE.Color(0xe8e8e8);
     } else {
@@ -259,9 +259,9 @@ export function changeTheme(state) {
         root.style.setProperty('--dettaglio', 'var(--grigio)');
 		// dashedMaterial.color.set(0x343434);
 		// dashedMaterial.color.set('yellow');
-		solidMaterial.color.set("black");
+		// solidMaterial.color.set("black");
 		goochMaterialArrow.uniforms.coolColor.value = new THREE.Color(0x303030);
-		goochMaterialArrow.uniforms.coolColor.value = new THREE.Color(0x000000);
+		goochMaterialArrow.uniforms.warmColor.value = new THREE.Color(0x000000);
     }
 }
 
@@ -335,8 +335,8 @@ export function freccia() {
 	arrowHelper.cone.geometry.dispose();
 	arrowHelper.cone.geometry = new THREE.CylinderGeometry( 0, 0.5, 1, 30, 1 );
 	arrowHelper.cone.geometry.translate(0, -0.5, 0);
-	arrowHelper.cone.name = "Orifonte-X"; //da oriri = sorgere (latino). è bello perchè indica un preciso punto cardinale dove la fonte sonora "sorge" ma non ci si può mai arrivare
-	arrowHelper.line.name = "Orifonte-X";
+	arrowHelper.cone.name = "Orifonte X"; //da oriri = sorgere (latino). è bello perchè indica un preciso punto cardinale dove la fonte sonora "sorge" ma non ci si può mai arrivare
+	arrowHelper.line.name = "Orifonte X";
 	// scene.add( arrowHelper );
 	scene.add( arrowHelper );
 	objToBeDetected.push(arrowHelper.cone);

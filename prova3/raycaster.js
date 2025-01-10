@@ -48,15 +48,15 @@ window.addEventListener('resize', () => {
     composer.setSize(window.innerWidth, window.innerHeight);
 });
 
-// Gestione del raycaster
+// Variabile per tracciare l'ultimo testo mostrato
+let lastHoveredObject = null;
+
 renderer.domElement.addEventListener('mousemove', (event) => {
     if (!isRaycasterActive) return;
 
     const now = Date.now();
     if (now - lastUpdateTime < updateInterval) return;
     lastUpdateTime = now;
-
-    // console.log('objToBeDetected:', objToBeDetected.map(obj => obj.name || obj.id));
 
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
@@ -76,7 +76,11 @@ renderer.domElement.addEventListener('mousemove', (event) => {
         }
     
         if (firstNonDashedObject) {
-            updateInfoText(firstNonDashedObject.name || 'Oggetto non trattato');
+            const newText = firstNonDashedObject.name || 'Oggetto non trattato';
+            if (newText !== lastHoveredObject) {
+                updateInfoText(newText);
+                lastHoveredObject = newText;
+            }
             outlineObject = firstNonDashedObject;
             outlinePass.selectedObjects = [outlineObject];
             window.addEventListener('keydown', function(event) {
@@ -90,13 +94,10 @@ renderer.domElement.addEventListener('mousemove', (event) => {
         } else {
             const dashedObject = intersects[0].object;
     
-            // Risali al gruppo contenente la linea intersecata
             const parentGroup = dashedObject.parent;
             if (parentGroup) {
-                // Trova la geometria invisibile (mesh) nel gruppo
                 const invisibleMesh = parentGroup.children.find(child => child.isMesh);
                 if (invisibleMesh) {
-                    // Aggiorna l'outline per la mesh invisibile
                     outlineObject = invisibleMesh;
                     outlinePass.selectedObjects = [outlineObject];
                     window.addEventListener('keydown', function(event) {
@@ -110,10 +111,14 @@ renderer.domElement.addEventListener('mousemove', (event) => {
                 }
             }
     
-            updateInfoText(dashedObject.name || 'Oggetto trattato');
+            const newText = dashedObject.name || 'Oggetto trattato';
+            if (newText !== lastHoveredObject) {
+                updateInfoText(newText);
+                lastHoveredObject = newText;
+            }
         }
     } else {
-        updateInfoText();
+        // Nessun oggetto hoverato, non aggiorna il testo
         outlineObject = null;
         outlinePass.selectedObjects = [];
     }

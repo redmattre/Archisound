@@ -11,12 +11,17 @@ navIcons.forEach(function(icon) {
         if (settingsFlag % 2 === 0) {
             menu.style.opacity = 0;
             menu.style.pointerEvents = "none";
+            menu.style.opacity = 0;
+            menu.style.width = "0vw";
+            menu.style.color = "var(--fondale)";
 			
 			// visualizzazione.style.right = "1rem";
 			// onSettingsResizeReverse();
         } else {
             menu.style.opacity = 1;
             menu.style.pointerEvents = "all";
+            menu.style.width = "33vw";
+            menu.style.color = "var(--testo)";
 
 			// visualizzazione.style.right = "33vw";
 			// onSettingsResize();

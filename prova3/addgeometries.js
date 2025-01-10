@@ -24,7 +24,7 @@ let howManyHalos = 0;
 
 addHalo.addEventListener('click', () => {
     howManyHalos++;
-    let nome = `Aureola-${howManyHalos}`
+    let nome = `Aureola ${howManyHalos}`
     loadObj('halo2_lowpoly.obj', nome, goochMaterialSp, 0.11, 0., 0, 0.5);
 });
 
@@ -32,7 +32,7 @@ let howManyArrows = 0;
 
  addArrow.addEventListener('click', () => {
     howManyArrows++;
-    const nome = `Orifonte-${howManyArrows}`;
+    const nome = `Orifonte ${howManyArrows}`;
     loadObj('arrow.obj', nome, goochMaterialArrow, 0.025, 0., 0., 0.5)
 });
 
@@ -40,8 +40,8 @@ let howManySpheres = 0;
 
 addSphere.addEventListener('click', (event) => {
     howManySpheres++;
-    let nome = `Omnifonte-${howManySpheres}`;
-    newShape(true, nome, goochMaterialSp, 0., 0., 0.5);
+    let nome = `Omnifonte ${howManySpheres}`;
+    newShape(true, nome, goochMaterialArrow, 0., 0., 0.5);
 });
 
 //zones
