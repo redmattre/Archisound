@@ -201,7 +201,7 @@ button:active {
   transition: all 0.25s ease;
 }
 
-#itemList {
+.itemList {
   background-color: var(--fondale);
   border: 1px solid var(--dettaglio);
   padding: 1rem;
@@ -209,6 +209,20 @@ button:active {
   margin-bottom: 1rem;
   /* bottom: 1rem; */
   height: auto;
+}
+
+.itemList:last-child {
+  margin-bottom: auto;
+}
+
+input[type='number'] {
+  border: 1px solid var(--dettaglio);
+  border-radius: 5px;
+  padding: 0.2rem;
+  margin: 0 0.2rem;
+  text-align: center;
+  background-color: transparent;
+  color: var(--testo);
 }
 
 .visualizzazione {

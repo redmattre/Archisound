@@ -3,6 +3,7 @@ import { renderer, objToBeDetected, currentCamera, scene, control } from './setu
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { OutlinePass } from 'three/addons/postprocessing/OutlinePass.js';
+import { updateMenu } from './objmenu';
 
 export let raycaster = new THREE.Raycaster();
 export let mouse = new THREE.Vector2();
@@ -163,6 +164,7 @@ window.addEventListener('keydown', (event) => {
         case 'Escape':
             if (!isRaycasterActive) {
                 isRaycasterActive = true;
+                updateMenu();
             } 
             break;
     }

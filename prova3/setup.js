@@ -6,6 +6,7 @@ import { LineSegmentsGeometry } from 'three/addons/lines/LineSegmentsGeometry.js
 import { LineSegments2 } from 'three/addons/lines/LineSegments2.js';
 import { standardMat, phongMat, dashedLineMat, dashedMaterial, solidMaterial, goochMaterial, goochMaterialArrow } from './materials.js';
 import { loadObj } from './loaders.js';
+import { updateMenu } from './objmenu.js';
 
 export let scene, ssuper, renderer, control, orbit, orbitOrtho;
 export let objToBeDetected = [];
@@ -320,27 +321,6 @@ export function render() {
 
 //     scene.add(line); // Aggiungi alla scena
 // }
-
-export function freccia() {
-	const dir = new THREE.Vector3( 1, 2, 0 );
-
-	//normalize the direction vector (convert to vector of length 1)
-	dir.normalize();
-
-	const origin = new THREE.Vector3( 0, 0, 0 );
-	const length = 0.5;
-	const hex = 0x000000;
-
-	const arrowHelper = new THREE.ArrowHelper( dir, origin, length, hex, 0.1, 0.1 );
-	arrowHelper.cone.geometry.dispose();
-	arrowHelper.cone.geometry = new THREE.CylinderGeometry( 0, 0.5, 1, 30, 1 );
-	arrowHelper.cone.geometry.translate(0, -0.5, 0);
-	arrowHelper.cone.name = "Orifonte X"; //da oriri = sorgere (latino). è bello perchè indica un preciso punto cardinale dove la fonte sonora "sorge" ma non ci si può mai arrivare
-	arrowHelper.line.name = "Orifonte X";
-	// scene.add( arrowHelper );
-	scene.add( arrowHelper );
-	objToBeDetected.push(arrowHelper.cone);
-}
 
 function initTransformControls() {
     control = new TransformControls( cameraPersp, renderer.domElement );

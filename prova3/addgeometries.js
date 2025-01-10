@@ -6,6 +6,7 @@ import { dashedMaterial, dashedMaterialB, dashedMaterialC, dashedMaterialD, gooc
 import { objToBeDetected, scene } from './setup.js';
 import { color } from 'three/tsl';
 import { bool } from 'three/tsl';
+import { createMenu } from './objmenu.js';
 
 const addSpeaker = document.getElementById('addCone');
 const addHalo = document.getElementById('addHalo');
@@ -18,6 +19,7 @@ addSpeaker.addEventListener('click', () => {
     howManySpeakers++;
     let nome = `Altoparlante ${howManySpeakers}`
     loadObj('speaker3dec.obj', nome, goochMaterialSp, 0.025, 0., 0, 0.5);
+    // createMenu(); //qui non fa perchè deve caricare il modello sec me
 });
 
 let howManyHalos = 0;
@@ -26,6 +28,7 @@ addHalo.addEventListener('click', () => {
     howManyHalos++;
     let nome = `Aureola ${howManyHalos}`
     loadObj('halo2_lowpoly.obj', nome, goochMaterialSp, 0.11, 0., 0, 0.5);
+    // createMenu();
 });
 
 let howManyArrows = 0;
@@ -34,6 +37,7 @@ let howManyArrows = 0;
     howManyArrows++;
     const nome = `Orifonte ${howManyArrows}`;
     loadObj('arrow.obj', nome, goochMaterialArrow, 0.025, 0., 0., 0.5)
+    // createMenu();
 });
 
 let howManySpheres = 0;
@@ -131,6 +135,7 @@ function newZone(boolgeo, name, materiale, x, y, z) {
 	group.position.set(x, z, y);
 	scene.add(group);
 	objToBeDetected.push(line);
+    createMenu();
 }
 
 function newShape(boolgeo, name, materiale, x, y, z) {
@@ -151,4 +156,5 @@ function newShape(boolgeo, name, materiale, x, y, z) {
 	mesh.position.set(x, z, y);
     scene.add(mesh);
 	objToBeDetected.push(mesh);
+    createMenu();
 }

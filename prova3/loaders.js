@@ -6,6 +6,7 @@ import { LineSegmentsGeometry } from 'three/examples/jsm/lines/LineSegmentsGeome
 import { objToBeDetected, scene } from './setup.js';
 import * as THREE from 'three';
 import { goochMaterial, goochMaterialAlpha, normalMat, phongMat, standardMat } from './materials.js';
+import { createMenu } from './objmenu.js';
 
 export function loadObj(filename, name, material, scaleFactor, x, y, z) {
     const loader = new OBJLoader();
@@ -13,21 +14,27 @@ export function loadObj(filename, name, material, scaleFactor, x, y, z) {
     loader.load(
         filename,
         function (object) {
+            // Crea un gruppo per gestire le trasformazioni
+            const group = new THREE.Group();
+            group.name = name; // Assegna un nome al gruppo
+
             object.traverse(function (child) {
                 if (child.isMesh) {
                     child.material = material; // Applica il materiale
-                    child.name = `${name}`;
+                    group.add(child); // Aggiungi i figli al gruppo
                 }
             });
 
-            // Aggiungi l'oggetto alla scena
-            object.scale.multiplyScalar(scaleFactor);
-            object.position.set(x, z, y);
-            // object.name = `${name}`;
-            scene.add(object);
-            objToBeDetected.push(object);
+            // Applica trasformazioni al gruppo
+            group.scale.multiplyScalar(scaleFactor);
+            group.position.set(x, z, y);
+
+            // Aggiungi il gruppo alla scena e agli oggetti da rilevare
+            scene.add(group);
+            objToBeDetected.push(group);
 
             console.log(`Loaded ${filename} successfully.`);
+            createMenu();
         },
         function (xhr) {
             console.log(`${Math.round((xhr.loaded / xhr.total) * 100)}% loaded`);

@@ -1,12 +1,11 @@
 import * as THREE from 'three';
-import { init, render, scene, control, freccia } from './setup.js';
+import { init, render, scene, control } from './setup.js';
 import { standardMat, phongMat, normalMat, dashedMaterial, solidMaterial, goochMaterial, goochMaterialSp, goochMaterialAlpha, goochMaterialArrow } from './materials.js';
 import { loadObj, loadObjWithDashedEdges } from './loaders.js';
 
 
 init();
 render();
-// freccia();
 // debugGeo();
 // debugGeo1();
 // debugGeo2();
