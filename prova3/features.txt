@@ -37,11 +37,12 @@ note:
 nota finale:
 
     per questa versione è buono chiudere introducendo:
-    - eliminare gli oggetti [ ]
+    - eliminare gli oggetti da interfaccia [x]
+    - eliminare gli oggetti da menu [ ]
     - POV dell'aureola [ ]
-    - aggancio griglia [ ]*
+    - aggancio griglia [X]*
 
-    * dove funziona :)))))
+    * dove funziona :))))) (magicamente ora funziona, bo, è cambiato qualcosa nel raycaster)
 
     cosa da fare la prossima volta:
     - gestire meglio le risorse, la parte di post processing sta pesando molto e c'è sicuramente un modo

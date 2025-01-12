@@ -401,7 +401,7 @@
 
 							}
  ],
-						"originid" : "pat-20"
+						"originid" : "pat-8"
 					}
 ,
 					"patching_rect" : [ 675.0, 70.0, 76.0, 22.0 ],
@@ -535,7 +535,7 @@
 
 							}
  ],
-						"originid" : "pat-22"
+						"originid" : "pat-10"
 					}
 ,
 					"patching_rect" : [ 600.0, 70.0, 58.0, 22.0 ],
@@ -1171,7 +1171,7 @@
 
 							}
  ],
-						"originid" : "pat-24"
+						"originid" : "pat-12"
 					}
 ,
 					"patching_rect" : [ 481.0, 70.0, 99.0, 22.0 ],
@@ -1203,6 +1203,7 @@
 						"classnamespace" : "box",
 						"rect" : [ 77.0, 97.0, 1019.0, 747.0 ],
 						"gridsize" : [ 15.0, 15.0 ],
+						"visible" : 1,
 						"boxes" : [ 							{
 								"box" : 								{
 									"id" : "obj-88",
@@ -1331,7 +1332,7 @@
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
 									"patching_rect" : [ 722.131126880645752, 277.049172401428223, 178.0, 22.0 ],
-									"text" : "vexpr ($f1+1)*1 @scalarmode 1"
+									"text" : "vexpr ($f1+1)*6 @scalarmode 1"
 								}
 
 							}
@@ -1439,7 +1440,7 @@
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
 									"patching_rect" : [ 505.737690448760986, 277.049172401428223, 178.0, 22.0 ],
-									"text" : "vexpr ($f1+1)*1 @scalarmode 1"
+									"text" : "vexpr ($f1+1)*6 @scalarmode 1"
 								}
 
 							}
@@ -1571,7 +1572,7 @@
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
 									"patching_rect" : [ 289.344254016876221, 277.868844509124756, 178.0, 22.0 ],
-									"text" : "vexpr ($f1+1)*1 @scalarmode 1"
+									"text" : "vexpr ($f1+1)*6 @scalarmode 1"
 								}
 
 							}
@@ -1679,7 +1680,7 @@
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
 									"patching_rect" : [ 68.852457046508789, 277.049172401428223, 178.0, 22.0 ],
-									"text" : "vexpr ($f1+1)*1 @scalarmode 1"
+									"text" : "vexpr ($f1+1)*6 @scalarmode 1"
 								}
 
 							}
@@ -2163,7 +2164,7 @@
 
 							}
  ],
-						"originid" : "pat-26"
+						"originid" : "pat-14"
 					}
 ,
 					"patching_rect" : [ 390.0, 71.0, 75.0, 22.0 ],
@@ -2289,13 +2290,13 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-13",
-					"linecount" : 3,
+					"linecount" : 2,
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 16.0, 736.0, 242.0, 49.0 ],
-					"text" : "\"dict set 6 Aureola-4 position 1.0360414498303998 0.5 1.6862135382269903 rotation 0 0 0\""
+					"patching_rect" : [ 16.0, 736.0, 242.0, 35.0 ],
+					"text" : "\"dict set 3 Aureola-4 position 0 0.5 0 rotation 0 0 0\""
 				}
 
 			}
@@ -2561,7 +2562,7 @@
 
 			}
  ],
-		"originid" : "pat-18",
+		"originid" : "pat-6",
 		"dependency_cache" : [  ],
 		"autosave" : 0
 	}

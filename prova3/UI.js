@@ -3,6 +3,10 @@ import { dashedMaterial, dashedMaterialB, dashedMaterialC, dashedMaterialD, gooc
 import { setRaycasterActive } from "./raycaster";
 import { currentCamera, changeTheme, control, orbit, orbitOrtho, onWindowResize, ssuper, scene, renderer, changeGrid, render } from "./setup";
 
+let scaleMoveSnap = 0.05;
+let rotationSnapDegrees = 15;
+let snapIsActive = true;
+
 // SWITCHES
 document.querySelectorAll('.switch input').forEach((checkbox) => {
 	checkbox.addEventListener('change', (event) => {
@@ -48,6 +52,19 @@ function toggleSwitch(id, state) {
             break;
         case 'grid':
             ssuper.visible = state;
+            break;
+        case 'gridSnapState':
+            if (state) {
+                control.setTranslationSnap(scaleMoveSnap);
+	            control.setRotationSnap(THREE.MathUtils.degToRad(rotationSnapDegrees));
+	            control.setScaleSnap(scaleMoveSnap);
+                snapIsActive = true;
+            } else {
+                control.setTranslationSnap(null);
+                control.setRotationSnap(THREE.MathUtils.degToRad(null));
+                control.setScaleSnap(null);
+                snapIsActive = false;
+            }
             break;
         case 'zoneVisibility':
             if (state) {
@@ -130,6 +147,36 @@ function toggleSlider(id, val) {
                     return;
             }
             break;
+        case 'snapDefinition':
+            switch(val) {
+                case 1:
+                    scaleMoveSnap = 0.0125;
+                    rotationSnapDegrees = 15;
+                    if (snapIsActive) {
+                        control.setTranslationSnap(scaleMoveSnap);
+                        control.setRotationSnap(THREE.MathUtils.degToRad(rotationSnapDegrees));
+                        control.setScaleSnap(scaleMoveSnap);
+                    };
+                    break;
+                case 2:
+                    scaleMoveSnap = 0.05;
+                    rotationSnapDegrees = 15;
+                    if (snapIsActive) {
+                        control.setTranslationSnap(scaleMoveSnap);
+                        control.setRotationSnap(THREE.MathUtils.degToRad(rotationSnapDegrees));
+                        control.setScaleSnap(scaleMoveSnap);
+                    };
+                    break;
+                case 3:
+                    scaleMoveSnap = 0.1;
+                    rotationSnapDegrees = 15;
+                    if (snapIsActive) {
+                        control.setTranslationSnap(scaleMoveSnap);
+                        control.setRotationSnap(THREE.MathUtils.degToRad(rotationSnapDegrees));
+                        control.setScaleSnap(scaleMoveSnap);
+                    };
+                    break;
+            }
 
         default:
             console.log("ID non riconosciuto.");
