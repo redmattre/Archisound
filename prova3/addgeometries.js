@@ -26,8 +26,8 @@ let howManyHalos = 0;
 
 addHalo.addEventListener('click', () => {
     howManyHalos++;
-    let nome = `Aureola ${howManyHalos}`
-    loadObj('halo2_lowpoly.obj', nome, goochMaterialSp, 0.11, 0., 0, 0.5);
+    let nome = `Aureola-${howManyHalos}`
+    loadObj('halo2_lowpoly.obj', nome, goochMaterialSp, 0.08, 0., 0, 0.5);
     // createMenu();
 });
 
@@ -96,6 +96,7 @@ addZoneSphere.addEventListener('click', () => {
 function newZone(boolgeo, name, materiale, x, y, z) {
 
     const group = new THREE.Group();
+    group.name = `${name}`;
 
     let geometry;
 
@@ -129,6 +130,7 @@ function newZone(boolgeo, name, materiale, x, y, z) {
 		visible: true
 	});;
 	const mesh = new THREE.Mesh(geometry, material);
+    mesh.name = `${name}`; //non serve davvero
 
 	group.add(mesh);
 	group.add(line);
@@ -145,7 +147,7 @@ function newShape(boolgeo, name, materiale, x, y, z) {
     if (!boolgeo) {
         geometry = new THREE.BoxGeometry(0.2,0.2,0.2);
     } else {
-        geometry = new THREE.SphereGeometry(0.25, 40, 40);
+        geometry = new THREE.SphereGeometry(0.15, 40, 40);
     }
 
     const material = materiale;

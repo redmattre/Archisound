@@ -42,7 +42,6 @@ function toggleSwitch(id, state) {
                 goochMaterialAlpha.uniforms.coolColor.value = new THREE.Color(0x0077ff);
                 goochMaterialAlpha.uniforms.warmColor.value = new THREE.Color(0xffaa00);
             }
-            
             break;
         case 'theme':
             changeTheme(state);
@@ -62,6 +61,16 @@ function toggleSwitch(id, state) {
                 dashedMaterialC.visible = false;
                 dashedMaterialD.visible = false;
             }
+            break;
+        case 'archVisibility':
+            if (state) {
+                goochMaterialAlpha.uniforms.opacity.value = isTransparent ? architectureTransparency : 1;
+                solidMaterial.visible = true;
+            } else {
+                goochMaterialAlpha.uniforms.opacity.value = 0;
+                solidMaterial.visible = false;
+            }
+            break;
 		default:
 			console.log('Switch non riconosciuto');
 	}

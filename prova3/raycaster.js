@@ -3,7 +3,7 @@ import { renderer, objToBeDetected, currentCamera, scene, control } from './setu
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { OutlinePass } from 'three/addons/postprocessing/OutlinePass.js';
-import { updateMenu } from './objmenu';
+import { createMenu, updateMenu } from './objmenu';
 
 export let raycaster = new THREE.Raycaster();
 export let mouse = new THREE.Vector2();
@@ -52,6 +52,40 @@ window.addEventListener('resize', () => {
 // Variabile per tracciare l'ultimo testo mostrato
 let lastHoveredObject = null;
 
+let currentSelectedObject = null; // L'ultimo oggetto selezionato rimane memorizzato
+
+window.addEventListener('keydown', function(event) {
+    if (!currentSelectedObject) return; // Nessun oggetto selezionato, esci
+
+    if (event.key === 'g' || event.key === 's' || event.key === 'r') {
+        // Attacca il controllo all'ultimo oggetto selezionato
+        const targetObject = currentSelectedObject.parent?.isGroup ? currentSelectedObject.parent : currentSelectedObject;
+        control.attach(targetObject);
+        outlineObject = null;
+        outlinePass.selectedObjects = [];
+        isRaycasterActive = false;
+    } else if (event.key === 'x' || event.key === 'Backspace') {
+        // console.log("Array attuale:", objToBeDetected.map(obj => obj.name));
+        // console.log("Nome dell'oggetto da rimuovere:", currentSelectedObject.name);
+        // console.log("Oggetto da rimuovere:", currentSelectedObject);
+
+        const targetObject = currentSelectedObject.parent?.isGroup ? currentSelectedObject.parent : currentSelectedObject;
+        const index = objToBeDetected.findIndex(obj => obj.name?.trim() === targetObject.name.trim());
+
+        if (index !== -1) {
+            // console.log("Oggetto trovato, rimuovo:", objToBeDetected[index].name);
+            objToBeDetected.splice(index, 1);
+            disposeObject(targetObject);
+            createMenu();
+        } else {
+            // console.error("Oggetto con nome '" + targetObject.name + "' non trovato nell'array.");
+        }
+
+        // console.log("Array finale:", objToBeDetected.map(obj => obj.name));
+        currentSelectedObject = null; // Resetta la selezione
+    }
+});
+
 renderer.domElement.addEventListener('mousemove', (event) => {
     if (!isRaycasterActive) return;
 
@@ -67,7 +101,7 @@ renderer.domElement.addEventListener('mousemove', (event) => {
 
     if (intersects.length > 0) {
         let firstNonDashedObject = null;
-    
+
         for (let i = 0; i < intersects.length; i++) {
             const intersectedObject = intersects[i].object;
             if (!intersectedObject.isDashed) {
@@ -75,7 +109,7 @@ renderer.domElement.addEventListener('mousemove', (event) => {
                 break;
             }
         }
-    
+
         if (firstNonDashedObject) {
             const newText = firstNonDashedObject.name || 'Oggetto non trattato';
             if (newText !== lastHoveredObject) {
@@ -84,34 +118,18 @@ renderer.domElement.addEventListener('mousemove', (event) => {
             }
             outlineObject = firstNonDashedObject;
             outlinePass.selectedObjects = [outlineObject];
-            window.addEventListener('keydown', function(event) {
-              if (event.key === 'g' || event.key === 's' || event.key === 'r') {
-                control.attach(firstNonDashedObject);
-                outlineObject = null;
-                outlinePass.selectedObjects = [];
-                isRaycasterActive = false;
-              }
-            });
+            currentSelectedObject = firstNonDashedObject; // Aggiorna l'oggetto selezionato
         } else {
             const dashedObject = intersects[0].object;
-    
             const parentGroup = dashedObject.parent;
+
             if (parentGroup) {
                 const invisibleMesh = parentGroup.children.find(child => child.isMesh);
-                if (invisibleMesh) {
-                    outlineObject = invisibleMesh;
-                    outlinePass.selectedObjects = [outlineObject];
-                    window.addEventListener('keydown', function(event) {
-                      if (event.key === 'g' || event.key === 's' || event.key === 'r') {
-                        control.attach(parentGroup);
-                        outlineObject = null;
-                        outlinePass.selectedObjects = [];
-                        isRaycasterActive = false;
-                      }
-                    });
-                }
+                currentSelectedObject = invisibleMesh || parentGroup; // Seleziona il gruppo o il mesh
+                outlineObject = currentSelectedObject;
+                outlinePass.selectedObjects = [outlineObject];
             }
-    
+
             const newText = dashedObject.name || 'Oggetto trattato';
             if (newText !== lastHoveredObject) {
                 updateInfoText(newText);
@@ -119,11 +137,45 @@ renderer.domElement.addEventListener('mousemove', (event) => {
             }
         }
     } else {
-        // Nessun oggetto hoverato, non aggiorna il testo
+        // Non resettare currentSelectedObject quando non c'è hover
         outlineObject = null;
         outlinePass.selectedObjects = [];
     }
 });
+
+function disposeObject(obj) {
+    // Rimuovi i figli ricorsivamente
+    while (obj.children.length > 0) {
+        disposeObject(obj.children[0]);
+    }
+
+    // Rimuovi il materiale
+    if (obj.material) {
+        if (Array.isArray(obj.material)) {
+            obj.material.forEach(mat => {
+                if (mat.map) mat.map.dispose();
+                if (mat.envMap) mat.envMap.dispose();
+                mat.dispose();
+            });
+        } else {
+            if (obj.material.map) obj.material.map.dispose();
+            if (obj.material.envMap) obj.material.envMap.dispose();
+            obj.material.dispose();
+        }
+    }
+
+    // Rimuovi la geometria
+    if (obj.geometry) {
+        obj.geometry.dispose();
+    }
+
+    // Rimuovi l'oggetto dal suo genitore
+    if (obj.parent) {
+        obj.parent.remove(obj);
+    }
+
+    console.log("Oggetto eliminato:", obj.name || obj.id);
+}
 
 // Funzione di rendering con il composer
 function animate() {

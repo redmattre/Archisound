@@ -5,46 +5,79 @@ export function createMenu() {
     menuList.innerHTML = ''; // Resetta il menu
 
     objToBeDetected.forEach((object) => {
-        // Risali al parent
         const parent = object.parent && object.parent !== scene ? object.parent : object;
 
         const itemList = document.createElement('div');
         itemList.className = 'itemList';
+        itemList.style.height = '1.2rem';
 
-        // Titolo con toggle visibilità
+        // Titolo con layout flessibile
         const itemTitle = document.createElement('div');
         itemTitle.className = 'itemListTitle';
-        const toggle = document.createElement('span');
-        toggle.textContent = object.visible ? '⏿' : '⊗';
-        toggle.style.cursor = 'pointer';
-        toggle.addEventListener('click', () => {
+        itemTitle.style.display = 'flex';
+        itemTitle.style.alignItems = 'center';
+        itemTitle.style.justifyContent = 'space-between';
+
+        // Contenitore per "⏿ - [NomeOggetto]"
+        const titleLeft = document.createElement('div');
+        const toggleVisibility = document.createElement('span');
+        toggleVisibility.textContent = object.visible ? '⏿' : '⊗';
+        toggleVisibility.style.cursor = 'pointer';
+        toggleVisibility.style.userSelect = 'none';
+        toggleVisibility.style.marginRight = '0.5rem';
+        toggleVisibility.addEventListener('click', () => {
             object.visible = !object.visible;
-            toggle.textContent = object.visible ? '⏿' : '⊗';
+            toggleVisibility.textContent = object.visible ? '⏿' : '⊗';
         });
-        itemTitle.appendChild(toggle);
-        itemTitle.append(` - ${object.name}`); // Usa il nome del child
-        itemList.appendChild(itemTitle);
+        titleLeft.appendChild(toggleVisibility);
+        titleLeft.append(` - ${object.name}`);
+
+        // Glifo "▤" per il toggle del menu collassabile
+        const toggleGlyph = document.createElement('div');
+        toggleGlyph.textContent = '▤';
+        toggleGlyph.style.userSelect = 'none';
+        toggleGlyph.style.cursor = 'pointer';
+
+        // Contenitore degli elementi collassabili
+        const collapsibleContainer = document.createElement('div');
+        collapsibleContainer.style.display = 'none'; // Inizialmente nascosto
+        // collapsibleContainer.style.backgroundColor = 'red';
+
+        // Funzione per togglare la visibilità del contenitore collassabile
+        toggleGlyph.addEventListener('click', () => {
+            collapsibleContainer.style.display =
+                collapsibleContainer.style.display === 'none' ? 'block' : 'none';
+            itemList.style.height = itemList.style.height === '1.2rem' ? 'auto' : '1.2rem'
+        });
+
+        // Aggiungi i contenitori sinistro e destro al titolo
+        itemTitle.appendChild(titleLeft);
+        itemTitle.appendChild(toggleGlyph);
 
         // Separator
-        itemList.appendChild(document.createElement('hr'));
+        collapsibleContainer.appendChild(document.createElement('hr'));
 
         // Posizione (usa il parent)
         const position = createEditableField('Position', parent.position, (value) => {
             parent.position.set(value.x, value.y, value.z);
         });
-        itemList.appendChild(position);
+        collapsibleContainer.appendChild(position);
 
         // Rotazione (usa il parent)
         const rotation = createEditableField('Rotation', parent.rotation, (value) => {
             parent.rotation.set(value.x, value.y, value.z);
         });
-        itemList.appendChild(rotation);
+        collapsibleContainer.appendChild(rotation);
 
         // Scala (usa il parent)
         const scale = createEditableField('Scale', parent.scale, (value) => {
             parent.scale.set(value.x, value.y, value.z);
         });
-        itemList.appendChild(scale);
+        collapsibleContainer.appendChild(scale);
+
+        // Aggiungi il titolo e il contenitore collassabile al menu
+        itemList.appendChild(itemTitle);
+        itemList.appendChild(collapsibleContainer);
 
         menuList.appendChild(itemList);
     });

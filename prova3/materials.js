@@ -144,10 +144,10 @@ export let goochMaterial = new THREE.ShaderMaterial({
 export let goochMaterialAlpha = new THREE.ShaderMaterial({
     uniforms: {
         lightDirection: { value: new THREE.Vector3(1, 1, 1).normalize() },
-        // coolColor: { value: new THREE.Color(0x0077ff) }, // Colore freddo
-        // warmColor: { value: new THREE.Color(0xffaa00) }, // Colore caldo
-        coolColor: { value: new THREE.Color(0x000080) }, // Colore freddo
-        warmColor: { value: new THREE.Color(0xF5F5DC) }, // Colore caldo
+        coolColor: { value: new THREE.Color(0x0077ff) }, // Colore freddo
+        warmColor: { value: new THREE.Color(0xffaa00) }, // Colore caldo
+        // coolColor: { value: new THREE.Color(0x000080) }, // Colore freddo
+        // warmColor: { value: new THREE.Color(0xF5F5DC) }, // Colore caldo
         surfaceColor: { value: new THREE.Color(0xffffff) }, // Colore base
         opacity: { value: 0. } // Aggiungi l'uniforme per l'opacità
     },

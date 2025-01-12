@@ -21,6 +21,7 @@ export function loadObj(filename, name, material, scaleFactor, x, y, z) {
             object.traverse(function (child) {
                 if (child.isMesh) {
                     child.material = material; // Applica il materiale
+                    child.name = name;
                     group.add(child); // Aggiungi i figli al gruppo
                 }
             });

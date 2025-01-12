@@ -183,9 +183,6 @@ export function init() {
 				orbit.enabled = true;
 				updateStato3();
 				break;
-			case 'Backspace', 'x':
-				deleteObjectOnClick();
-				break;
 				
 		}
 	});

@@ -33,3 +33,36 @@ note:
     è una versione diversa ed alternativa di panning che mi è venuta in mente basandomi sulla directional
     light nel 3D, non ha una distanza e una direzione della luce sempre. Directional sound, non vero 3D 
     placed simulated sound; ANCHE QUESTA COSA E' VIRTUALITA'.
+
+nota finale:
+
+    per questa versione è buono chiudere introducendo:
+    - eliminare gli oggetti [ ]
+    - POV dell'aureola [ ]
+    - aggancio griglia [ ]*
+
+    * dove funziona :)))))
+
+    cosa da fare la prossima volta:
+    - gestire meglio le risorse, la parte di post processing sta pesando molto e c'è sicuramente un modo
+        migliore per tenerla dentro. In questo caso il raycaster gestisce tutto il post processing ma non
+        va bene. Bisogna separare il raycaster dal post processing che semmai va messo in setup.
+        Questo anche perchè va AGGIUNTO IL FEEDBACK AUDIO VISIVO, in sincrono con le fonti, e deve essere
+        una cosa super cheap a livello grafico, altrimenti tante cose non funzionerebbero.
+    - aggiungere la costruzione specifica per la room based wi fi recognition. A questo punto della ricerca
+        ancora non è possibile determinare quale tipo di tecnologia verrà utilizzato, quindi per ora
+        apparte concept nessuna idea da avanzare a livello di UI.
+    - aggiungere un modo di distinguere o visualizzare le fonti che sono NUVOLA:CLIENT ma non hanno IMU.
+
+    cose tecniche da provare addirittura a parte sono:
+
+    - come funziona la questione dei modelli importati rispetto a quelli nativi nei confronti dei
+    transform controls e della visualizzazione nel menu. Provare:
+        1. usare file .gitf (perchè fose pesano meno)
+    - sistemare tutto il raycasting e ricostruirlo da capo
+        1. probabilmente va messo in setup (ha dato molto fastidio nell'ordine delle cose da caricare)
+        2. fare in modo che possa venire chiamato in altri moduli facilmente per aggiungere funzionalità
+    - ricostruire il composer e il post processing
+    - provare ad impostare la parte architettonica con il BIM e IFC open source loader in modo da avere
+        una cosa effettivamente professionale e non quegli .obj di merda che effettivamente vengono 
+        visualizzati veramente male.

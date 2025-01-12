@@ -207,8 +207,6 @@ button:active {
   padding: 1rem;
   border-radius: 10px;
   margin-bottom: 1rem;
-  /* bottom: 1rem; */
-  height: auto;
 }
 
 .itemList:last-child {
@@ -223,6 +221,26 @@ input[type='number'] {
   text-align: center;
   background-color: transparent;
   color: var(--testo);
+}
+
+.itemListTitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* font-weight: bold; */
+  height: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.itemListTitle div {
+  display: flex;
+  align-items: center;
+}
+
+.itemList hr {
+  border: none;
+  border-top: 1px solid var(--dettaglio);
+  margin: 0.5rem 0;
 }
 
 .visualizzazione {
