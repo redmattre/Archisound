@@ -1,4 +1,4 @@
-# Archisound
+# Cielo
 
 versione prototipo_alpha
 
@@ -18,7 +18,7 @@ versione prototipo_alpha
 
 ## Introduzione
 
-**Archisound** è un'editor web per la progettazione di spazi sonori, in particolare integrato con il sistema di spazializzazione immersiva Nuvola. Offre funzinalità di:
+**Cielo** è un'editor web per la progettazione di spazi sonori, in particolare integrato con il sistema di spazializzazione immersiva Nuvola. Offre funzinalità di:
 
 - Inserimento di progetti e modelli architettonici (formati generici come .obj o specifici di disegno tecnico come .ifc o .3dm)
 - Trasformazione ed inserimento di elementi di sound design 3D nello spazio
