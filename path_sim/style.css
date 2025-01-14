@@ -1,0 +1,25 @@
+body {
+    margin: 0;
+    /* padding: 1rem; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* height: 100vh; */
+    background-color: transparent;
+}
+
+canvas {
+    display: block;
+    background-color: transparent;
+    border: 1px solid black;
+
+    /* Ridimensiona il canvas al 60% dello spazio disponibile */
+    width: 90%;
+    height: 90%;
+}
+
+button {
+    background-color: transparent;
+    background-color: red;
+    color: white;
+}

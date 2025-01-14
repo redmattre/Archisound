@@ -12,6 +12,7 @@ const addSpeaker = document.getElementById('addCone');
 const addHalo = document.getElementById('addHalo');
 const addSphere = document.getElementById('addSphere');
 const addArrow = document.getElementById('addArrow');
+const addCloudClient = document.getElementById('addCloudElement');
 
 let howManySpeakers = 0;
 
@@ -33,11 +34,20 @@ addHalo.addEventListener('click', () => {
 
 let howManyArrows = 0;
 
- addArrow.addEventListener('click', () => {
+addArrow.addEventListener('click', () => {
     howManyArrows++;
     const nome = `Orifonte ${howManyArrows}`;
     loadObj('arrow.obj', nome, goochMaterialArrow, 0.025, 0., 0., 0.5)
     // createMenu();
+});
+
+let howManyCloudClients = 0;
+
+addCloudClient.addEventListener('click', () => {
+    howManyCloudClients++;
+    const nome = `Nuvola:client ${howManyCloudClients}`;
+    // loadObj('bunnySpeaker.obj', nome, goochMaterialSp, 0.025, 0., 0, 0.5);
+    loadObj('cloudDec.obj', nome, goochMaterialSp, 0.015, 0., 0, 0.5);
 });
 
 let howManySpheres = 0;

@@ -91,7 +91,7 @@ export function init() {
 				orbit.object = currentCamera;
 				orbit.update();
 				// currentCamera.position.set(0, 5, 0); // Posizione dall'alto
-				currentCamera.lookAt(0, 0, 0); // Guarda verso il centro della scena
+				// currentCamera.lookAt(0, 0, 0);
 				control.camera = currentCamera; // Aggiorna la camera nei c
 	
 				visualizzazione.textContent = "Prospettiva";

@@ -76,11 +76,11 @@ window.addEventListener('keydown', function(event) {
             // console.log("Oggetto trovato, rimuovo:", objToBeDetected[index].name);
             objToBeDetected.splice(index, 1);
             disposeObject(targetObject);
-            createMenu();
+            updateInfoTextBasso(objToBeDetected[index].name) ;
         } else {
             // console.error("Oggetto con nome '" + targetObject.name + "' non trovato nell'array.");
         }
-
+        createMenu();
         // console.log("Array finale:", objToBeDetected.map(obj => obj.name));
         currentSelectedObject = null; // Resetta la selezione
     }
@@ -142,6 +142,13 @@ renderer.domElement.addEventListener('mousemove', (event) => {
         outlinePass.selectedObjects = [];
     }
 });
+
+// Funzione per aggiornare il div con le informazioni
+const infoDivDown = document.getElementById('infoDivBottomLeft');
+function updateInfoTextBasso(text) {
+    infoDiv.textContent = "rimosso: ", text || '---';
+}
+
 
 function disposeObject(obj) {
     // Rimuovi i figli ricorsivamente
