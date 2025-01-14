@@ -5,16 +5,6 @@ versione prototipo_alpha
 ## Table of Contents
 1. [Introduzione](#introduzione)
 2. [Struttura dell'Interfaccia](#struttura-dellinterfaccia)
-3. [Funzionalità](#funzionalità)
-   - [Impostazioni Generali](#impostazioni-generali)
-   - [Gestione Architettura](#gestione-architettura)
-   - [Zone](#zone)
-   - [Altoparlanti](#altoparlanti)
-   - [Corone](#corone)
-4. [Scorciatoie e Controlli](#scorciatoie-e-controlli)
-5. [Dipendenze](#dipendenze)
-6. [Contributi](#contributi)
-7. [Licenza](#licenza)
 
 ## Introduzione
 
@@ -73,4 +63,26 @@ versione prototipo_alpha
 
 4. Menu Impostazioni:
 
+   - **Generali**
+      - **"Tema Eco"**: cambio del tema da bianco a nero. Lo schermo nero è total black quindi è un opzione di risparmio energetico sugli schermi che lo supportano.
+      - **"Aggancio Griglia"**: attiva o disattiva l'aggancio alla griglia. Il selettore permette tre grandezze.
+      - **"Diorama"**: attiva o disattiva la possibilità di modifica degli oggetti nella scena, risparmia potenza di calcolo qando attivata.
+      - **"Super Superficie"** si riferisce alla griglia di aiuto, lo slider ne imposta l'estensione.
+
+   - **Architettura**
+     - **"⏿"**: permette di vedere o nascondere l'architettura.
+      - **"Tema Muto"**: cambio della palette di colori del materale dell'architettura.
+      - **"Trasparenza"**: attiva o disattiva la trasparenza del materiale dell'architettura, lo slider definisce il valore di trasparenza.
+
+   - **Zone**
+      - **"⏿"**: permette di vedere o nascondere le Zone.
+        
+   - **Altoparlanti**
+      - **"⏿"**: permette di vedere o nascondere gli Altoparlanti.
+        
+   - **Aureole**
+     - **"⏿"**: permette di vedere o nascondere le Aureole.
+
 5. Menu Lista Oggetti:
+   
+   In questo menu vengono dinamicamente mostrate gli oggetti presenti nella scena, da qui è possibile inserire valori precisi per le trasformazioni e attivare o disattivare la vista di ogni singolo oggetto (con "⏿").
