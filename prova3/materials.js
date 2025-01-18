@@ -86,7 +86,7 @@ export let dashedMaterialD = new LineMaterial({
 
 export let solidMaterial = new LineMaterial({
     color: 'black', // Green
-    linewidth: 0.008,
+    linewidth: 0.012,
     worldUnits: true,
     alphaToCoverage: true, // Enable better transparency blending
     visible: false

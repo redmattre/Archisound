@@ -76,7 +76,9 @@ window.addEventListener('keydown', function(event) {
             // console.log("Oggetto trovato, rimuovo:", objToBeDetected[index].name);
             objToBeDetected.splice(index, 1);
             disposeObject(targetObject);
-            updateInfoTextBasso(objToBeDetected[index].name) ;
+            console.log(objToBeDetected[index].name);
+            updateInfoTextBasso(objToBeDetected[index].name);
+            
         } else {
             // console.error("Oggetto con nome '" + targetObject.name + "' non trovato nell'array.");
         }
@@ -146,7 +148,8 @@ renderer.domElement.addEventListener('mousemove', (event) => {
 // Funzione per aggiornare il div con le informazioni
 const infoDivDown = document.getElementById('infoDivBottomLeft');
 function updateInfoTextBasso(text) {
-    infoDiv.textContent = "rimosso: ", text || '---';
+    console.log("sto cancellando!");
+    infoDivDown.textContent = "rimosso: " + currentSelectedObject || '---';
 }
 
 

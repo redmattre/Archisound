@@ -46,16 +46,21 @@ export function init() {
     currentCamera.position.set(5, 1.5, 5);
 
     // Lighting
-    const ambientLight = new THREE.AmbientLight(0xe7e7e7, 1);
+    const ambientLight = new THREE.AmbientLight(0xe7e7e7, 5);
     scene.add(ambientLight);
 
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1.6);
     directionalLight.position.set(5, 10, 7.5);
     directionalLight.castShadow = true;
     scene.add(directionalLight);
 
-    const pointLight = new THREE.PointLight(0xffffff, 1);
-    cameraPersp.add(pointLight);
+	const directionalLight2 = new THREE.DirectionalLight(0xffffff, 1.6);
+    directionalLight2.position.set(-5, 10, -7.5);
+    directionalLight2.castShadow = true;
+    scene.add(directionalLight2);
+
+    // const pointLight = new THREE.PointLight(0xffffff, 1);
+    // cameraPersp.add(pointLight);
     scene.add(currentCamera);
 
     // Renderer
@@ -105,7 +110,7 @@ export function init() {
 				// Aggiorna i controlli per la nuova camera
 				orbitOrtho.object = currentCamera;
 				orbitOrtho.update();
-				currentCamera.position.set(0, 5, 0); // Posizione dall'alto
+				currentCamera.position.set(0, -5, 0); // Posizione dall'alto
 				currentCamera.lookAt(0, 0, 0); // Guarda verso il centro della scena
 				orbitOrtho.target.set(0, 0, 0);
 				control.camera = currentCamera; // Aggiorna la camera nei c

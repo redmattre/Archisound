@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { dashedMaterial, dashedMaterialB, dashedMaterialC, dashedMaterialD, goochMaterialAlpha, solidMaterial } from "./materials";
 import { setRaycasterActive } from "./raycaster";
 import { currentCamera, changeTheme, control, orbit, orbitOrtho, onWindowResize, ssuper, scene, renderer, changeGrid, render } from "./setup";
+import { changeNatMatTransparency, toggleMaterial, toggleModelVisibility, toggleTransparency } from './loadersFIX';
 
 let scaleMoveSnap = 0.05;
 let rotationSnapDegrees = 15;
@@ -25,27 +26,36 @@ function toggleSwitch(id, state) {
 			break;
 
         case 'transparencyA':
+            toggleTransparency('architettura', state);
+            isTransparent = state;
             if (state) {
                 goochMaterialAlpha.uniforms.opacity.value = architectureTransparency;
                 // architectureTransparency = 0.5;
                 // goochMaterialAlpha.transparent = true;
-                isTransparent = true;
+
             } else {
                 goochMaterialAlpha.uniforms.opacity.value = 1.;
                 // architectureTransparency = 1.;
                 // goochMaterialAlpha.transparent = false;
-                isTransparent = false;
             }
             
             break;
         case 'serioso':
             if (state) {
-                goochMaterialAlpha.uniforms.coolColor.value = new THREE.Color(0x000080);
-                goochMaterialAlpha.uniforms.warmColor.value = new THREE.Color(0xF5F5DC);
-            } else {
                 goochMaterialAlpha.uniforms.coolColor.value = new THREE.Color(0x0077ff);
                 goochMaterialAlpha.uniforms.warmColor.value = new THREE.Color(0xffaa00);
+            } else {
+                goochMaterialAlpha.uniforms.coolColor.value = new THREE.Color(0x000080);
+                goochMaterialAlpha.uniforms.warmColor.value = new THREE.Color(0xF5F5DC);
             }
+
+            if (state) {
+                toggleMaterial('architettura', goochMaterialAlpha);
+            } else {
+                toggleMaterial('architettura');
+            }
+            break;
+        case 'wireframeVisibility':
             break;
         case 'theme':
             changeTheme(state);
@@ -87,6 +97,7 @@ function toggleSwitch(id, state) {
                 goochMaterialAlpha.uniforms.opacity.value = 0;
                 solidMaterial.visible = false;
             }
+            toggleModelVisibility('architettura', state);
             break;
 		default:
 			console.log('Switch non riconosciuto');
@@ -128,19 +139,39 @@ function toggleSlider(id, val) {
             switch (val) {
                 case 1:
                     architectureTransparency = 0.;
-                    if (isTransparent) {goochMaterialAlpha.uniforms.opacity.value = 0.;}
+                    changeNatMatTransparency(0.1);
+                    if (isTransparent) {
+                        goochMaterialAlpha.uniforms.opacity.value = 0.;
+                        toggleTransparency('architettura', true);
+                    }
+                    
                     break;
                 case 2:
                     architectureTransparency = 0.2;
-                    if (isTransparent) {goochMaterialAlpha.uniforms.opacity.value = 0.2;}
+                    changeNatMatTransparency(0.3);
+                    if (isTransparent) {
+                        goochMaterialAlpha.uniforms.opacity.value = 0.2;
+                        toggleTransparency('architettura', true);
+                    }
+                    
                     break;
                 case 3:
                     architectureTransparency = 0.5;
-                    if (isTransparent) {goochMaterialAlpha.uniforms.opacity.value = 0.5;}
+                    changeNatMatTransparency(0.5);
+                    if (isTransparent) {
+                        goochMaterialAlpha.uniforms.opacity.value = 0.5;
+                        toggleTransparency('architettura', true);
+                    }
+                    
                     break;
                 case 4:
                     architectureTransparency = 0.7;
-                    if (isTransparent) {goochMaterialAlpha.uniforms.opacity.value = 0.7;}
+                    changeNatMatTransparency(0.7);
+                    if (isTransparent) {
+                        goochMaterialAlpha.uniforms.opacity.value = 0.7;
+                        toggleTransparency('architettura', true);
+                    }
+                    
                     break;
                 default:
                     console.log("Valore non riconosciuto.");

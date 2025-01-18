@@ -19,7 +19,7 @@ let howManySpeakers = 0;
 addSpeaker.addEventListener('click', () => {
     howManySpeakers++;
     let nome = `Altoparlante ${howManySpeakers}`
-    loadObj('speaker3dec.obj', nome, goochMaterialSp, 0.025, 0., 0, 0.5);
+    loadObj('speaker3dec.obj', nome, goochMaterialSp, 0.035, 0., 0, 0.5);
     // createMenu(); //qui non fa perchè deve caricare il modello sec me
 });
 
@@ -28,7 +28,7 @@ let howManyHalos = 0;
 addHalo.addEventListener('click', () => {
     howManyHalos++;
     let nome = `Aureola-${howManyHalos}`
-    loadObj('halo2_lowpoly.obj', nome, goochMaterialSp, 0.08, 0., 0, 0.5);
+    loadObj('halo2_lowpoly.obj', nome, goochMaterialSp, 0.12, 0., 0, 1.2);
     // createMenu();
 });
 
@@ -37,7 +37,7 @@ let howManyArrows = 0;
 addArrow.addEventListener('click', () => {
     howManyArrows++;
     const nome = `Orifonte ${howManyArrows}`;
-    loadObj('arrow.obj', nome, goochMaterialArrow, 0.025, 0., 0., 0.5)
+    loadObj('arrow.obj', nome, goochMaterialArrow, 0.045, 0., 0., 0.5)
     // createMenu();
 });
 
@@ -47,7 +47,7 @@ addCloudClient.addEventListener('click', () => {
     howManyCloudClients++;
     const nome = `Nuvola:client ${howManyCloudClients}`;
     // loadObj('bunnySpeaker.obj', nome, goochMaterialSp, 0.025, 0., 0, 0.5);
-    loadObj('cloudDec.obj', nome, goochMaterialSp, 0.015, 0., 0, 0.5);
+    loadObj('cloudDec.obj', nome, goochMaterialSp, 0.035, 0., 0, 0.5);
 });
 
 let howManySpheres = 0;
@@ -157,7 +157,7 @@ function newShape(boolgeo, name, materiale, x, y, z) {
     if (!boolgeo) {
         geometry = new THREE.BoxGeometry(0.2,0.2,0.2);
     } else {
-        geometry = new THREE.SphereGeometry(0.15, 40, 40);
+        geometry = new THREE.SphereGeometry(0.35, 40, 40);
     }
 
     const material = materiale;
