@@ -26,7 +26,7 @@ export function changeGrid(size, divisions) {
 
 export function init() {
     // Scene setup
-	ssuper = new THREE.GridHelper(5, 8, 0x888888, 0x888888)
+	ssuper = new THREE.GridHelper(10, 16, 0x888888, 0x888888)
     scene = new THREE.Scene();
     scene.add(ssuper);
 
@@ -43,7 +43,7 @@ export function init() {
         200
     );
     currentCamera = cameraPersp; // Default camera
-    currentCamera.position.set(5, 1.5, 5);
+    currentCamera.position.set(10, 3, 10);
 
     // Lighting
     const ambientLight = new THREE.AmbientLight(0xe7e7e7, 5);
@@ -110,7 +110,7 @@ export function init() {
 				// Aggiorna i controlli per la nuova camera
 				orbitOrtho.object = currentCamera;
 				orbitOrtho.update();
-				currentCamera.position.set(0, -5, 0); // Posizione dall'alto
+				currentCamera.position.set(0, -8, 0); // Posizione dall'alto
 				currentCamera.lookAt(0, 0, 0); // Guarda verso il centro della scena
 				orbitOrtho.target.set(0, 0, 0);
 				control.camera = currentCamera; // Aggiorna la camera nei c
@@ -125,7 +125,7 @@ export function init() {
 				// Aggiorna i controlli per la nuova camera
 				orbitOrtho.object = currentCamera;
 				orbitOrtho.update();
-				currentCamera.position.set(0, 0, 5); // Posizione da di fronte
+				currentCamera.position.set(0, 0, 8); // Posizione da di fronte
 				currentCamera.lookAt(0, 0, 0); // Guarda verso il centro della scena
 				orbitOrtho.target.set(0, 0, 0);
 				control.camera = currentCamera; // Aggiorna la camera nei c
@@ -140,7 +140,7 @@ export function init() {
 				// Aggiorna i controlli per la nuova camera
 				orbitOrtho.object = currentCamera;
 				orbitOrtho.update();
-				currentCamera.position.set(5, 0, 0); // Posizione da destra
+				currentCamera.position.set(8, 0, 0); // Posizione da destra
 				currentCamera.lookAt(0, 0, 0); // Guarda verso il centro della scena
 				orbitOrtho.target.set(0, 0, 0);
 				control.camera = currentCamera; // Aggiorna la camera nei c
@@ -198,7 +198,7 @@ export function init() {
 		const currentZoom = currentCamera.zoom;
 
 		if (currentCamera === cameraPersp) {
-			currentCamera.position.set(5, 1.5, 5); // Posizione di default
+			currentCamera.position.set(10, 3, 10); // Posizione di default
 			currentCamera.lookAt(0, 0, 0);
 		} else if (currentCamera === cameraOrtho) {
 			

@@ -7,6 +7,10 @@ import { loadGltfModel, loadObjWithMaterials, toggleTransparency } from './loade
 
 init();
 render();
+
+loadGltfModel('./modelli/galleriaGLTF/GenericGallery.glb');
+// loadGltfModel('./modelli/galleriaGLTF/ChiesaSuffragio.glb');
+
 // debugGeo();
 // debugGeo1();
 // debugGeo2();
@@ -15,8 +19,6 @@ render();
 // loadObjWithDashedEdges('parkinglot.obj', solidMaterial);
 // loadObjWithDashedEdges('galleria_sketchup.obj', solidMaterial);
 // loadObjWithMaterials('./', 'galleria_sketchup.obj', 'galleria_sketchup.mtl');
-loadGltfModel('./modelli/galleriaGLTF/GenericGallery.glb');
-// loadGltfModel('./modelli/galleriaGLTF/ChiesaSuffragio.glb');
 // loadObj('arrow.obj', 'Freccia', goochMaterialArrow, 0.025, 0., 0., 0.5)
 // loadObjWithDashedEdges('provaarch1.obj', solidMaterial);
 // loadObj('speaker3dec.obj', goochMaterialSp, 0.025, 0., -0.5, 0.5)

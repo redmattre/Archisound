@@ -32,7 +32,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 779.0, 491.0, 67.0, 22.0 ],
-					"text" : "pack f 0.5 f"
+					"text" : "pack f 1.2 f"
 				}
 
 			}
@@ -56,7 +56,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 527.0, 491.0, 67.0, 22.0 ],
-					"text" : "pack f 0.5 f"
+					"text" : "pack f 1.2 f"
 				}
 
 			}
@@ -80,7 +80,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 275.0, 491.0, 67.0, 22.0 ],
-					"text" : "pack f 0.5 f"
+					"text" : "pack f 1.2 f"
 				}
 
 			}
@@ -104,7 +104,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 23.0, 491.0, 67.0, 22.0 ],
-					"text" : "pack f 0.5 f"
+					"text" : "pack f 1.2 f"
 				}
 
 			}
@@ -717,7 +717,7 @@
 
 			}
  ],
-		"originid" : "pat-237"
+		"originid" : "pat-102"
 	}
 
 }
