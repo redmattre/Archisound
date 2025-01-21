@@ -52,7 +52,7 @@ window.addEventListener('resize', () => {
 // Variabile per tracciare l'ultimo testo mostrato
 let lastHoveredObject = null;
 
-let currentSelectedObject = null; // L'ultimo oggetto selezionato rimane memorizzato
+export let currentSelectedObject = null; // L'ultimo oggetto selezionato rimane memorizzato
 
 window.addEventListener('keydown', function(event) {
     if (!currentSelectedObject) return; // Nessun oggetto selezionato, esci

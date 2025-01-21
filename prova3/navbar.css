@@ -262,14 +262,13 @@
 /* pannello che si apre */
 #black-panel{
   opacity: 0;
-  right: 0;
   position: absolute;
   height: auto;
   top: 0.5rem;
   bottom: 0.5rem;
   right: 0.5rem;
   /* width: 33vw; */
-  width: 0;
+  width: 0; /*non si controlla qua ma da js*/
   background-color: var(--fondale);
   border: solid var(--dettaglio) 2px;
   border-radius: 2px;
@@ -284,7 +283,7 @@
 }
 
 .container {
-  /* margin-top: 4rem; */
+  margin-top: 4rem;
   /* font-size: small; */
   padding: 0.5rem 1rem;
   display: flex;

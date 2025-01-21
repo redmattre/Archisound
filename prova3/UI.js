@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { dashedMaterial, dashedMaterialB, dashedMaterialC, dashedMaterialD, goochMaterialAlpha, solidMaterial } from "./materials";
-import { setRaycasterActive } from "./raycaster";
-import { currentCamera, changeTheme, control, orbit, orbitOrtho, onWindowResize, ssuper, scene, renderer, changeGrid, render } from "./setup";
+import { currentSelectedObject, setRaycasterActive } from "./raycaster";
+import { currentCamera, changeTheme, control, orbit, orbitOrtho, onWindowResize, ssuper, scene, renderer, changeGrid, render, updateStato, transfo, changeTransfo, updateStato1 } from "./setup";
 import { changeNatMatTransparency, toggleMaterial, toggleModelVisibility, toggleTransparency } from './loadersFIX';
 
 let scaleMoveSnap = 0.05;
@@ -220,25 +220,6 @@ let counter = 1; // Definito al di fuori per mantenere lo stato tra i clic
 let isTransparent = false;
 let isVisible = false;
 
-// document.getElementById('addArch').addEventListener('click', (event) => {
-//     // Recupera lo stato del pulsante dal suo attributo data
-//     const isActive = event.target.getAttribute('data-active') === 'true';
-
-//     if (isActive) {
-//         // Disattiva
-//         goochMaterialAlpha.uniforms.opacity.value = 0;
-//         solidMaterial.visible = false;
-
-//         event.target.setAttribute('data-active', 'false'); // Aggiorna stato
-//     } else {
-//         // Attiva
-//         goochMaterialAlpha.uniforms.opacity.value = isTransparent ? architectureTransparency : 1;
-//         solidMaterial.visible = true;
-
-//         event.target.setAttribute('data-active', 'true'); // Aggiorna stato
-//     }
-// });
-
 const menuList = document.getElementById("menuList");
 
 document.getElementById('seeItemsList').addEventListener('click', (event) => {
@@ -261,6 +242,41 @@ document.getElementById('seeItemsList').addEventListener('click', (event) => {
         menu.style.pointerEvents = "all";
         event.target.setAttribute('data-active', 'true');
     }
+});
+
+let moveButton = document.getElementById('moveButton');
+let rotateButton = document.getElementById('rotateButton');
+let scaleButton = document.getElementById('scaleButton');
+let toggleTransButton = document.getElementById('toggleTransButton');
+
+moveButton.addEventListener('click', () => {
+    control.setMode('translate');
+    updateStato('Spostamento (g)');
+    if (!currentSelectedObject) return;
+    const targetObject = currentSelectedObject.parent?.isGroup ? currentSelectedObject.parent : currentSelectedObject;
+    control.attach(targetObject);
+});
+
+rotateButton.addEventListener('click', () => {
+    control.setMode('rotate');
+	updateStato('Rotazione (r)');
+    if (!currentSelectedObject) return;
+    const targetObject = currentSelectedObject.parent?.isGroup ? currentSelectedObject.parent : currentSelectedObject;
+    control.attach(targetObject);
+});
+
+scaleButton.addEventListener('click', () => {
+    control.setMode('scale');
+	updateStato('Scala (s)');
+    if (!currentSelectedObject) return;
+    const targetObject = currentSelectedObject.parent?.isGroup ? currentSelectedObject.parent : currentSelectedObject;
+    control.attach(targetObject);
+});
+
+toggleTransButton.addEventListener('click', () => {
+    changeTransfo(!transfo);
+    control.setSpace(control.space === 'local' ? 'world' : 'local');
+    updateStato1();
 });
 
 //OPTIMIZATION

@@ -8,6 +8,7 @@
   --testo: black;
   --dettaglio: var(--grigio);
   --fondale: var(--fondaleBianco);
+  font-size: 14px; /*default è 16, da qui decidi grandezza interfaccia in pratica*/
 }
 
 a{
@@ -50,6 +51,14 @@ button {
   user-select: none;
   /* box-shadow: 0 0 0.5rem var(--fondale); */
 }
+
+/* #helper {
+  background-image: url("modelli/Logo_TempoReale.webp");
+  background-position: center;
+  background-size: 80%;
+  background-repeat: no-repeat;
+  border: none;
+} */
 
 #addArrow {
     overflow: hidden;
@@ -120,6 +129,23 @@ button:active {
              1px 1px var(--fondale), -1px -1px var(--fondale), 1px -1px var(--fondale), -1px 1px var(--fondale);
 }
 
+#transTriangle {
+  position: absolute;
+  /* top: 50%;
+  left: 50%; */
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  width: 2rem;
+  height: 2rem;
+  /* aspect-ratio: 1; */
+  /* clip-path: polygon(0 0,100% 100%,0 100%); */
+  clip-path: polygon(0 100%,0 0,100% 0);
+  /* background: linear-gradient(90deg,red, violet); */
+  background-color: var(--testo);
+  display: none;
+}
+
 #infoDivCenter {
     position: absolute;
     margin: 0;
@@ -147,6 +173,7 @@ button:active {
     margin: 0;
     margin-right: 0.5rem;
     margin-left: 0.5rem;
+    border: 1px solid var(--testo);
 }
 
 .bottonieraDestra {
@@ -159,6 +186,51 @@ button:active {
     top: 1rem;
     right: 1rem;
     z-index: 9999;
+}
+
+.bottonieraSopra {
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  /* pointer-events: none; */
+  /* background-color: red; */
+  /* border: var(--dettaglio) solid 2px;
+  border-radius: 10px; */
+  height: 3rem;
+  width: auto;
+  top: 1rem;
+  right: 6rem;
+  left: 1rem;
+  z-index: 600;
+  text-align: center; /* Allinea il testo orizzontalmente */
+  display: flex; /* Attiva flexbox */
+  justify-content: right; /* Centra orizzontalmente */
+  align-items: center;
+}
+
+.topButtons {
+  margin-left: 1rem;
+}
+
+#ghostButton {
+  
+}
+
+#chiudiMenuSopra, #chiudiMenuSotto {
+  display: none;
+  /* background-color: var(--testo); */
+  /* color: var(--dettaglio); */
+  transition: all 0.5s ease;
+  border: 2px solid var(--testo)
+
+}
+
+#chiudiMenuSotto {
+  height: 2rem;
+}
+
+#chiudiMenuSopra {
+  width: 2rem;
 }
 
 .bottonieraSotto {

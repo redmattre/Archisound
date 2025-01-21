@@ -20,7 +20,7 @@ navIcons.forEach(function(icon) {
         } else {
             menu.style.opacity = 1;
             menu.style.pointerEvents = "all";
-            menu.style.width = "33vw";
+            menu.style.width = "29rem";
             menu.style.color = "var(--testo)";
 
 			// visualizzazione.style.right = "33vw";

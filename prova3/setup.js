@@ -16,7 +16,7 @@ let rendererBackgoundColor = 0xd6d6d6; //inizia bianco
 
 const visualizzazione = document.getElementById("visualizzazione");
 const stato = document.getElementById("infoDivBottomLeft");
-let transfo = false;
+export let transfo = false;
 
 export function changeGrid(size, divisions) {
 	scene.remove(ssuper);
@@ -32,7 +32,7 @@ export function init() {
 
     // Camere
     const aspect = window.innerWidth / window.innerHeight;
-    const frustumSize = 4;
+    const frustumSize = 8;
     cameraPersp = new THREE.PerspectiveCamera(50, aspect, 0.3, 200);
     cameraOrtho = new THREE.OrthographicCamera(
         -frustumSize * aspect,
@@ -43,10 +43,10 @@ export function init() {
         200
     );
     currentCamera = cameraPersp; // Default camera
-    currentCamera.position.set(10, 3, 10);
+    currentCamera.position.set(12, 3, 12);
 
     // Lighting
-    const ambientLight = new THREE.AmbientLight(0xe7e7e7, 5);
+    const ambientLight = new THREE.AmbientLight(0xe7e7e7, 4);
     scene.add(ambientLight);
 
     const directionalLight = new THREE.DirectionalLight(0xffffff, 1.6);
@@ -110,7 +110,7 @@ export function init() {
 				// Aggiorna i controlli per la nuova camera
 				orbitOrtho.object = currentCamera;
 				orbitOrtho.update();
-				currentCamera.position.set(0, -8, 0); // Posizione dall'alto
+				currentCamera.position.set(0, 8, 0); // Posizione dall'alto
 				currentCamera.lookAt(0, 0, 0); // Guarda verso il centro della scena
 				orbitOrtho.target.set(0, 0, 0);
 				control.camera = currentCamera; // Aggiorna la camera nei c
@@ -163,25 +163,19 @@ export function init() {
 				control.setSpace(control.space === 'local' ? 'world' : 'local');
 				updateStato1();
 				break;
-	
-			// case 'Shift':
-			//     control.setTranslationSnap(1);
-			//     control.setRotationSnap(THREE.MathUtils.degToRad(15));
-			//     control.setScaleSnap(0.25);
-			//     break;
 			case 'g':
 				control.setMode('translate');
-				updateStato('spostamento');
+				updateStato('Spostamento');
 				break;
 	
 			case 'r':
 				control.setMode('rotate');
-				updateStato('rotazione');
+				updateStato('Rotazione');
 				break;
 	
 			case 's':
 				control.setMode('scale');
-				updateStato('scala');
+				updateStato('Scala');
 				break;
 			case 'Escape':
 				control.detach();
@@ -198,7 +192,7 @@ export function init() {
 		const currentZoom = currentCamera.zoom;
 
 		if (currentCamera === cameraPersp) {
-			currentCamera.position.set(10, 3, 10); // Posizione di default
+			currentCamera.position.set(12, 3, 12); // Posizione di default
 			currentCamera.lookAt(0, 0, 0);
 		} else if (currentCamera === cameraOrtho) {
 			
@@ -217,8 +211,13 @@ export function init() {
 
 let miao;
 let tipo;
+const transTriangle = document.getElementById("transTriangle");
 
-function updateStato(type) {
+export function changeTransfo(state) {
+	transfo = state;
+}
+
+export function updateStato(type) {
 	tipo = type;
 	if (transfo) {
 		miao = "locale";
@@ -226,9 +225,10 @@ function updateStato(type) {
 		miao = "globale";
 	}
 	stato.textContent = type + " " + miao;
+	transTriangle.style.display = "block";
 }
 
-function updateStato1() {
+export function updateStato1() {
 	if (transfo) {
 		miao = "locale";
 	} else {
@@ -237,8 +237,9 @@ function updateStato1() {
 	stato.textContent = tipo + " " + miao;
 }
 
-function updateStato3() {
+export function updateStato3() {
 	stato.textContent = "---";
+	transTriangle.style.display = "none";
 }
 
 export function changeTheme(state) {
