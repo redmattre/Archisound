@@ -7,6 +7,7 @@ import { changeNatMatTransparency, toggleMaterial, toggleModelVisibility, toggle
 let scaleMoveSnap = 0.05;
 let rotationSnapDegrees = 15;
 let snapIsActive = true;
+let ghostButton = document.getElementById('ghostButton');
 
 // SWITCHES
 document.querySelectorAll('.switch input').forEach((checkbox) => {
@@ -252,6 +253,8 @@ let toggleTransButton = document.getElementById('toggleTransButton');
 moveButton.addEventListener('click', () => {
     control.setMode('translate');
     updateStato('Spostamento (g)');
+    ghostButton.style.display = 'block';
+    ghostButton.style.right = '21.5rem';
     if (!currentSelectedObject) return;
     const targetObject = currentSelectedObject.parent?.isGroup ? currentSelectedObject.parent : currentSelectedObject;
     control.attach(targetObject);
@@ -260,6 +263,8 @@ moveButton.addEventListener('click', () => {
 rotateButton.addEventListener('click', () => {
     control.setMode('rotate');
 	updateStato('Rotazione (r)');
+    ghostButton.style.display = 'block';
+    ghostButton.style.right = '16.5rem';
     if (!currentSelectedObject) return;
     const targetObject = currentSelectedObject.parent?.isGroup ? currentSelectedObject.parent : currentSelectedObject;
     control.attach(targetObject);
@@ -268,6 +273,8 @@ rotateButton.addEventListener('click', () => {
 scaleButton.addEventListener('click', () => {
     control.setMode('scale');
 	updateStato('Scala (s)');
+    ghostButton.style.display = 'block';
+    ghostButton.style.right = '11.5rem';
     if (!currentSelectedObject) return;
     const targetObject = currentSelectedObject.parent?.isGroup ? currentSelectedObject.parent : currentSelectedObject;
     control.attach(targetObject);

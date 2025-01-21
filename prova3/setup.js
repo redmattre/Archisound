@@ -13,6 +13,7 @@ export let objToBeDetected = [];
 export let cameraPersp, cameraOrtho, currentCamera, camera;
 let rendererBackgoundColor = 0xd6d6d6; //inizia bianco
 // let rendererBackgoundColor = 0x000000; //inizia nero
+let ghostButton = document.getElementById('ghostButton');
 
 const visualizzazione = document.getElementById("visualizzazione");
 const stato = document.getElementById("infoDivBottomLeft");
@@ -166,21 +167,28 @@ export function init() {
 			case 'g':
 				control.setMode('translate');
 				updateStato('Spostamento');
+				ghostButton.style.display = 'block';
+				ghostButton.style.right = '21.5rem';
 				break;
 	
 			case 'r':
 				control.setMode('rotate');
 				updateStato('Rotazione');
+				ghostButton.style.display = 'block';
+				ghostButton.style.right = '16.5rem';
 				break;
 	
 			case 's':
 				control.setMode('scale');
 				updateStato('Scala');
+				ghostButton.style.display = 'block';
+				ghostButton.style.right = '11.5rem';
 				break;
 			case 'Escape':
 				control.detach();
 				orbit.enabled = true;
 				updateStato3();
+				ghostButton.style.display = 'none';
 				break;
 				
 		}
