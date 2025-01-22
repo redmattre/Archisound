@@ -224,7 +224,6 @@ let isVisible = false;
 const menuList = document.getElementById("menuList");
 
 document.getElementById('seeItemsList').addEventListener('click', (event) => {
-    console.log("sono qui");
     // Recupera lo stato del pulsante dal suo attributo data
     const isActive = event.target.getAttribute('data-active') === 'true';
 

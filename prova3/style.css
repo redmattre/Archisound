@@ -11,6 +11,12 @@
   font-size: 14px; /*default è 16, da qui decidi grandezza interfaccia in pratica*/
 }
 
+@media only screen and (orientation: portrait) {
+  :root {
+    font-size: 8px;
+  }
+}
+
 a{
     all: unset;
 }
@@ -38,7 +44,7 @@ button {
   align-items: center;
   width: 4rem;
   height: 3.7rem;
-  font-size: xx-large;
+  font-size: 2rem;
   background-color: transparent;
   /* background-color: var(--fondale); */
   border: solid var(--testo) 2px;

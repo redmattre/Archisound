@@ -65,9 +65,6 @@ window.addEventListener('keydown', function(event) {
         outlinePass.selectedObjects = [];
         isRaycasterActive = false;
     } else if (event.key === 'x' || event.key === 'Backspace') {
-        // console.log("Array attuale:", objToBeDetected.map(obj => obj.name));
-        // console.log("Nome dell'oggetto da rimuovere:", currentSelectedObject.name);
-        // console.log("Oggetto da rimuovere:", currentSelectedObject);
 
         const targetObject = currentSelectedObject.parent?.isGroup ? currentSelectedObject.parent : currentSelectedObject;
         const index = objToBeDetected.findIndex(obj => obj.name?.trim() === targetObject.name.trim());
@@ -83,7 +80,6 @@ window.addEventListener('keydown', function(event) {
             // console.error("Oggetto con nome '" + targetObject.name + "' non trovato nell'array.");
         }
         createMenu();
-        // console.log("Array finale:", objToBeDetected.map(obj => obj.name));
         currentSelectedObject = null; // Resetta la selezione
     }
 });
