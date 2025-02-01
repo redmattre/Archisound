@@ -2,10 +2,11 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { CustomBoundingBox } from '../../src/custom';
+import { loadGltfModel } from './loader';
 
 
 // Imposta la scena
-const scene = new THREE.Scene();
+export const scene = new THREE.Scene();
 let objToBeDetected = [];
 
 // Imposta la camera
@@ -28,44 +29,33 @@ document.body.appendChild(renderer.domElement);
 // Variabile globale per l'oggetto selezionato
 let selectedObject = null;
 
-// Crea i Torus Knot
+// Crea le geometrie native
 const torusKnot1 = new THREE.Mesh(
     new THREE.TorusKnotGeometry(1, 0.3, 100, 16),
     new THREE.MeshStandardMaterial({ color: 0x00ff00 })
 );
 torusKnot1.name = "TorusKnot1";
-torusKnot1.position.x = -6.2;
-
-const torusKnot2 = new THREE.Mesh(
-    new THREE.TorusKnotGeometry(1, 0.3, 100, 16),
-    new THREE.MeshStandardMaterial({ color: 0x00ff00 })
-);
-torusKnot2.name = "TorusKnot2";
-torusKnot2.position.x = 6.2;
+torusKnot1.position.x = -5;
 
 const scatolone = new THREE.Mesh(
-  new THREE.SphereGeometry(2, 20, 20),
+  new THREE.SphereGeometry(1.5, 20, 20),
   new THREE.MeshStandardMaterial({ color: 0x00ff00 })
 );
 scatolone.name = "Sfera1";
-scatolone.position.x = 2.3;
-
-const scatolone2 = new THREE.Mesh(
-  new THREE.SphereGeometry(2,20,20),
-  new THREE.MeshStandardMaterial({ color: 0x00ff00 })
-);
-scatolone2.name = "Sfera2";
-scatolone2.position.x = -2.3;
+scatolone.position.x = 0;
 
 const scatolone3 = new THREE.Mesh(
-  new THREE.BoxGeometry(2, 2, 2),
+  new THREE.BoxGeometry(2, 3, 2),
   new THREE.MeshStandardMaterial({ color: 0x00ff00 })
 );
 scatolone3.name = "Scatolone";
-scatolone3.position.x = 10;
+scatolone3.position.x = 5;
 
-scene.add(torusKnot1, torusKnot2, scatolone, scatolone2, scatolone3);
-objToBeDetected.push(torusKnot1, torusKnot2, scatolone, scatolone2, scatolone3);
+scene.add(torusKnot1, scatolone, scatolone3);
+objToBeDetected.push(torusKnot1, scatolone, scatolone3);
+
+//aggiungi un modello da fuori
+loadGltfModel('src/models/GenericGallery.glb');
 
 // Crea una bounding box personalizzata
 const customBox = new CustomBoundingBox(torusKnot1, 0xff0000); // Inizialmente senza target
